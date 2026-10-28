@@ -1,0 +1,76 @@
+{
+  "name": "three",
+  "version": "0.180.0",
+  "license": "MIT",
+  "source": "https://registry.npmjs.org/three/-/three-0.180.0.tgz",
+  "integrity": "sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w==",
+  "rewrite": "ESM bare three imports resolve to the local /vendor/three/three.module.js only",
+  "files": [
+    {
+      "source": "build/three.module.js",
+      "path": "three.module.js",
+      "originalSha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+      "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+    },
+    {
+      "source": "build/three.core.js",
+      "path": "three.core.js",
+      "originalSha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+      "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+    },
+    {
+      "source": "LICENSE",
+      "path": "LICENSE",
+      "originalSha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+    },
+    {
+      "source": "examples/jsm/loaders/OBJLoader.js",
+      "path": "addons/loaders/OBJLoader.js",
+      "originalSha256": "e3ceb6a8ed48ca146049a8f0879c7acbf884d430f2e728779af26c6ea3a57c65",
+      "sha256": "68e8a4dfcddb8b9891eaa2f92508d04b40faef9ace04b4e4a8dd9968150be9ba"
+    },
+    {
+      "source": "examples/jsm/loaders/MTLLoader.js",
+      "path": "addons/loaders/MTLLoader.js",
+      "originalSha256": "f1f8f0c6fcfa09671cb609954ea436521d835606853c110c5aff2dc8188f5e61",
+      "sha256": "3ffe726da4f75fc5c972c6b8d4153991f5b621038ea5a4ebeda923c06e3022f5"
+    },
+    {
+      "source": "examples/jsm/loaders/GLTFLoader.js",
+      "path": "addons/loaders/GLTFLoader.js",
+      "originalSha256": "67ac5551fdafa6e349bd80c8f8e5e39c136d6b2fb1ad647db9abb21dc86f9e4a",
+      "sha256": "1b977a526fa82c14a8db7db20e71c1f1ce1b7bdd09883a2ac713da7ccef94b5d"
+    },
+    {
+      "source": "examples/jsm/loaders/STLLoader.js",
+      "path": "addons/loaders/STLLoader.js",
+      "originalSha256": "023ed97f848b633d8bcd53d4db3b996d29d0c644088700691297c552257d480b",
+      "sha256": "55afb30c61ec59d2d874b36bbcf429e1551bc2940c731323e0e30a0ea12319c8"
+    },
+    {
+      "source": "examples/jsm/loaders/ColladaLoader.js",
+      "path": "addons/loaders/ColladaLoader.js",
+      "originalSha256": "a778a6886874e5eff0a6cf1e4a15ec3c38d675d13ad3dcd04c3094eecfaf80d2",
+      "sha256": "4ac0f73afa30f7486aecf048ed08435a2656b32f6a848e99a7fffe1558b24ffb"
+    },
+    {
+      "source": "examples/jsm/loaders/TGALoader.js",
+      "path": "addons/loaders/TGALoader.js",
+      "originalSha256": "7560c445146ed4432a340e312672155d86cf54ad3fc7f5571da12cba9512b5c8",
+      "sha256": "ced92f40f8b0140edd6bdef183afface32f45b2e5d1c2f61fb5da57da99cafcf"
+    },
+    {
+      "source": "examples/jsm/controls/OrbitControls.js",
+      "path": "addons/controls/OrbitControls.js",
+      "originalSha256": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+      "sha256": "4b0bcebb99e76933cc11ce8c33e431308e847afbd7cfee26aa185a261492306f"
+    },
+    {
+      "source": "examples/jsm/utils/BufferGeometryUtils.js",
+      "path": "addons/utils/BufferGeometryUtils.js",
+      "originalSha256": "fda7e946b8e0b5ab39b779206589e7a1079a22eb24efb89d7223e03fdfb1f751",
+      "sha256": "da4195d94421881d5a822e266fc1a498e4ceedf8dbdbcc321dc48dfcc2447d24"
+    }
+  ]
+}
