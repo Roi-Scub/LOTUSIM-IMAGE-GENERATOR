@@ -5,6 +5,10 @@ Ce dossier contient les développements locaux ajoutés autour de LOTUSim et Uni
 Version portable actuelle : **0.3.0**. Voir le [journal des versions](CHANGELOG.md)
 et le [guide de versionnement](docs/VERSIONNEMENT.md).
 
+Les conventions par langage et les commandes de vérification sont décrites dans
+[le guide de style](docs/CONVENTIONS_CODE.md). La branche `refactor` est destinée à
+la revue ; elle ne modifie pas les projets en cours d’exécution sous `runtime/`.
+
 ## Démarrer depuis le dépôt privé
 
 Avec un compte autorisé sur le dépôt :

@@ -1,5 +1,13 @@
 # Journal des versions
 
+## Refactorisation en revue
+
+- Conventions et formateurs épinglés pour Python, JavaScript, HTML/CSS, C#, C++ et HLSL.
+- Sources dépliées et indentées, sans renommage des contrats applicatifs ou Unity.
+- Tests d’inspection des sources rendus indépendants des espaces et retours à la ligne.
+- Sources de référence et correctifs d’installation synchronisés avec le code formaté.
+- Aucun rechargement du runtime, aucune fusion dans `main` et aucune nouvelle version publiée.
+
 ## 0.3.0 du 28 octobre 2026
 
 - Centre d’alertes local avec regroupement par source, déduplication et filtre de

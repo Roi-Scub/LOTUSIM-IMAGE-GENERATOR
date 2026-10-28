@@ -3,14 +3,39 @@
   "date": "2026-10-27",
   "files": [
     {
+      "path": ".clang-format",
+      "bytes": 304,
+      "sha256": "b0d2b59f9cb0a18bf44121c742770e686fc50e7e23722638e46bfe7e398a5862"
+    },
+    {
+      "path": ".editorconfig",
+      "bytes": 741,
+      "sha256": "c47ed8e925a7ff4b5845960c71fb7c0cc542b9c81f2a7fb13dbcc86819f92ad1"
+    },
+    {
+      "path": ".git-blame-ignore-revs",
+      "bytes": 121,
+      "sha256": "d07b11dfc8f45523462294d30bb3deb6b13a060a1a0853cee0991cd1e34d8a5f"
+    },
+    {
       "path": ".gitattributes",
-      "bytes": 582,
-      "sha256": "34dcc2fbb7f6819d52fd0963fe898ae20f26bfd56a660dd833050129a9e6c11f"
+      "bytes": 777,
+      "sha256": "76659edd2f4582ba33e1e6c51b9eafd1a1976259b142bdeaed6acdf6ea80ede8"
     },
     {
       "path": ".gitignore",
-      "bytes": 828,
-      "sha256": "e0f01d1ab4868f15c6775862225ea2b6ed34bc6b2ac2ec80a2ee7999d121e885"
+      "bytes": 843,
+      "sha256": "fb9a42fc8bc9ea412f276c4853c695afc4bd7676ad66d2020041a155a092b55f"
+    },
+    {
+      "path": ".prettierignore",
+      "bytes": 219,
+      "sha256": "d6a6f2ada6616f577cf40b5b4664606e68190ecbf410b904760670d68dcc6ba1"
+    },
+    {
+      "path": ".prettierrc.json",
+      "bytes": 281,
+      "sha256": "bcfb488ea1355b97180fefd326d0e15741bfa7e72dd18df2048d93f87ff3c6c3"
     },
     {
       "path": "AGENTS.md",
@@ -19,8 +44,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3603,
-      "sha256": "aef574edefc152039adc80e23f0e878d2ef3f89244875c10424bf05ec85718b7"
+      "bytes": 4091,
+      "sha256": "e2793360cb58ed92a1166434343caee4e7e0c094d4118d43c879a54210469a65"
     },
     {
       "path": "LICENSE",
@@ -29,8 +54,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 7316,
-      "sha256": "ecfe4d02a30a06fa163152fe2e3827f42b602680f25f81fe9b05f9f89a02afb5"
+      "bytes": 7569,
+      "sha256": "ab2c277e7a7d65371ab6e22300fface511c9fe0af2616695ec35115bc4e075f2"
     },
     {
       "path": "VERSION",
@@ -234,8 +259,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryBuilder.cs",
-      "bytes": 12154,
-      "sha256": "ef9239377115552e2b860c0c651ce75a8324bf1d202508c59b0cccd46ddd13f6"
+      "bytes": 14328,
+      "sha256": "27e07fa6b1007f7c2b75838a7e190f1ad07ab819e5018d7f2984d4a9811b6f73"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryBuilder.cs.meta",
@@ -244,8 +269,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryExport.cs",
-      "bytes": 10392,
-      "sha256": "dddc0bd96bccee30afcf9133a74e39aae6573a3aac5cde707a458a67a5cd6153"
+      "bytes": 11989,
+      "sha256": "d6b32ab78c28c7b4710fac1f94782ad9a832cf5fdb2a84daf36b2a734b5f4774"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryExport.cs.meta",
@@ -254,8 +279,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryGeometry.cs",
-      "bytes": 12011,
-      "sha256": "de6a2a2e9cd740d33a02c7a9b947cda2185b16fe0fd63cf37ab8a6af1793af6b"
+      "bytes": 14804,
+      "sha256": "ff00fef1fc95397cb2ce6c798241b62334701549793d733943f14171e4a6fdf1"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryGeometry.cs.meta",
@@ -264,8 +289,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryGeometryChecks.cs",
-      "bytes": 4038,
-      "sha256": "227587bb173514b744174f355244e56a9b58ed14294778e93f4cce739b286de7"
+      "bytes": 5762,
+      "sha256": "1f36421b95833ea36275b2f8c2fc77f417601ec86d20ec3a70a35bae5d060d02"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryGeometryChecks.cs.meta",
@@ -274,8 +299,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryModels.cs",
-      "bytes": 18020,
-      "sha256": "21182d6c63731fe55540f7127547e97ce875a9d922e4ee8ad09259045358641c"
+      "bytes": 20189,
+      "sha256": "c84fd7046e098c4534652af15f871d35e041a536d84981e84ed81c38d86ec7f4"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/AerialLibraryModels.cs.meta",
@@ -284,8 +309,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetAnnotationTests.cs",
-      "bytes": 5157,
-      "sha256": "339da929b24fb8f89f32739cb0998ebdbe8673b801a0783651250a62cd6bf475"
+      "bytes": 6149,
+      "sha256": "8d094ba54b7c0a3ab2ccd4ecac140015d5a4e1f462c609e3b3c2097ddec59f34"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetAnnotationTests.cs.meta",
@@ -294,8 +319,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetBoatVariantTests.cs",
-      "bytes": 3022,
-      "sha256": "2c485fee05cc63bcadd393d33ec92b93297349c4e79651125ff49e58b7a0dede"
+      "bytes": 3535,
+      "sha256": "673a5b6d78b0724c409086fde735775f07f2028591665d4f20a459d3c85d210e"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetBoatVariantTests.cs.meta",
@@ -304,8 +329,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardImportContract.cs",
-      "bytes": 10757,
-      "sha256": "3dddec29395ad0f28b4009529b975e61ac894f585416706887df2d3c46095c4f"
+      "bytes": 12260,
+      "sha256": "db8e56bf406460262c1af3bf9c570d27ef325e0956f846869e7d6206e57a873f"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardImportContract.cs.meta",
@@ -314,8 +339,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardImportTests.cs",
-      "bytes": 5302,
-      "sha256": "7fa5ec2e6914e76a18492395b137ee5365973d623946c016107c32cc2a2ad5f7"
+      "bytes": 7469,
+      "sha256": "51f751530f8be645a836e2d70fa6fd0ab8d12fa010fee3f9df30e3281584143a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardImportTests.cs.meta",
@@ -324,8 +349,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardImportWatcher.cs",
-      "bytes": 7204,
-      "sha256": "dd118e71bf1eaf83d1618f92d5314f9a6ba0bb48fa1e233cd8c010154ea45b78"
+      "bytes": 8606,
+      "sha256": "33271951efdacc08194d5bc4da6f5faeabe46d93fcad3bfdc07897f48226cd58"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardImportWatcher.cs.meta",
@@ -334,8 +359,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardMeshBuilder.cs",
-      "bytes": 16707,
-      "sha256": "5b0b8e136be353d6a6e0e6275cb2e919254fa55c35fee538b37974a2e56df05c"
+      "bytes": 19038,
+      "sha256": "91f206b336d5d41210ccde7662baa52e3b53bdd65fe2d1669fa962410ba85861"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetDashboardMeshBuilder.cs.meta",
@@ -344,8 +369,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetExternalAssetTests.cs",
-      "bytes": 2862,
-      "sha256": "cf80ea8ebf858788be6b329c7b16bf62dada01a9514fa271d54e6ea2feb26c43"
+      "bytes": 3720,
+      "sha256": "a8c8f88bb917efb5954b4a5a0ced99a0f3f4b7ecd2b46de8636d6338449ce913"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetExternalAssetTests.cs.meta",
@@ -354,8 +379,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetFastDroneBuilder.cs",
-      "bytes": 2445,
-      "sha256": "bad0fa3b27ce382b71f14e7131fe3b264a4849ac2d94e125074c52b853b026ab"
+      "bytes": 2991,
+      "sha256": "e89bf5dd6e32db86502658a41f1857de13c930d866ebcdc5fc061d2e9d9fc382"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetFastDroneBuilder.cs.meta",
@@ -364,8 +389,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLanternLifecycleTests.cs",
-      "bytes": 6122,
-      "sha256": "5b08b3df196875a616da09332ccbd078550393f7bbfb7d06ddd5d10fa20f5afd"
+      "bytes": 6751,
+      "sha256": "83776642add0e5c9fd32f891f1136a38190a6c2a40be79e23747ed5a50070917"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLanternLifecycleTests.cs.meta",
@@ -374,8 +399,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimBridgeBuilder.cs",
-      "bytes": 1021,
-      "sha256": "3d981403db575f74b875622a00e459a13e0a1b2398ecabad347dff0c07c7e672"
+      "bytes": 1144,
+      "sha256": "c94b0b22e972d702e09f1d6149893baa0f5c72fc423453576907244fac21a334"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimBridgeBuilder.cs.meta",
@@ -384,8 +409,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimSceneBuilder.cs",
-      "bytes": 12167,
-      "sha256": "87613774e7b0f1c195ae3a8f8cb8647f3d87483b0d633d3a36fba6d571238cb9"
+      "bytes": 14218,
+      "sha256": "ab70c7b3d7172f62e0e40e8349f53d313ac67964e3a93870bbd5140dc7b6627a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimSceneBuilder.cs.meta",
@@ -394,8 +419,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimSensorsBuilder.cs",
-      "bytes": 715,
-      "sha256": "92e205b928adc24c84a2f1a2b6b8ecde18ba8a4ffa4e202411767f4cfc25a178"
+      "bytes": 881,
+      "sha256": "8c0370a8d8bc245b34ec182bc921fd239def243a5e4b07e6c5e73d73feb758e9"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimSensorsBuilder.cs.meta",
@@ -404,8 +429,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimTests.cs",
-      "bytes": 7451,
-      "sha256": "d82abd415dfb388257b9004c53c1b8a8f23b22c85473326b1a94e5f4ebc723a1"
+      "bytes": 9443,
+      "sha256": "132f52a547cebb072d703820ef5696ccea703b868ed027a7154226cdcdb212ac"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimTests.cs.meta",
@@ -414,8 +439,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimVoyageBuilder.cs",
-      "bytes": 6052,
-      "sha256": "2bf06929c6f601013421373e6f90693904056d4bc2078faed52cf5b5e97d518d"
+      "bytes": 8464,
+      "sha256": "2c03f0233be69d3bc3a792f5fc50bb4c4db3872d1f277a5086f8672d45888c01"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetLotusimVoyageBuilder.cs.meta",
@@ -424,8 +449,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetManualCampaignBuilder.cs",
-      "bytes": 20992,
-      "sha256": "a640e4da3734282f581be1f2d4345183dd6f9f1631308b1d73aa1f6749741ae9"
+      "bytes": 25426,
+      "sha256": "0bf424b1ea64e65ed53aaf6261ef132ad3954e05e77095657ac98788dd65eeac"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetManualCampaignBuilder.cs.meta",
@@ -434,8 +459,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetManualCampaignTests.cs",
-      "bytes": 4707,
-      "sha256": "2742ede5983438c446c9a4074ade7f5705e84e2f3526b712d498b8e49883a465"
+      "bytes": 6611,
+      "sha256": "758ee03abb4e6b2b4bc709515fb6c51202958e272485912a3e97f80f534ca899"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetManualCampaignTests.cs.meta",
@@ -444,8 +469,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetOpsTelemetry.cs",
-      "bytes": 12913,
-      "sha256": "7c45f7fe9f59201afe07ffb9aeb2068a1ae6be1e6875b4e0dc58208ef588c3f5"
+      "bytes": 15818,
+      "sha256": "c751855c4f1f8766b0c9cd3a387d3335c8091a84640127338cf72f5a1a2c9753"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetOpsTelemetry.cs.meta",
@@ -454,8 +479,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetPilotSceneBuilder.cs",
-      "bytes": 15063,
-      "sha256": "4bd0864e40601d46d150c7dfc237a3e9dc5992d53eedab1169551f862417bfa8"
+      "bytes": 17892,
+      "sha256": "5894326adb76c45c2fbbf35dd15c9c819e5e304c9b93cd4c0082bd5d59799fad"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetPilotSceneBuilder.cs.meta",
@@ -464,8 +489,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetPilotTests.cs",
-      "bytes": 7683,
-      "sha256": "3523dda77437861ef086faca2fec6b1f8d7c45a6429b3c369b8778d5b88151ec"
+      "bytes": 9996,
+      "sha256": "4dbe52ff4289cca7788b5baff14f05d2f2a97df2bd6644f2d09ff481a903e2ac"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetPilotTests.cs.meta",
@@ -474,8 +499,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetPngTests.cs",
-      "bytes": 1595,
-      "sha256": "73cb708b9e27669b12fcfe3131ca006973dc6e20097bb60c51069e5c769df92a"
+      "bytes": 2245,
+      "sha256": "816bbbfd54b6420f2430616462fb96758e50f7ac36cfd8e6314d21646bce2e2c"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetPngTests.cs.meta",
@@ -484,8 +509,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetRecognitionTests.cs",
-      "bytes": 2999,
-      "sha256": "9baa8209212cc2614e67518b0ec7e0a6559c705d811912e64bc370318efe679a"
+      "bytes": 3824,
+      "sha256": "0be13928f21667166cb694334985a6a781f4fb4ffdc1163270915a068cd54441"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetRecognitionTests.cs.meta",
@@ -494,8 +519,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetRgbObserverTools.cs",
-      "bytes": 12325,
-      "sha256": "fa10b2b3910e27368f047ae449d95030135b2a4892b9c66712ed2fddc305b785"
+      "bytes": 14692,
+      "sha256": "3e5ea7c3f68aa7a5aa0b4b43984c4b164fddb655398e558e41eabca2459a6cbc"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetRgbObserverTools.cs.meta",
@@ -504,8 +529,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetSensorsTests.cs",
-      "bytes": 3641,
-      "sha256": "d99a9aeff0c0aefdb64dc244b12e85505dc8ddc7bfda47d14de07b1996c17451"
+      "bytes": 4524,
+      "sha256": "cd534493f9657c5c1df12d130a32b4754766876dc0575c4e00e3ff157dbe8a17"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetSensorsTests.cs.meta",
@@ -514,8 +539,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetSequenceSceneBuilder.cs",
-      "bytes": 5214,
-      "sha256": "e1d6e82385e3f7cfebb4eac93c27c83fd29ffcee2409bf990091027bd6282486"
+      "bytes": 6359,
+      "sha256": "46fd50340c279456b5fb68118321c7739c13bb2fa9cebc725fff2ca2ee98cd0a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetSequenceSceneBuilder.cs.meta",
@@ -524,8 +549,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetSequenceTests.cs",
-      "bytes": 5257,
-      "sha256": "11b854be82689b9dd458038b1f71fe5ccf06ee67f76d854df7f376b5ec0babe3"
+      "bytes": 6546,
+      "sha256": "30ec4259397a5fee65785bcce08d8497f2cc724df42b837c01dfc5e109af4c47"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetSequenceTests.cs.meta",
@@ -534,8 +559,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficAgentsBuilder.cs",
-      "bytes": 17085,
-      "sha256": "e73bbae7361bd5c09ad32f7ed50bced4eb6d58f065015e42bb345f0fce4c1316"
+      "bytes": 20955,
+      "sha256": "e0bdf9df59a6b5f0469c85d400b20a4b9ff01d3f04362194f720b9c8b1bbd86f"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficAgentsBuilder.cs.meta",
@@ -544,8 +569,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficAgentsTests.cs",
-      "bytes": 8804,
-      "sha256": "61b248df30b0dadc9c17cb8bea4422b2fef472ce6ed76e5909ed325c9937ff77"
+      "bytes": 11025,
+      "sha256": "70ccf2549043ba53bdc6212e0d8662f823c0a6a78d7a1652e4ccb2af20684427"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficAgentsTests.cs.meta",
@@ -554,8 +579,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficLibraryBuilder.cs",
-      "bytes": 18779,
-      "sha256": "c129568a5732181022e698f21f72165e9bdc43b1b46ef4710f721cb21e16e13d"
+      "bytes": 22252,
+      "sha256": "c6ca1710542f4feca936989e3858d7aad9e9c5d81cba5704a0ba28ef2ec6132b"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficLibraryBuilder.cs.meta",
@@ -564,8 +589,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficLibraryImportContract.cs",
-      "bytes": 9160,
-      "sha256": "f7124eeb72e5036ca84b803cf8acdeb86fb79daa7cd4b0889c8748871a7007fe"
+      "bytes": 10628,
+      "sha256": "eb43ee03fb2d1763d7c0c1b2b33d9679377f54a94143548c59d29051cbea180c"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficLibraryImportContract.cs.meta",
@@ -574,8 +599,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficLibraryTests.cs",
-      "bytes": 1650,
-      "sha256": "43f0646472da3e377e4d949d2ae05976a55bbfd2c76de9478a3306da0291f164"
+      "bytes": 2121,
+      "sha256": "4f5afb541e29aee93b62c522ad93fde48b5f363ec4f5798b6bcb6c152d777b79"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/DatasetTrafficLibraryTests.cs.meta",
@@ -584,8 +609,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineBuoyBuilder.cs",
-      "bytes": 30544,
-      "sha256": "8cfe0e4f3512801029e259e7a0bfd287ab234042fa58454c9b10232d13602f5e"
+      "bytes": 35078,
+      "sha256": "3c1f6b5a06686ac0a356f21a5c57c04dd8054c15b9b21bef6bb51370ec212b07"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineBuoyBuilder.cs.meta",
@@ -594,8 +619,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryBuilder.cs",
-      "bytes": 16330,
-      "sha256": "208ae9f881351af547e35ea69662f35c59216a5cb6b52e0b271f1dd1e84d72a8"
+      "bytes": 20855,
+      "sha256": "b4c8032c40f4c6c4e76c11ae2f2a888e735fe7d5377ba12b435151033f796b7f"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryBuilder.cs.meta",
@@ -604,8 +629,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryChecks.cs",
-      "bytes": 4907,
-      "sha256": "ff39ca66ea332a102663869adbf56977fc6bb4a72a666b6f1517adf49de190e8"
+      "bytes": 5975,
+      "sha256": "c5213f3ac528c8ed48c2727c728d1e4fe3f0c2a5b65b6ea2e5df204c7881d8ec"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryChecks.cs.meta",
@@ -614,8 +639,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryGeometry.cs",
-      "bytes": 11229,
-      "sha256": "d2ed5624296243ade641cd048637053d453105241ba1db49fe419c277bb1acde"
+      "bytes": 15470,
+      "sha256": "d0cab3af177dc65a23a0ff7008579a263aff6307eaa2609eb69f7712668fb0cd"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryGeometry.cs.meta",
@@ -624,8 +649,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryModels.cs",
-      "bytes": 19232,
-      "sha256": "41b80278aa3844122f4ef8e85ab389d31c3b9cc2e3711f5c842d52b6e703bc4d"
+      "bytes": 24451,
+      "sha256": "79c8eeea279ea39c0590987e9d643d36614dc7f22f015931ff0e2ce37aa688a0"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryModels.cs.meta",
@@ -634,8 +659,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryScene.cs",
-      "bytes": 5591,
-      "sha256": "4b3f9ca680a9b4e64f7c05cd69ef064217673a98f2fbf5c0f3f4f192b53e0134"
+      "bytes": 6763,
+      "sha256": "53ec72fe1cf52306829f1ed2650d21a490fe2e1790b332e19e88d3c01078607c"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineLibraryScene.cs.meta",
@@ -644,8 +669,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineOpenBoatsBuilder.cs",
-      "bytes": 14320,
-      "sha256": "e5cbc045b5afcf76b8e9e75c9b6409b274a7d24945b4f44bd3b2c43afa334343"
+      "bytes": 18301,
+      "sha256": "375dfb039d21655099f3d58c748cab2837e47dd7ecf1a3205a9671cd54ea684d"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineOpenBoatsBuilder.cs.meta",
@@ -654,8 +679,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineOpenObjectsBuilder.cs",
-      "bytes": 18896,
-      "sha256": "be8843ee4f1ed51c80ad255202c49b8feab0e2654e4dfe93854b05e4ee52f75d"
+      "bytes": 25601,
+      "sha256": "c3a1f3e3533ded7bf3e87cfeb866ae1c27b440cdda1dc62a360ca90391381450"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Editor/MarineOpenObjectsBuilder.cs.meta",
@@ -959,8 +984,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Resources/Dataset/InstanceMask.shader",
-      "bytes": 1438,
-      "sha256": "8a4eceba2b82968c1ffdfdd7c95979862fc9481aaa2c00158efff4178ebaa7a3"
+      "bytes": 1587,
+      "sha256": "236ddce0bfa30b20301590ac15fe29c478d9d029e2d1fa93b090d2b7b3b3e660"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Resources/Dataset/InstanceMask.shader.meta",
@@ -969,8 +994,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Resources/Dataset/SpectralCapture.shader",
-      "bytes": 5172,
-      "sha256": "f3ec120ca43e92e911b7f4fe80517d5fc3e1ea662da7bd69c702c71b5aa89583"
+      "bytes": 5951,
+      "sha256": "dd6eea414ca862421fc2437dc12210173dd60588ccc74a8838a808f76fd5c2eb"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Resources/Dataset/SpectralCapture.shader.meta",
@@ -1114,8 +1139,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/BuoyLanternFlash.cs",
-      "bytes": 4908,
-      "sha256": "2175a7823ff423de2ee03a1d88984fc831b54012830d21871b2f40bee1e83117"
+      "bytes": 5638,
+      "sha256": "50e6e8cf8e31217ff4e6d99e9ebe1623c3d280e23bdb591e627edbd98130b035"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/BuoyLanternFlash.cs.meta",
@@ -1124,8 +1149,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/BuoyWaveMotion.cs",
-      "bytes": 6721,
-      "sha256": "d349e49963e52705145ed85db0eeabe4924518787f7cca20675f2dc2eca94bc3"
+      "bytes": 7736,
+      "sha256": "46e248438d5329d9516bae3b48a9ec5c788384ce9edf03f0ff4f6d5911d84e9d"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/BuoyWaveMotion.cs.meta",
@@ -1134,8 +1159,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAerialResponse.cs",
-      "bytes": 789,
-      "sha256": "3a4ba4938ef10c292fc73b54bd9a04d9730fce171f839fa331b4dd85ec9265cd"
+      "bytes": 897,
+      "sha256": "52324c5b516da0da450dfb36aadc7342ea12cede3254292bded0e2f693f8f230"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAerialResponse.cs.meta",
@@ -1144,8 +1169,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAircraftLights.cs",
-      "bytes": 4473,
-      "sha256": "1b4fa23f4931725acec810912d17c5fcd70b5ed68ad4d2b65e644268b9c859eb"
+      "bytes": 5531,
+      "sha256": "4e9e32b1da67b253e125cdc35a884334f9e57b25e5131deb6a1fd1177647bb7c"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAircraftLights.cs.meta",
@@ -1154,8 +1179,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAnnotationExport.cs",
-      "bytes": 10944,
-      "sha256": "bac2a74723256efb669b5555bcd3164c25af1b4f5191dd395e3de23443b7ab26"
+      "bytes": 13462,
+      "sha256": "d6e184bc600e054577630124ec23961ca6a581dc7bb98af64db7e847439ff413"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAnnotationExport.cs.meta",
@@ -1164,8 +1189,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAssetLights.cs",
-      "bytes": 1978,
-      "sha256": "6c55ebc4d3fdd4229a634317288d60f8a80950e3774c26b7bf5a541a95974947"
+      "bytes": 2492,
+      "sha256": "ca8b63bf74c418fcdb8af1d048fb1100c5ee66452f0869655bc6d4ca304f273f"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAssetLights.cs.meta",
@@ -1174,8 +1199,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAssetShowcase.cs",
-      "bytes": 5272,
-      "sha256": "cbb9259572fac0ba2153e26c0890ec60b5982fb07a51cc87fc981b24d07b2535"
+      "bytes": 6834,
+      "sha256": "7a01f0e745622e4b0b4b9b6932dc54d635c49f5c0230e6611aebcf03a0572b23"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetAssetShowcase.cs.meta",
@@ -1184,8 +1209,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetBoatVariants.cs",
-      "bytes": 2578,
-      "sha256": "ac120f508348d5430324d15c62581156951cf2d0a132624e94efcdf1ce145995"
+      "bytes": 3038,
+      "sha256": "611ef5dc4a872c866cd8f32258a74bb22ea02180174217e71191307d448b124a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetBoatVariants.cs.meta",
@@ -1194,8 +1219,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetBuoyAutoSetup.cs",
-      "bytes": 1166,
-      "sha256": "14f91fe1316c68d8cb0a61865b9d0673c7a7a9933011baa2b46a89d2c93d8a8c"
+      "bytes": 1390,
+      "sha256": "ebf90006cb0066c5c81b0e7cf8bf78aa67600940a9d9b4ee314494a2680518dd"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetBuoyAutoSetup.cs.meta",
@@ -1204,8 +1229,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetCampaignConfig.cs",
-      "bytes": 14747,
-      "sha256": "18de8f8bd94d477dd162ce26335b8b34251711ddc0e36fc76199a4064bfacbd6"
+      "bytes": 16660,
+      "sha256": "bbf9540ccde2fcb50c131834e51f05d6bab4e8f10dabe3f929581bce66f38cf7"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetCampaignConfig.cs.meta",
@@ -1214,8 +1239,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetCampaignRunner.cs",
-      "bytes": 42181,
-      "sha256": "437655d1648968aa881d46e69e34ce39dc2cca7183fe401849a427fff96d481c"
+      "bytes": 49936,
+      "sha256": "ab5ae0406d8b207e73926cf817f42cc7e9adbb4f762a920a81d91e5aa96b178a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetCampaignRunner.cs.meta",
@@ -1224,8 +1249,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetExternalAssetCatalog.cs",
-      "bytes": 1189,
-      "sha256": "55b3c552fe59bb2f2e5a739fb8d52941d8693edc792ef25d93607fb8e15dacec"
+      "bytes": 1618,
+      "sha256": "9d02b3bf35850cadce0cd3b4b555f618434479578b4f66ebef63a3233b354f96"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetExternalAssetCatalog.cs.meta",
@@ -1234,8 +1259,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetImportedAsset.cs",
-      "bytes": 3360,
-      "sha256": "3d5fafe0a8f2963b18da43ba65041e9ab36eb04ea0e4e407004c5ead46fd4265"
+      "bytes": 4278,
+      "sha256": "792f947d04ed680da01477cbb86085efd3d3a13e41fc2e90440b164204c83326"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetImportedAsset.cs.meta",
@@ -1244,8 +1269,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetInstanceMaskPass.cs",
-      "bytes": 3304,
-      "sha256": "91c83f120819507345bacce61ca252d995416f37e043e7b2437864f06ef61ddb"
+      "bytes": 3782,
+      "sha256": "4fa05084b068596d445a78ed3c91de3df1d29d2fd7ba95e00c9af5800fda0cc2"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetInstanceMaskPass.cs.meta",
@@ -1254,8 +1279,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetLotusimScenario.cs",
-      "bytes": 7041,
-      "sha256": "ad16e27d6e9ce273523c05012060370bf04abd73a2e428ea7eb1829d0a25ccd7"
+      "bytes": 8111,
+      "sha256": "9e6635f35870bb6d90e61c3db6a01cf68dc392a701f36cd40bfe47d81759be71"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetLotusimScenario.cs.meta",
@@ -1264,8 +1289,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetLotusimSource.cs",
-      "bytes": 15045,
-      "sha256": "e4921a1b3146e1fbbe7743526e3466f308a0b2c498f9141899dd8fe6cc2168a2"
+      "bytes": 17261,
+      "sha256": "792d8ba52552099220bd7523d856b5b4feda37060ef132df2f9d59c589d77095"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetLotusimSource.cs.meta",
@@ -1274,8 +1299,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualCampaign.cs",
-      "bytes": 3895,
-      "sha256": "8fec89f11ee826e8205e6aff44a27e96054edacc2ab4e6f8ca411aa15eda1878"
+      "bytes": 4350,
+      "sha256": "3c55defcecb8c43348952f650c6c790d931a4d4bf5fdcffc4b4ceb1d50299290"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualCampaign.cs.meta",
@@ -1284,8 +1309,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualCampaignAsset.cs",
-      "bytes": 1317,
-      "sha256": "0929ac90be6ee8687f178ff11ba59acf4fa6b7c2b8e87662c505958c34a6c010"
+      "bytes": 1443,
+      "sha256": "b95fbb89d140fbf5d6587237f186df70050ac627071d35a5b0c3b4a6a6649bac"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualCampaignAsset.cs.meta",
@@ -1294,8 +1319,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualCampaignRunner.cs",
-      "bytes": 12719,
-      "sha256": "cc737c671cded49c0ac21bd3d5f821212e814ee94859c3db4f10b122955de448"
+      "bytes": 16102,
+      "sha256": "cded1dd8c9e4bcd4006a91273348e584344fd241e0548e58db1038375e1df128"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualCampaignRunner.cs.meta",
@@ -1304,8 +1329,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualPlanBundle.cs",
-      "bytes": 4291,
-      "sha256": "e4760e351ec317772b86cea5f2dcd46c51d8d357ee89fe836df15b5a3cfb49f7"
+      "bytes": 4525,
+      "sha256": "a5abc9b9d0df8a842fd58b5cdbcc1c9562ca503a985a51ce85f6758dc34e4086"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualPlanBundle.cs.meta",
@@ -1314,8 +1339,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualWeather.cs",
-      "bytes": 4430,
-      "sha256": "60a44a7a9ac814a06bdca6cc548fc9ce6057cbefcdb4218b5130c0a29c8160cf"
+      "bytes": 5591,
+      "sha256": "e842892f62fac6c4d9afed035b409898b32dc2b1421a62abb910a53ce4424326"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetManualWeather.cs.meta",
@@ -1324,8 +1349,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetMeshAnimation.cs",
-      "bytes": 1036,
-      "sha256": "d17f9b4679a37aa3b3747ce92c81d8f59870fafec7c36f57f0647987a592b056"
+      "bytes": 1222,
+      "sha256": "58671590f5f4debbb871bfe583ac169f39fe3544fea1204586eb9c61cd91ed9d"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetMeshAnimation.cs.meta",
@@ -1334,8 +1359,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetMeshAnimationClip.cs",
-      "bytes": 338,
-      "sha256": "ceb096b12c7698a470730a948b5adbfa2058dac1299921dead391ec6be38a7b4"
+      "bytes": 364,
+      "sha256": "529330092aacd93add8fef049b8b0f83155f8cdba39a3431796991d6c4e7598a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetMeshAnimationClip.cs.meta",
@@ -1344,8 +1369,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetMultiInstanceMaskPass.cs",
-      "bytes": 4677,
-      "sha256": "12c07b1b3fe9fb673990cca70214ccd2c9e47f7605571e69aba72a31b7a50d22"
+      "bytes": 5607,
+      "sha256": "a0f977c4a04780bda27e2a4bd013906d81cbd2db06e10b99407d66ac91dac4c6"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetMultiInstanceMaskPass.cs.meta",
@@ -1354,8 +1379,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetOverlayLabel.cs",
-      "bytes": 10343,
-      "sha256": "61c3ed111652fd534715e64b29115c636782e5108450226473e2bade3ab706e2"
+      "bytes": 12795,
+      "sha256": "a6c45d3103d155e233e7c336bb28ae50e34cb1c2a5d7894b06f7bbfdc35d9370"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetOverlayLabel.cs.meta",
@@ -1364,8 +1389,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetRecognition.cs",
-      "bytes": 5569,
-      "sha256": "8bb4a0b6fdd0db6b95022a5ab85dfd4a47aa1ba2de96383dc494777e2b2510b4"
+      "bytes": 6754,
+      "sha256": "d3109256783c3100ab1d38eb7d374a4f1b573e3061b6e94f912f516fca2a130c"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetRecognition.cs.meta",
@@ -1374,8 +1399,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetRgbPng.cs",
-      "bytes": 3344,
-      "sha256": "4cd344ea64e6892ed9a8636ea78c917f3ac7912bfcf6cdfcfced7ade636242e8"
+      "bytes": 4388,
+      "sha256": "df99880c24472f4afad5b8ca9efd9b8a64be58a0c82e2ec3e1ac29f3b0ee224b"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetRgbPng.cs.meta",
@@ -1384,8 +1409,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetScenarioService.cs",
-      "bytes": 2165,
-      "sha256": "0c96a4437479a2e025a60c3bc2af9b98637655c125a4cf125c0ce569d96da50d"
+      "bytes": 2489,
+      "sha256": "e40d8d35d2a2c03e6e62e8094b11a745e05995aa2e5d81b612144f7ac2305b46"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetScenarioService.cs.meta",
@@ -1394,8 +1419,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSensorSettings.cs",
-      "bytes": 2920,
-      "sha256": "d3bc305ed782532a41c5d28757626ec98635961f3c5356e7587d047b64ab171b"
+      "bytes": 3576,
+      "sha256": "f8b4629695eba7a4b2e261b4795709c665368fc37a4ab48fc3be6d676ba37c8a"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSensorSettings.cs.meta",
@@ -1404,8 +1429,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceConfig.cs",
-      "bytes": 27956,
-      "sha256": "eb2f35f7a135dae5be6e7c6f73c21fac8e28b256756f9a4905cfb667f0eaffae"
+      "bytes": 35266,
+      "sha256": "6444e0644a367dd0399a47bcfa27043275a4e614ddc6c71c4ce237a201f1a51e"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceConfig.cs.meta",
@@ -1414,8 +1439,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceExport.cs",
-      "bytes": 17220,
-      "sha256": "27c5e5161bf6f4468c1453c4f420d45d249995823a0125f25f551c25cc54afe3"
+      "bytes": 19822,
+      "sha256": "8b6d2ca56048d1a65bf222298217b9b172b15be75ab96207b805815ea0538926"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceExport.cs.meta",
@@ -1424,8 +1449,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceGallery.cs",
-      "bytes": 4544,
-      "sha256": "6a0c508e22c643b7031260d86858d904ed2456418e96c6902fe7f0cf1bceb1e9"
+      "bytes": 4685,
+      "sha256": "8c97b12ebe599aa2d80a1feaceb9fa5f9b113a707a6d2cce3f0d33e5ed474d72"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceGallery.cs.meta",
@@ -1434,8 +1459,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceRunner.cs",
-      "bytes": 38472,
-      "sha256": "51006cd1fecc29d8fc2bd99eacb20db53adfe6cefe861250bf3f7a8a060596e2"
+      "bytes": 47416,
+      "sha256": "83c98836fbde64e3cfa20e298363b5f6b0b6de7c8734ec5fb9dc1cd2a1337423"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceRunner.cs.meta",
@@ -1444,8 +1469,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceSensorsExport.cs",
-      "bytes": 4017,
-      "sha256": "396071b15058f965fd47b9ae71b2326fa7032f7cc51f669596248e89619229ed"
+      "bytes": 5068,
+      "sha256": "2738232c96152ac3d85b25fd008cce75d1fecb4b4dde43166e344993fb8d93e8"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSequenceSensorsExport.cs.meta",
@@ -1454,8 +1479,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSpectralPass.cs",
-      "bytes": 4623,
-      "sha256": "3d3b97efe2f62693315a4717936c053941170f04b249a382f88eb59c2a82e763"
+      "bytes": 5461,
+      "sha256": "423eff00cfde5a271a4572bbddb977b51e02b163527c7210de3ca1697231f758"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetSpectralPass.cs.meta",
@@ -1464,8 +1489,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetTrafficPlanBundle.cs",
-      "bytes": 5204,
-      "sha256": "dd95dd92983d2638a68074696db9808c821c180adce77e89c29b06e7b2f96f49"
+      "bytes": 5734,
+      "sha256": "5305292421a015a8b1171409e7ef07774f2d43edc3485ef5a44c641f778620bc"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetTrafficPlanBundle.cs.meta",
@@ -1474,8 +1499,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetTrafficRuntimeGuard.cs",
-      "bytes": 3018,
-      "sha256": "0c1013b35e7a852de35bdf12499267a5d22875c130c72101f04d5bba8281ddcc"
+      "bytes": 3894,
+      "sha256": "7ea188348cb32005412a1b63c96c4e4ef1cb43a3c11da8d38e9acaa68a72cdf6"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetTrafficRuntimeGuard.cs.meta",
@@ -1484,8 +1509,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetVesselCameraMount.cs",
-      "bytes": 1591,
-      "sha256": "3a4168e03dd76cbf70a63b56343e080ee4ab210948ae62e9a5e4bd272c8b8baf"
+      "bytes": 1928,
+      "sha256": "455ffe1746d76c92061748c70355dca1470e78564627dbc44179351276a79026"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/DatasetVesselCameraMount.cs.meta",
@@ -1494,8 +1519,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/MarineLibraryShowcase.cs",
-      "bytes": 5937,
-      "sha256": "4c1001b9916008c63d1017630a5d2b129cad329d1b7d84da93ad1cd4aaabfe46"
+      "bytes": 7200,
+      "sha256": "dbf9daeb237fa7a1f7526f12448809c95a8113188f0ff5d55b905f2896a06586"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/MarineLibraryShowcase.cs.meta",
@@ -1504,8 +1529,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/MarineVesselWaveMotion.cs",
-      "bytes": 13437,
-      "sha256": "2af09aa2c6cc9253452b2c40a1140fabce2d86307683e2982266f22054390d30"
+      "bytes": 17684,
+      "sha256": "53726f0f34183a1275b220ff55af5a343400f281ab9f9db82c3774b3c4fd0776"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/MarineVesselWaveMotion.cs.meta",
@@ -1514,8 +1539,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/OpenBoatAssetCredit.cs",
-      "bytes": 557,
-      "sha256": "8c0f9d5eada952bb4885d340a610388ed411a93e2ccb92c10e3b2e39e96e944c"
+      "bytes": 570,
+      "sha256": "719f687d3930d75c52ac25f7376abbc9b49c72f2594cec9bddb2f52413fb59b0"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/OpenBoatAssetCredit.cs.meta",
@@ -10899,483 +10924,493 @@
     },
     {
       "path": "components/LOTUSim/scripts/check_generated_unity_scene.py",
-      "bytes": 2398,
-      "sha256": "0dd0ce4ac768bd0b061ebcbe9a6dad9b1a5842aa57fd702432faab3ee5d4190a"
+      "bytes": 2465,
+      "sha256": "58fd5160725f8400f5c4760306d8742bf650ae79c520d442797b2c5eb4ea4e69"
     },
     {
       "path": "components/LOTUSim/scripts/check_traffic_library_unity.py",
-      "bytes": 2564,
-      "sha256": "456480a69eff903941d8648a30103cb07ed4e827482bbc0d22da25f65c95ce59"
+      "bytes": 2989,
+      "sha256": "9754386d92746587b282bfe6c5382aa002f5471c855f94d857864af8e0559190"
     },
     {
       "path": "components/LOTUSim/scripts/gazebo_image_to_png.py",
-      "bytes": 2060,
-      "sha256": "ec92d61cbd3d2fc6d5d82db463415b9b56d32004bc6a318208eda1dc474e22d9"
+      "bytes": 2064,
+      "sha256": "0850dc8c9986d2fd64358d0aafaed9820dffeb1fcd9e39eb10fdef306415bd1a"
     },
     {
       "path": "components/LOTUSim/scripts/qa_actual_capture_cadence_ui.cjs",
-      "bytes": 12574,
-      "sha256": "f5d0ee1d921a6ee5a74753e5fc00faa25f4a7690417e7579a2f33a964f07714f"
+      "bytes": 14441,
+      "sha256": "7fd01fd17b888e88fad73ccff4bd71c4585fdcee0293ea49dfaa34af0aaeb952"
     },
     {
       "path": "components/LOTUSim/scripts/qa_actual_engine_traffic_ui.cjs",
-      "bytes": 9469,
-      "sha256": "5fb79319070d8b4342cf52171019cebd8f22e9f858d11cfca04be8fed026fa62"
+      "bytes": 10880,
+      "sha256": "45bad68971e94b07e262d0bcfee6addd773e76c5e40d339aef3d77f67f76ebe0"
     },
     {
       "path": "components/LOTUSim/scripts/qa_actual_operations_ux.cjs",
-      "bytes": 11624,
-      "sha256": "adc23d3658b3a5dba785b53f3c6c34db7202823b3dbeedadf8820d7246101ef3"
+      "bytes": 13272,
+      "sha256": "ea94834ab36559cdd8c6f854b5b6149ce8b3f0edd7ee04a6ef973c41f42263bb"
     },
     {
       "path": "components/LOTUSim/scripts/qa_actual_traffic_library_ui.cjs",
-      "bytes": 10512,
-      "sha256": "27f37025622c66db54577c79e5ce741d324bd47c996786be698c9f6c2b339248"
+      "bytes": 12165,
+      "sha256": "71764ffebcf0486a63c0d67cbbb7d07e840ee6b3da1ff420c77ff3c5ded66ddb"
     },
     {
       "path": "components/LOTUSim/scripts/qa_capture_cadence_ui.cjs",
-      "bytes": 16006,
-      "sha256": "feae18dddc4c86535c17797cb585c48e0b127822cd5fbb966b94e58ac0013cd0"
+      "bytes": 18850,
+      "sha256": "31d86c4dbf3732d0edaf96cbf2cb32bbef4c1b5ef4ffc6698c526840f297e7e2"
     },
     {
       "path": "components/LOTUSim/scripts/qa_engine_neutral_ui.cjs",
-      "bytes": 16369,
-      "sha256": "60207f18d8905c034075fc0080bfd85245f01f8efccd9451eaf39c6484a7dc66"
+      "bytes": 19342,
+      "sha256": "d8418eb15341cd1da0c5764af7249933b330bf4879cf419912ec2fbef20172c9"
     },
     {
       "path": "components/LOTUSim/scripts/qa_operations_ux.cjs",
-      "bytes": 18658,
-      "sha256": "b833162d0bb22bcbf328166edd6c3bf304e87ab512ab69ee8d061e18d0efa436"
+      "bytes": 21186,
+      "sha256": "447961dbf8b7dad8d6b7e1a8c3ef6fc234efd7a9b55951908210b282c8eb6394"
     },
     {
       "path": "components/LOTUSim/scripts/qa_traffic_library_ui.cjs",
-      "bytes": 14506,
-      "sha256": "b190bbccbd380fec979827b76beed112d6a62d39e4bc3fd4987cc5b3c458a087"
+      "bytes": 17056,
+      "sha256": "ab791e0ff8ef3fb933380db15823a7b160c2d8da06313ed3aea50190e0bb516a"
     },
     {
       "path": "components/LOTUSim/scripts/qa_traffic_ui.cjs",
-      "bytes": 10667,
-      "sha256": "2d5cae744e72051c11e20f15d5c1607ea38a3fef7dacb84da2772c968081f61f"
+      "bytes": 12440,
+      "sha256": "2606abbab16fe1eb6b4d584f3c8bf50fb5df91735b89e97f46d8fc7a0baed4fd"
+    },
+    {
+      "path": "components/LOTUSim/scripts/source_contract_helpers.cjs",
+      "bytes": 2231,
+      "sha256": "207e3557ef228f8fb4dea97f1b28980dc641dde508d2ab5d4ea1a81b0f5a6d2e"
     },
     {
       "path": "components/LOTUSim/scripts/test_campaign_engines.py",
-      "bytes": 11866,
-      "sha256": "47acb0b189d313c8d786df4d8f8e20d7fafde5f156c387a9c770c9d35f8352cb"
+      "bytes": 12607,
+      "sha256": "3c3d4a324f5a4b45890b706c4258ec891490b61999a40c09784208b01f9a24b0"
     },
     {
       "path": "components/LOTUSim/scripts/test_campaign_settings.py",
-      "bytes": 16835,
-      "sha256": "6b31bf95cd9d0e326182b26eff76128dc4875532970136d3d93ddc123d1cc96a"
+      "bytes": 17546,
+      "sha256": "98ded365b403548583b70f016db3eda553e45a57e978e2dfdd97976a3e57203f"
     },
     {
       "path": "components/LOTUSim/scripts/test_campaign_settings_api.py",
-      "bytes": 6045,
-      "sha256": "fb8fd97c646437f40046654f6533906e73fb38a5ae4ec7d124efc30ca7fad629"
+      "bytes": 6760,
+      "sha256": "0fdd79a377804677067e67703007c825cdc106b6457bc79f425d85adef0d3ee9"
     },
     {
       "path": "components/LOTUSim/scripts/test_campaign_settings_collector.py",
-      "bytes": 1668,
-      "sha256": "b844673b5cde9aea4daac1d22af5f24d744695cc4dc58520110f8c0dcbc29f2a"
+      "bytes": 2088,
+      "sha256": "75b37b98ffeb110bbac878db7b1da267d52212b5b187be9d8591c75e605d76cf"
     },
     {
       "path": "components/LOTUSim/scripts/test_campaign_settings_frontend.py",
-      "bytes": 1949,
-      "sha256": "6a06184c9b6856de9f255ca72a888d54c01a3159397c4286939c20ab7b2b533c"
+      "bytes": 2439,
+      "sha256": "3d0b72cdca2bea38f70a9fd434ae839f116be37fa6d56e84242bfcf4229d9719"
     },
     {
       "path": "components/LOTUSim/scripts/test_campaign_settings_ui.cjs",
-      "bytes": 14934,
-      "sha256": "4e12524afebb4b0c1e82274f7e92efe2ff599d8a01721ce912d52a0ca7be4ad6"
+      "bytes": 17615,
+      "sha256": "011ce84bf90bd6d705052f4cf7003b7cafacb4ffebbc69d1407160c42683a238"
     },
     {
       "path": "components/LOTUSim/scripts/test_capture_cadence_ui.cjs",
-      "bytes": 3070,
-      "sha256": "41cb103cb7c54c6815577001d99bb8eabf383e5de0ad7db9202eab60f944ab24"
+      "bytes": 3603,
+      "sha256": "65668614172900b7675cc8a8fe9c1535926f375eb5db9551601d647e16844560"
     },
     {
       "path": "components/LOTUSim/scripts/test_capture_schedule.py",
-      "bytes": 13703,
-      "sha256": "d7a1f271247e82bf63247bfeee3a942581161824d96e0853258a411d016c9d87"
+      "bytes": 14457,
+      "sha256": "18cb7bf2eeb9395f25d2ae8668a2960a985de460a79e682e1f103882c395376f"
     },
     {
       "path": "components/LOTUSim/scripts/test_context_disclosures_ui.cjs",
-      "bytes": 7266,
-      "sha256": "8405c6f46c5d70d3486811017d8a26928a3338dab30b72e75c7b70db40639101"
+      "bytes": 8280,
+      "sha256": "3d07fa2c0c97cb5e85e3eee0c17f0a96e1f4b340a3f0bc40abd5121864e505de"
     },
     {
       "path": "components/LOTUSim/scripts/test_cooperative_scenario.py",
-      "bytes": 12612,
-      "sha256": "da277933eac43f8e713f64ff017bb0be001c5344aefd355da89cc5d946cbc1be"
+      "bytes": 13330,
+      "sha256": "5a07c102f3f424a3464f8a3eec498114c01034b02b644f47d448610a3c4d8abd"
     },
     {
       "path": "components/LOTUSim/scripts/test_dataset_bridge_server.py",
-      "bytes": 2737,
-      "sha256": "b566f25d4fc9e78940a3ef3147aba355d55200d5efece67783d4cbfbec691fbb"
+      "bytes": 3424,
+      "sha256": "fea9fbbd4f1570d8b59715313e2d392de63a3149190d079e03f4b6a9f4660cb9"
     },
     {
       "path": "components/LOTUSim/scripts/test_dataset_connected.py",
-      "bytes": 9987,
-      "sha256": "40cc20efd454fcc60b8511332cc441c6a0ae5701f5a7a554c0d7944dbd4adc5d"
+      "bytes": 12285,
+      "sha256": "19c9af8211f9b6a348816574e0f135b01ce8cef6ab45d626c2cbb7754df59015"
     },
     {
       "path": "components/LOTUSim/scripts/test_dataset_motion.cpp",
-      "bytes": 1370,
-      "sha256": "88c019745d66df7d8b6cb867d44809809423c6ed5076863b5b3aa4a01da1a0c7"
+      "bytes": 1655,
+      "sha256": "390f2b49a88292130041f7f272ce18f67a3a4e3f9c78ae2b034c49f40d9b15e7"
     },
     {
       "path": "components/LOTUSim/scripts/test_dataset_scenario_lifecycle.py",
-      "bytes": 6543,
-      "sha256": "6431882727c8bc14468689b7241ba52878bb9e3206c1b447a937c4bdfe161987"
+      "bytes": 7123,
+      "sha256": "1761983354803a86b07cff27fd574b90e5289ac2538d9d4bee158a4fa68d5767"
     },
     {
       "path": "components/LOTUSim/scripts/test_dual_engine_settings_ui.cjs",
-      "bytes": 23428,
-      "sha256": "7106845e326a292153788fd025672f3596a3fcf649fb38971f24cfbdcf6e8f76"
+      "bytes": 27451,
+      "sha256": "881a4ed4a0375291a34c90f083d82f976f8d9d6e0f1170ccef680baa74986f47"
     },
     {
       "path": "components/LOTUSim/scripts/test_engine_neutral_ops_ui.cjs",
-      "bytes": 14368,
-      "sha256": "6f4126c46cfef8f3b51eba73e286ffc42e44cc87a105e5ea17998bc0239481f0"
+      "bytes": 17348,
+      "sha256": "b210894a2c30fb94c7ad95b617011703e7f87cec45ee80f781e86152c91dac5b"
     },
     {
       "path": "components/LOTUSim/scripts/test_engine_neutral_settings_ui.cjs",
-      "bytes": 21977,
-      "sha256": "611e35706dff5f6d3668d23f3d214e51f69f1b1ddbf3f6c3284b3c0686e9d2ec"
+      "bytes": 25795,
+      "sha256": "592406e9667a35d03ed10be716bb3ba5f64dd79786f43ed22612db4e73e0d92c"
     },
     {
       "path": "components/LOTUSim/scripts/test_engine_profile_api.py",
-      "bytes": 4748,
-      "sha256": "f3a3fc4118257d8ebf907271af23ae7533b8c1f6f19209109c05ad90cc156f31"
+      "bytes": 5113,
+      "sha256": "9de8f5b43d26981c35541c847e6ac256077bc1fea15d214ec33c0e2534e6554b"
     },
     {
       "path": "components/LOTUSim/scripts/test_engine_registry.py",
-      "bytes": 16447,
-      "sha256": "224261ce3c7673ef68ef43e08af845e098eaf503c631fd950ca9507af7a1c3ca"
+      "bytes": 17816,
+      "sha256": "34913085b110f7f98902d96fdd0e0bbf17c5326c3dd969b19174c4213448efbb"
     },
     {
       "path": "components/LOTUSim/scripts/test_fast_drone_traffic.py",
-      "bytes": 4606,
-      "sha256": "ad0454d1800867c91182de04f146f137de9998ca520b76d97f1da423117b59a9"
+      "bytes": 5736,
+      "sha256": "549a53d1387b2dcc05a87c5c6dd981137ccf78b21996353094850f25bf0aab9a"
     },
     {
       "path": "components/LOTUSim/scripts/test_imported_campaign_assets.py",
-      "bytes": 14307,
-      "sha256": "550448d7c775235f166fc82e56e7b600f552e96fa6581624e704fa3db82f92a8"
+      "bytes": 15226,
+      "sha256": "1c01bd0217b533cf23c0a9bd0ae1a4e0d66548aaff3e63a5ce85680fa670daad"
     },
     {
       "path": "components/LOTUSim/scripts/test_mesh_api.py",
-      "bytes": 4693,
-      "sha256": "ca0d82039abc051bbaa752982be5120570bb3bef95abf5f3580fcfcbd5569c88"
+      "bytes": 4689,
+      "sha256": "84c9f05c4e66f6a1bb7f6d42b4239c0042d5ebedcf2f78e9e0fff8ab69fcb837"
     },
     {
       "path": "components/LOTUSim/scripts/test_mesh_convert.py",
-      "bytes": 16177,
-      "sha256": "b8e6279b38cbf992dea15d6f7829ca745171148cde0f1428544abcb0e8e29c8b"
+      "bytes": 17344,
+      "sha256": "a68e14ce0c75c61e51a2eb71651d18867461d5bb7577b9141a9820f6e11d0500"
     },
     {
       "path": "components/LOTUSim/scripts/test_mesh_integration.py",
-      "bytes": 18536,
-      "sha256": "e9cfdac75b20c8cf7873062c8b9fac1310ac27fdea2615b427ed91b00a449863"
+      "bytes": 19648,
+      "sha256": "c56f49e75cbcaee7966bda0fe0885d4aa96eae5d227d4ac75c8ffbecb1f57807"
     },
     {
       "path": "components/LOTUSim/scripts/test_mesh_library.py",
-      "bytes": 30562,
-      "sha256": "02c2a14a96983b25c2c2b9a20299ba675b95bb22d6e3646509f00aea37ec3c9c"
+      "bytes": 32456,
+      "sha256": "a2d41ff0f1e7ea79e4da06224ce83dee41b286b875e02aca319553ebdae034f0"
     },
     {
       "path": "components/LOTUSim/scripts/test_neutral_mesh_sources.py",
-      "bytes": 3466,
-      "sha256": "3908974df743456787f092f26ffafa5e97d04016b342855ec0abf853622f8c7d"
+      "bytes": 3519,
+      "sha256": "776ce173955dbce56a2e78105af4f895e7eb3dc30a58b0a05727e23e77241254"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_alerts.cjs",
-      "bytes": 8753,
-      "sha256": "20c23f6d8d5f10d38f10e8a4f10f627110fd1cd9f96519b8d0efcb487df177c9"
+      "bytes": 10021,
+      "sha256": "e791bb3170638a4bfeff5af8785cf030f421652bd7a6489739c7a83514936749"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_collector.py",
-      "bytes": 15495,
-      "sha256": "b43144af1a8874492c9e963771d17fd2ea44ea12cb9ed4c61a34c2256a0ef38c"
+      "bytes": 18509,
+      "sha256": "5873eba9dc7794be31766572334894c1935b5d26b0a3d47079d92e7d54d3f04e"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_journal.cjs",
-      "bytes": 13078,
-      "sha256": "168c50010113055156618e8312f2a308755b11d47b1c3f33728991bce1035a6c"
+      "bytes": 15323,
+      "sha256": "a28d9b418104fb231d62fbb816b52479e6ded147f76df4f81cb116103b3db0f4"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_runtime.py",
-      "bytes": 4101,
-      "sha256": "3e9147525dcd6c7b03ab6abd12e6a4c40e92d0eb72e1f923d0ffb6a209904ffd"
+      "bytes": 4930,
+      "sha256": "a470383c1961a2f13233c9478a207c7dc8d094ed04d3f8ae03e4bc9e24d27a66"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_server.py",
-      "bytes": 8471,
-      "sha256": "18837dfd2ba8cecf406b7157b7234b97929a394e8a4d83668b6b48edbf20b4ee"
+      "bytes": 9366,
+      "sha256": "402bc939cda6445653eaeb1d1962fca479e682a468408afc68962cd73d9e9cd9"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_ui.py",
-      "bytes": 5647,
-      "sha256": "4c3d65494f5e5c4e17c10afec1a2735de3cc95cf9badd573dd971dce188253f8"
+      "bytes": 6470,
+      "sha256": "d874aeafdec92b36a0d20376d2f20fb6443fc9f5ccefd78a8390bebff80adce1"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_ui_behavior.cjs",
-      "bytes": 9858,
-      "sha256": "f5ef4d78c537c0ae2a086d6b040bfcc7bf96c4e4c6d53e686e1358f5e64927e9"
+      "bytes": 11915,
+      "sha256": "8fb3528a3db99c8bbbf32751594eb242fb92e175caeef1d3c8a93d02894a0af9"
     },
     {
       "path": "components/LOTUSim/scripts/test_renderer_telemetry.py",
-      "bytes": 18130,
-      "sha256": "13aea8397c60267140549b71c7df0affdb6d2473c086604d0928a9e6bb94cf93"
+      "bytes": 20564,
+      "sha256": "6ab43f4333659c652dfd4cb474b2d744c31c755395f9c46d781b3580a80e2832"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_confidence.py",
-      "bytes": 10155,
-      "sha256": "c04dadb8c2c4431fa19440eb68bf41c69e6967ae4521c4f45b34a9093e0a17db"
+      "bytes": 10229,
+      "sha256": "338eff6edea93efe82f037d9dea3eff239a3f5c10bdddfef58a0c41ea11effaf"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_gallery.py",
-      "bytes": 11164,
-      "sha256": "7a6521e89f63bbb8d8b5b847ed94372c0ea4eb79b9ba17003410b19485ad5b20"
+      "bytes": 13411,
+      "sha256": "3673cf7d13ca786e4e58f99d6a64e695404dfdf3c63e5c0bab34f3c4ae06a084"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_knowledge.py",
-      "bytes": 11611,
-      "sha256": "351b310f8b575714d172d57da8c08cc21f35fd653455ef5c1a5030c9d6b40b9a"
+      "bytes": 12420,
+      "sha256": "e8cc3347692b7a677dcdff1009facf1d5c32c0de0be4a8a2bfe31e4f5b6ecd1a"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_observer.py",
-      "bytes": 3476,
-      "sha256": "cee735117a8c4eb56eb267d6dc9829bb7d9972ac85b9b9e2db450db3ff9eca65"
+      "bytes": 4562,
+      "sha256": "20195efe4b043a97471d562ee240f78959634427d1a810be87efe630cea43589"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_overlay.py",
-      "bytes": 4563,
-      "sha256": "df30f3b346e2406679242a29478ccac6e61fefac7481ce682f832b5efdffabe3"
+      "bytes": 4689,
+      "sha256": "e38e720de57cf533498cfd7bab54b2189646cd1738bdb0005d3c7623c6adf5c3"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_pipeline.py",
-      "bytes": 15571,
-      "sha256": "4a3c9fd7381ea7e85c7eda08897ae57a262db34c777bed4d6b44f2fca859d0c4"
+      "bytes": 18176,
+      "sha256": "508408b81ad87826e2a6904299fec2c7ffd79023bf1a613ec7bb791f85eb3b96"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_postprocess.py",
-      "bytes": 11134,
-      "sha256": "fa15a134a150de730662eaa4c58b4869e4a6421a86d8ab6efb8e7e13d89a05f5"
+      "bytes": 12754,
+      "sha256": "4eaa0cd7a902f45052667fca0f5d2268d329a5d946a2cdb467fa1c82d9badf5b"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_regions.py",
-      "bytes": 9746,
-      "sha256": "726ccb1c370c7fe5dcaaf6022584d3587f93bc6274eb31b4a5d3b90bf17b1bb5"
+      "bytes": 11541,
+      "sha256": "b9c8d482ebc568b79604bef0ce0a3db521ccd067c91cdeb2c59e69adca4726d9"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_scope_integration.py",
-      "bytes": 2635,
-      "sha256": "32b8c34e90bc34494b5ff9c5caff8c32be459cd5eddaac89c962daa5854aa33c"
+      "bytes": 2911,
+      "sha256": "04508a763cc20fb1e3452c09b86164235da2b1f803d27adad53ceb616df97055"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_verify_instances.py",
-      "bytes": 8403,
-      "sha256": "c3c1b8b5506f271e08d8af471f5577dd6e840f442c4a188c58d49ab5d28dbb1e"
+      "bytes": 8651,
+      "sha256": "16d23f2a9860326ca609355c1e405e7cd22441b0f34c34af48daf54a4f4de8db"
     },
     {
       "path": "components/LOTUSim/scripts/test_rgb_worker.py",
-      "bytes": 7944,
-      "sha256": "7dae19d4a2785a6314e4297e4411c5ac919019c5e4eda889a6f7a4cd41c74961"
+      "bytes": 8268,
+      "sha256": "55879d6b7cc3bda8ebea63fe55e8bbeee90efffda9fcd1bc8d5a5eb4ce3f0295"
     },
     {
       "path": "components/LOTUSim/scripts/test_scene_preparation.py",
-      "bytes": 14450,
-      "sha256": "80a69b230b86ddb73da2cd7d6bc97f0e0bf5abf0f0ed4f46362ebb2a300789ba"
+      "bytes": 15134,
+      "sha256": "0fa7df4358336086627844e2e6041ed6eb5b5090012db9756691f52650bc5123"
     },
     {
       "path": "components/LOTUSim/scripts/test_scene_preparation_ui.cjs",
-      "bytes": 16337,
-      "sha256": "6778277ca4862560327a194f96f312971b813d9c2c420fcd8ceb1a68bd645e2b"
+      "bytes": 19809,
+      "sha256": "539a9c6cf7e7b6d856c08c2d137e0fb71a78da06d99d501e02fafb2153f5bd51"
     },
     {
       "path": "components/LOTUSim/scripts/test_settings_traffic_generation_ui.cjs",
-      "bytes": 27971,
-      "sha256": "1511e4e0f55b5fe49fa5869e4c23e7ec1ea6f92b065d65f1b59ad7c860b98c7a"
+      "bytes": 32680,
+      "sha256": "b7109864c3df75c9c4ea98b0698816a7d94ca4d9fd28e777cceb89477c1b9697"
+    },
+    {
+      "path": "components/LOTUSim/scripts/test_source_contract_helpers.cjs",
+      "bytes": 1667,
+      "sha256": "b04dde19ad6059d52e759f576231fd6555c1d0dbfb31f3be2018f316e0a95b03"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_agents.py",
-      "bytes": 5118,
-      "sha256": "b1836e2d01b549d26ebc2de9f3b8de90f17e68ce35670b53b4afea152a15516c"
+      "bytes": 6107,
+      "sha256": "e046c6a1be5a8a81701d4031756e25a4d017c7653fc747b8bfabc23b1afc0df1"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_library_api.py",
-      "bytes": 8085,
-      "sha256": "36a8ac49d45fe0d7067e33a1f73f01ed920361f7d13d0ae7f8bd0a24258a08b6"
+      "bytes": 9218,
+      "sha256": "10420e35eeac85c378847d292b294372b76f0f461343bed9e116b7c93ab1a4da"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_library_ui.cjs",
-      "bytes": 24674,
-      "sha256": "0eb1a0c1fa036af399d683683ff819777dd6132d08d2bab65f360e0947a1c47a"
+      "bytes": 29207,
+      "sha256": "a016f426d6aa8c423073d0c18b4b1689afaca043e5cfc3c609d63f9d141ea079"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_plan_api.py",
-      "bytes": 3773,
-      "sha256": "54a7c372d0a631fc55aadde8968400d00f9f4fff5a822547089298fce6c1bf55"
+      "bytes": 4167,
+      "sha256": "85038d4d7ab07d1ff065ba6d73e5eb1cd90425a5541c4e15376b17359f81ba26"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_plan_editor.py",
-      "bytes": 15471,
-      "sha256": "b8603d6823342afba56f0a20a39302b49fdfa23cc857224f711c6f8b250ba381"
+      "bytes": 17544,
+      "sha256": "8a06d3cb9da2d6afb18a9fbc4ba7aef3619c0d9515096c87f84eab6982ff32b6"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_plan_library.py",
-      "bytes": 19094,
-      "sha256": "69684e6920cf5acff5ab6592e0e4993b972be6d549a17b3180d49fc7b47c6314"
+      "bytes": 22148,
+      "sha256": "726498ede8e73e452f80bcace8423813c0c77043b793d37f715b76b0eff2b664"
     },
     {
       "path": "components/LOTUSim/scripts/test_traffic_ui.cjs",
-      "bytes": 13369,
-      "sha256": "75c3e42174626be9c8a42b81a8a8c706effab08738f00b622f55f55b83550aeb"
+      "bytes": 15932,
+      "sha256": "f118ce365670e2f01ffa01974afbd6a84b4b69ac1af0ffaaf6eaf17a498d1881"
     },
     {
       "path": "components/LOTUSim/scripts/test_unreal_scene_adapter.py",
-      "bytes": 11824,
-      "sha256": "e0195f0db384d7e0d27b43dc08d713d7445509606c013bcbbb4d8ff3ee221e86"
+      "bytes": 13274,
+      "sha256": "7b4a821f4c2273a684779281efa00fdad281e695023a386b5e379fd03fc0b18a"
     },
     {
       "path": "components/LOTUSim/systems/lotusim_mas/include/lotusim_mas/dataset_motion.hpp",
-      "bytes": 1770,
-      "sha256": "450b10f49ac8ce268202fa2a040283e2d25c016fb09363d098eee6cdbee62bc1"
+      "bytes": 2200,
+      "sha256": "af1d66e11c5698109103ad4224b3c73eef60937431fab5e29c4573325bfbfe14"
     },
     {
       "path": "components/LOTUSim/systems/lotusim_mas/include/lotusim_mas/dataset_timeline.hpp",
-      "bytes": 1011,
-      "sha256": "e2f3b7b5a4e4768c1eb57a6c53361a10e713086a270b8403cc5a4fe6a2b328cc"
+      "bytes": 1071,
+      "sha256": "1cd766afafac6cb7865af09cba1d40b6dd3f52b289618155007141fdc2504443"
     },
     {
       "path": "components/LOTUSim/systems/lotusim_mas/src/dataset_timeline.cpp",
-      "bytes": 4927,
-      "sha256": "0901beccf4de098453becffd9231cd86a8db5c2b8a33b042e7b806d87ded345b"
+      "bytes": 5335,
+      "sha256": "91ee10a44595c47c5fb77586eb616b7f7101510cec9c32c1430869069ea3c8b3"
     },
     {
       "path": "components/LOTUSim/tools/campaign_settings.py",
-      "bytes": 38667,
-      "sha256": "5b15a3253747f0659a93c693f65ca4486919122b346340e13d75dcdd9278efdd"
+      "bytes": 43514,
+      "sha256": "762483bc589a73dd7cba2abb1de711ced2466f31d6e64578a7acf1a3493031e9"
     },
     {
       "path": "components/LOTUSim/tools/capture_schedule.py",
-      "bytes": 10237,
-      "sha256": "b2342702f53a22ba25911e97d20bb1415fc0c789a540eb8a60f206a9d6a61601"
+      "bytes": 10807,
+      "sha256": "b120837a1d98aee7d98afc85367f6adb8bb6e2c8362fdfa518a2baaa21261ab1"
     },
     {
       "path": "components/LOTUSim/tools/cooperative_scenario.py",
-      "bytes": 37492,
-      "sha256": "9004f6d340ad198ac9215b506959465eedd539597509d64dfdc97b2bc9ca0cf8"
+      "bytes": 43129,
+      "sha256": "ab3d6026117c316d759a4cfeac50304807ecb083675369d2aeca01406d73eff3"
     },
     {
       "path": "components/LOTUSim/tools/engine_registry.py",
-      "bytes": 14335,
-      "sha256": "30d99e2d3202a6d0993576d1eeee9122d429ed486295aa83c70298754301ebf8"
+      "bytes": 15762,
+      "sha256": "f5b86e9baf8d556c14ae07da722ed4420915c54c8f4bc194e077f4e8ae9ffc79"
     },
     {
       "path": "components/LOTUSim/tools/fetch_open_boats.py",
-      "bytes": 2630,
-      "sha256": "0bb4bd93aff131e3d40f8f7fdc58cd151a3e0c7e963356c71e54a86b4b1fb6b1"
+      "bytes": 2718,
+      "sha256": "402423abd4028923341fee7197d0da826ba29b380bfe3be57fe8dc5899f43177"
     },
     {
       "path": "components/LOTUSim/tools/fetch_open_objects.py",
-      "bytes": 3251,
-      "sha256": "7164d61a3df9ce894b604b362159c5ae8735634683c37f5e575c7f9baa50f208"
+      "bytes": 3621,
+      "sha256": "29ab3d53ba84dbdf3d4cc9a48b78dd03c1e8a39c554fb6cad00914f6e0a2c541"
     },
     {
       "path": "components/LOTUSim/tools/gazebo_rgb_observer_relay.cpp",
-      "bytes": 2965,
-      "sha256": "508dafbea90e44b3f414c67ed44f84d932a87286fa6bfa743cb5fc4d6012a9ab"
+      "bytes": 3792,
+      "sha256": "39425bf1cbde5db14d1e2b627faaee2bd2ef3883cad07a183e1f6cdccfdefdd0"
     },
     {
       "path": "components/LOTUSim/tools/mesh_convert.py",
-      "bytes": 40422,
-      "sha256": "e35a268644355c42a7c706f7e4aec6e1f10db66e0f466c8d6d8ac2854837ccd9"
+      "bytes": 45646,
+      "sha256": "5bfe30cae0c8117d9f45f3076b7643d3c41075ce28d6591380578fb620ca84e2"
     },
     {
       "path": "components/LOTUSim/tools/mesh_integration.py",
-      "bytes": 42094,
-      "sha256": "d43abde54d3bfb2d4dffd4b9e6c6feb723cbded7451eabb48222b6b30a77ed6e"
+      "bytes": 47862,
+      "sha256": "c75e19d2e0f498ef8e908e800559cf97ada70fa55e58269967296b9d342e5598"
     },
     {
       "path": "components/LOTUSim/tools/mesh_library.py",
-      "bytes": 37328,
-      "sha256": "a2c67fbd5837acef30b2e9e298dcdf2a1c1afbbde8ee3649db8ca1ef2beab7ae"
+      "bytes": 41313,
+      "sha256": "aa1f4301ad8b0f0863ee99c7e665a01e5198a53345cfc2c140aa4c6f15ff934a"
     },
     {
       "path": "components/LOTUSim/tools/neutral_scene_adapter.py",
-      "bytes": 9881,
-      "sha256": "3442b3aa180eb8041354e1e5a722ff048e39885bd86bfde48f2bc5f703838fd5"
+      "bytes": 10519,
+      "sha256": "e3e9d6bd73b0028f5c77b71849b038724ef623acc6acbeeddac9ee190a95f8ef"
     },
     {
       "path": "components/LOTUSim/tools/ops_collector.py",
-      "bytes": 42993,
-      "sha256": "0327ea244b035cdface9f7a4decafb2f22810121084d8bc6f30dbce9663f6c48"
+      "bytes": 52174,
+      "sha256": "f5887c4c9feabe0cd7b2dac8a7044a17f2d6286edea6e75ebf2dab24ad6667d5"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard.py",
-      "bytes": 36477,
-      "sha256": "a10ee1e8871cf14a2085f2573e0e5fec35fa6804b95b7dc8d2aadbe56c45ede3"
+      "bytes": 43737,
+      "sha256": "dd7d9401c346d99cc521a5729bacfa95e8ad0ff5f5867555291037a3d78f39af"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/alerts.js",
-      "bytes": 10334,
-      "sha256": "cf15dbb28477b1e794deadc3361f7b179c85400b5f1b9e7e39f171f462292f92"
+      "bytes": 12206,
+      "sha256": "d9ff948c0f0579a2e7c424f04e3ec8fdd8d61d29b03dfb4975a4b482da61b98a"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/app.js",
-      "bytes": 47031,
-      "sha256": "c04ef48efa930fe738f668d284d047bf719f8e092d46c0949e26d63854731207"
+      "bytes": 53158,
+      "sha256": "289717eacda72f9c281e0a6d720bdde48b3a55d8389756964273eebd68f6138e"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/assets.css",
-      "bytes": 16318,
-      "sha256": "e6568c1839b8c186378130da051ddb35e88df4fba9a446b8a450e3e55891b12a"
+      "bytes": 20342,
+      "sha256": "9d68da54719a32e219c6f2e976d2217cdd2f24f48f5b4c67d4c3c25babb889b0"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/assets.js",
-      "bytes": 42065,
-      "sha256": "9d65aaf2487951952fc37082185652ee4fbb85ebe8dd46a25bbd3966acc4ec76"
+      "bytes": 47531,
+      "sha256": "36a91875794aa24bfbf058528a4a7b6a3638a6e0fe72ff384aa6601ebcefba7b"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/index.html",
-      "bytes": 38063,
-      "sha256": "ebca4cb3ea7e22520cfb80b2611a827e46e4b13b4c21699e9d3c11769eb1ea01"
+      "bytes": 54196,
+      "sha256": "399ad9bd6fb8bee648455c7bd22e569447c1d84b7080ef029e75c1cba5ff1294"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/mesh-viewer.js",
-      "bytes": 15753,
-      "sha256": "94ebc14af5cb3a0b5cfbef6086a13929dff2b51b045da099c6bc3223b76c2f3c"
+      "bytes": 16662,
+      "sha256": "db67512765632fb36ab6e364620287d5a414e62dc3b888494f8ff312b9b8ff37"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/operations-ux.css",
-      "bytes": 4671,
-      "sha256": "315cc10d5ef9e527d9206d7d3cf3d7a263e1e7738f0a20d9c63a1fc55a0139ba"
+      "bytes": 5654,
+      "sha256": "f9744a051c3338ec9dc23fa8adaca474a3db6d689c97cb770182ff2e48a6f736"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/settings.css",
-      "bytes": 15871,
-      "sha256": "594d8e74a6b24a2f49d46415bbf73dc9a3c7f11540a7c8f6d6819c6b775041b4"
+      "bytes": 19480,
+      "sha256": "462c1b8fd99738d0a2c7834674a9b14e6c7fe7948e9f9712c692e552ba4718e1"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/settings.js",
-      "bytes": 62908,
-      "sha256": "fd4e139f106ac94fda3d08de611c509927cb146430fc68dddb09238c0b636a3d"
+      "bytes": 76867,
+      "sha256": "e989188bab4000630365af043e3f93d2eda00768914a321326596a62cdbf350f"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/styles.css",
-      "bytes": 25860,
-      "sha256": "0c08a14ee93da05bd82cf963256e6b065ecbd18449e364c4744ba2bfc7cbed5c"
+      "bytes": 32876,
+      "sha256": "cfa2f2c3364e78b90405854b30567d118486b16d720bca0f445c342696a7aae9"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/traffic.css",
-      "bytes": 9534,
-      "sha256": "6bdeb2a4e46fe484b3bf643bf56fb610261c7bcebb6186b0b6ceb7ce42f4247f"
+      "bytes": 11827,
+      "sha256": "bbc001e61d8f65fc75d41068961bc68113c059cdf5be6e169c9621172ce5f560"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/traffic.js",
-      "bytes": 39814,
-      "sha256": "3cbe8980a7230b2bfcc8982a5fb622b62f4bef7f9db6fea2146e6bbdcb5d3c11"
+      "bytes": 51108,
+      "sha256": "500197f8d7aea1af8e46e077d27168bfde898913ed382b72157bc688def4d9a8"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/vendor/three/LICENSE",
@@ -11439,93 +11474,93 @@
     },
     {
       "path": "components/LOTUSim/tools/ops_runtime.py",
-      "bytes": 3606,
-      "sha256": "9da2eb30b66733e59f9d2ed9ced61f9ea4b2f2ed64d4b823fae9a8a3cebabcc9"
+      "bytes": 4235,
+      "sha256": "1cc288f4a0182a48d55b916dba6a93121e082c2836844d29849a314725d8d611"
     },
     {
       "path": "components/LOTUSim/tools/plan_maritime_traffic.py",
-      "bytes": 40601,
-      "sha256": "7da58176a2e5a94b63689be6ad378d4ad2e86f4fdf7d45b45efb612e4a12a9f0"
+      "bytes": 53027,
+      "sha256": "466c72a6dbf74292d1e2be5cb3bfd47699f909a544f450a9fb0314ad4482c837"
     },
     {
       "path": "components/LOTUSim/tools/prepare_open_boats.py",
-      "bytes": 18623,
-      "sha256": "4ff6eb7252ddef1af88131fe13adb6acfc28cc79ad95ccbe1317a9933f63e92e"
+      "bytes": 20171,
+      "sha256": "cbf2072fb3d9b9654a12a26009d0ea38633242a57918cca01ed7694cc9c9947c"
     },
     {
       "path": "components/LOTUSim/tools/prepare_open_objects.py",
-      "bytes": 13896,
-      "sha256": "422723db8dea0cd84fb75d8d366e695bd7dac66ec5ad326cb83b9b5bd35040fa"
+      "bytes": 16655,
+      "sha256": "f3794df1376da89716071bc955fd04b3128321bc58d1055e9823448a6cfdc80d"
     },
     {
       "path": "components/LOTUSim/tools/render_engine_agents.py",
-      "bytes": 6405,
-      "sha256": "648bd6481514a2904194cc7df2a15305c3492537070f9debffcf0ec184990eeb"
+      "bytes": 7044,
+      "sha256": "2ced48607f0048a7cb0b22aa862c2cedea9cea558f83994eb75ee7170b3173b5"
     },
     {
       "path": "components/LOTUSim/tools/renderer_telemetry.py",
-      "bytes": 15425,
-      "sha256": "c44847705e4ab02f97394d77d85419990187f8abd0c19fcf5464a4259609c793"
+      "bytes": 16362,
+      "sha256": "8c01920216d0cd85acef7f422d808b3dda8e03548c1947b8fa2c6cbf71d1f98f"
     },
     {
       "path": "components/LOTUSim/tools/rgb_confidence.py",
-      "bytes": 13695,
-      "sha256": "98b4b75b7eda618a7e0faad736e75413155438fe746892eae7bb0394f03affad"
+      "bytes": 13965,
+      "sha256": "b5aa381995461c424b1f568dd6228408ff9bd72247eb3692cd459679ae35705a"
     },
     {
       "path": "components/LOTUSim/tools/rgb_gazebo.py",
-      "bytes": 2525,
-      "sha256": "30790da5033782310ddb4a35b585a7521ac5752372ba319e3be705cb0e4b1b64"
+      "bytes": 3236,
+      "sha256": "ab1de87e0bde7397390eccdf98edd965c44262a824b8f44c29ab6f092176139a"
     },
     {
       "path": "components/LOTUSim/tools/rgb_knowledge.py",
-      "bytes": 15636,
-      "sha256": "4eafbdb03eaea2ea9d6c7588a8f94f7606ced9f01f5ccd3a2bce20fd40d2b2bc"
+      "bytes": 17065,
+      "sha256": "263cf0fe9de12e16595f04339862d3640b107c07af698e5e18d122ee1efe8119"
     },
     {
       "path": "components/LOTUSim/tools/rgb_lineage.py",
-      "bytes": 549,
-      "sha256": "c183462bcf066b00c3b20537db48edcec2d924df08c87543966dd007567a5992"
+      "bytes": 586,
+      "sha256": "e0e9254daa00314c499cd85cf65753c49224728107b04e39cb3a90615fa6c6f2"
     },
     {
       "path": "components/LOTUSim/tools/rgb_observer.py",
-      "bytes": 17947,
-      "sha256": "e60a5212c9938fcca5362a2c5f8db9519522c5d112d72ce5f9109306b979a329"
+      "bytes": 22427,
+      "sha256": "0d55503e35536d31980c5c46ef6c180ddcba8fffe106f8a7d991e1db3ef0c472"
     },
     {
       "path": "components/LOTUSim/tools/rgb_observer_worker.py",
-      "bytes": 29785,
-      "sha256": "d34f362ad8d535721aa5257a8e50d790587adcac80c76fb2c8bede8dba2fe4a8"
+      "bytes": 32963,
+      "sha256": "0db4fbe424fb055242390507f744f4be65cb87260a44de155593bdd48b6d62bd"
     },
     {
       "path": "components/LOTUSim/tools/rgb_postprocess.py",
-      "bytes": 12692,
-      "sha256": "6eb642b359c74ac3144f08b61d20b1b63a86f611c8dcc1104b8a90b1f8f9bcb1"
+      "bytes": 13544,
+      "sha256": "046af32021296162a4659a16b1dba230b4581218942849afded73a52aef29f6e"
     },
     {
       "path": "components/LOTUSim/tools/rgb_regions.py",
-      "bytes": 13216,
-      "sha256": "4f9fb5f11249022572f5a3cedede9ad737c38afa8e06256989bb23485b2790de"
+      "bytes": 15557,
+      "sha256": "327f12c2ae1e3abeca27fa6dca2b69cc76c005fe371884cde5e0ea6a1980afb7"
     },
     {
       "path": "components/LOTUSim/tools/rgb_validate.py",
-      "bytes": 13503,
-      "sha256": "6208f7b065595e65dd754a9b7684872250ae4499c161106d4da6c53e01e49234"
+      "bytes": 15890,
+      "sha256": "adc81f095c6e1b7f07e36511338638e7a2783f60891e00c09e84d743388167c3"
     },
     {
       "path": "components/LOTUSim/tools/rgb_verify_instances.py",
-      "bytes": 24691,
-      "sha256": "d5b05ea490776e921d9e17ab18452947981644eca69e29f83de7f63741ff0236"
+      "bytes": 26551,
+      "sha256": "edccbaca54fd7f7c7ac5725938414bb52fc23d2cb3ec59ab468be3fc13cf80c6"
     },
     {
       "path": "components/LOTUSim/tools/rgb_visual_gallery.py",
-      "bytes": 33302,
-      "sha256": "191124a44f573c89cd5b605be91b7954c513a208dfa9781047cfd34187a76cbe"
+      "bytes": 33758,
+      "sha256": "0a8743761db57b7ddbfade1cb46a5544f7726c2bb72cc4cea24811d66a70ff50"
     },
     {
       "path": "components/LOTUSim/tools/scene_preparation_status.py",
-      "bytes": 20456,
-      "sha256": "f1ee0cf31b6695ff12cfdd48d7f01b833e70ac8279b256ada361097e015aacd8"
+      "bytes": 22211,
+      "sha256": "23707609ef8c50f65100834aca1849b4b796e24c9e46029dac3c5d822b1f9c97"
     },
     {
       "path": "components/LOTUSim/tools/start_ops_dashboard.command",
@@ -11534,28 +11569,28 @@
     },
     {
       "path": "components/LOTUSim/tools/traffic_plan_editor.py",
-      "bytes": 33174,
-      "sha256": "82613694a19a9a963260bf9802bcc498245d838b74c837eeeea5592dae1c4766"
+      "bytes": 39239,
+      "sha256": "c3a89942f280db14d3ab6c108dcbd73d196e893fcd2af7f831e327ef2f3a3f36"
     },
     {
       "path": "components/LOTUSim/tools/traffic_plan_library.py",
-      "bytes": 28837,
-      "sha256": "93e3108453d34e45b0f8b23258ac078739fac0af314a3022dfd74e92aada349b"
+      "bytes": 35245,
+      "sha256": "ec473f0dc16c420acf69f84fa36bd98b7288de6e86acca30ae767bb2ae46faae"
     },
     {
       "path": "components/LOTUSim/tools/unity_scene_adapter.py",
-      "bytes": 3765,
-      "sha256": "24d814641041f1ccc6f82db2894a2e91ae1915f838d40abd82c72606d3da1170"
+      "bytes": 3873,
+      "sha256": "159ecb84e3627f5ceb4b8900b7c34840b6bdae5b8ae74656c7819f4044c8cdec"
     },
     {
       "path": "components/LOTUSim/tools/unreal_scene_adapter.py",
-      "bytes": 18458,
-      "sha256": "3b1bce0ba3a7f2c67762db9488ed4cfcc94acd5bf439c5656070c306af032092"
+      "bytes": 19959,
+      "sha256": "aec3fff3ba555de25e0b24a4019f819dadb2aae5809f93545c0c3a1056438894"
     },
     {
       "path": "components/LOTUSim/tools/unreal_scene_template.py",
-      "bytes": 32270,
-      "sha256": "2833bb84fa5a3d20ef34077fe492ba7d1593ae9953b5641c93b8b1a10918640f"
+      "bytes": 34263,
+      "sha256": "58b0fc9e4b770db9717ec44955a532e6778cd72ad6d37aa36854062dd7a9b2ae"
     },
     {
       "path": "components/LOTUSim/tools/vision-requirements.txt",
@@ -11576,6 +11611,11 @@
       "path": "docs/BIBLIOTHEQUE_MESHES.md",
       "bytes": 5605,
       "sha256": "77139ff3110cd1d15acbbda8b2a97bb8f8c6f8f9a2d6eedfae1cbeb279e488bf"
+    },
+    {
+      "path": "docs/CONVENTIONS_CODE.md",
+      "bytes": 6054,
+      "sha256": "cf329026f77935c86c33034c36c1cf771a37f233b14d5d730a5d6d2433f8b251"
     },
     {
       "path": "docs/ETUDE_MOTEURS_3D.md",
@@ -11643,14 +11683,24 @@
       "sha256": "c66368596b10a24c64921d7091df4ab797b4b59109d8c4d243c7044f37789351"
     },
     {
+      "path": "package-lock.json",
+      "bytes": 5741,
+      "sha256": "ec2ff4f327854a272828e22ed27440551338bc8c165b26f25c19bcbe0d1d3d22"
+    },
+    {
+      "path": "package.json",
+      "bytes": 333,
+      "sha256": "880c7cbf629ed376fc2cef8e68ebd39d1c3af429dc7a2a435ea489565cb5af67"
+    },
+    {
       "path": "patches/lotusim-environment.patch",
       "bytes": 5140,
       "sha256": "3720e4aa10010e76cbcda7148c0378944c8433d1ce4696d27d30367a65374b98"
     },
     {
       "path": "patches/lotusim-functional.patch",
-      "bytes": 37038,
-      "sha256": "2402cc1c1291975ea22fe19e0476cdbded106f5fed6419fd6167c1912d02977c"
+      "bytes": 114052,
+      "sha256": "9f46e613bd29153038de06cfd7dca00817b8c33793d494388ae87fa0ae5ecae7"
     },
     {
       "path": "patches/lotusim-ignore.patch",
@@ -11664,13 +11714,13 @@
     },
     {
       "path": "patches/unity-interactive.patch",
-      "bytes": 22119,
-      "sha256": "80644e553ad3c78fcc90d0fa0362664dc4073761ebf297376a07582970d994e8"
+      "bytes": 34703,
+      "sha256": "e539d402451d0939e5348ccbed377449e2caca001d2bc331fe9649683310dfb6"
     },
     {
       "path": "patches/unity-ros-bridge.patch",
-      "bytes": 17182,
-      "sha256": "7e533e7f45fcddaa81695497108f167b57197ffe492c34429fc4c7642aa42668"
+      "bytes": 36296,
+      "sha256": "6b04eceabc7aac03ca52b7e00300b41a59b3e0640c6269103f4cdd6f4c0b60ab"
     },
     {
       "path": "patches/unity-xr-local.patch",
@@ -11681,6 +11731,11 @@
       "path": "provenance.json",
       "bytes": 4518,
       "sha256": "e133e42734b4c714326b6145216211c461d821b9eb1805a82c9633acaef3295f"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 216,
+      "sha256": "ab562a01e723e9125e0e7cde17acbeb5ecc4affc117904b60051246dd0aa2a57"
     },
     {
       "path": "references/LOTUSim-base/flake.lock",
@@ -11744,33 +11799,33 @@
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/Scripts/MultiUser/Launcher.cs",
-      "bytes": 14517,
-      "sha256": "68ef47af785ec88555053a83113aad5bff2987ac1d823356612d55c8910b2de5"
+      "bytes": 14465,
+      "sha256": "c9a6453339357cbf5bca8fd8cfb8e82e031c36e86c3f6db98a3019110c949e9b"
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/Scripts/camera/CameraDynamicTargetsNavigator.cs",
-      "bytes": 9090,
-      "sha256": "2436ebfc9bb5735e065a90021c3813d25192a8725f585aed70d8d94861af28e7"
+      "bytes": 8948,
+      "sha256": "08c33dfc3cbb99a658e16207a465ca02d87ea94947188591e4a72d3218f7f2aa"
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/Scripts/lotusim_interface/InterfaceFactory.cs",
-      "bytes": 2962,
-      "sha256": "ec59860c1819cc5f605658ad8995ae4f3f9327820c90d6e4898539776b52ec35"
+      "bytes": 3019,
+      "sha256": "df0585f72a1f99a87ccc0d5a633cf8f3959c22816635a2d4067e9d18ea6158bb"
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/Scripts/lotusim_interface/LotusimConnector.cs",
-      "bytes": 11661,
-      "sha256": "1de16a4e698cdcbff35af23b4b29643326f14fa200f1ec1fb5ef73a5ac93b6c7"
+      "bytes": 11125,
+      "sha256": "5e824d023a775a335f660bc532afedc3dd6a07a609e8cda5c5490fd73b903db8"
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/Scripts/lotusim_interface/ROS2_interface/RosInterface.cs",
-      "bytes": 12764,
-      "sha256": "1190e0c846e61e4e1907d3106ab141aba40b6d0ebac64a078d614217753f83e8"
+      "bytes": 12387,
+      "sha256": "fc56eefbaf1c6e3bab5b1268413aa6877ab357e95369a3acb535a628627f8e61"
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/Scripts/lotusim_interface/ROSConnectionConfigurator.cs",
-      "bytes": 2791,
-      "sha256": "3953cb9007ccb72481c2a05c95b061b12276b06c4fb06c96699546f3f6e51047"
+      "bytes": 2781,
+      "sha256": "476a67888b8ebeacc03b16d198e6521bb21b5162023f3b1749e11acf6b4e332b"
     },
     {
       "path": "references/modified-sources/LOTUSim-Unity-modules/Assets/XR/XRGeneralSettingsPerBuildTarget.asset",
@@ -11799,23 +11854,23 @@
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/include/lotusim_mas/dataset_motion.hpp",
-      "bytes": 1770,
-      "sha256": "450b10f49ac8ce268202fa2a040283e2d25c016fb09363d098eee6cdbee62bc1"
+      "bytes": 2200,
+      "sha256": "af1d66e11c5698109103ad4224b3c73eef60937431fab5e29c4573325bfbfe14"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/include/lotusim_mas/dataset_timeline.hpp",
-      "bytes": 1011,
-      "sha256": "e2f3b7b5a4e4768c1eb57a6c53361a10e713086a270b8403cc5a4fe6a2b328cc"
+      "bytes": 1071,
+      "sha256": "1cd766afafac6cb7865af09cba1d40b6dd3f52b289618155007141fdc2504443"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/include/lotusim_mas/scenario_manager.hpp",
-      "bytes": 4702,
-      "sha256": "76bb63d59f7d10a34fc88b47423b799ad8294b57ff7def305d0806dd304389fd"
+      "bytes": 4716,
+      "sha256": "f7d216068a462cefcb97922f69a7739ca6e9370643b39781a9f8231ad7320578"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/include/lotusim_mas/scenario_types.hpp",
-      "bytes": 1999,
-      "sha256": "d73dc1f158e9a2e5aff450c3f8375e2c4823bd0fe0bea388c28490d139d4147f"
+      "bytes": 1991,
+      "sha256": "89ab461374c6b7640b12b32ed43a98a194d3e9c8174cb9ab0440297751428d43"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/package.xml",
@@ -11824,48 +11879,73 @@
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/src/dataset_timeline.cpp",
-      "bytes": 4927,
-      "sha256": "0901beccf4de098453becffd9231cd86a8db5c2b8a33b042e7b806d87ded345b"
+      "bytes": 5335,
+      "sha256": "91ee10a44595c47c5fb77586eb616b7f7101510cec9c32c1430869069ea3c8b3"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/src/entity_spawner.cpp",
-      "bytes": 13575,
-      "sha256": "5a31ed2a1b1e6e265c1fb923a89cc5b8e3fb6284604ffc9c8bc1fe2a00d1ec60"
+      "bytes": 13147,
+      "sha256": "905bf60ff57569196f27a2481fe4c21f1e1f790d94f7e6c99d4ef4f9ea239fec"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/src/multi_agent_system.cpp",
-      "bytes": 17360,
-      "sha256": "db4155e99d2cf7dce7ebe75fe9e824b54abb85b58a3b668ecbf8bf96b8d83daf"
+      "bytes": 16892,
+      "sha256": "4ebd945be2b82d4a74adcb2c236486af76ec558e0bdf2a1bbcd055b3093e6bf8"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/src/scenario_manager.cpp",
-      "bytes": 12515,
-      "sha256": "02259f600f8885af87ca79e280d384558e83b44bf1780a51f549b706775b47e4"
+      "bytes": 12939,
+      "sha256": "34aa98430b2a3968f319ba19c198edf79a4d922d2907df5ee4b20f218dc7fe19"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/lotusim_mas/src/scenario_parser.cpp",
-      "bytes": 14288,
-      "sha256": "3fe4cb7a1b4917eb7fa2a8d584116398d8546e500d44689950f677dd7ab9009c"
+      "bytes": 14254,
+      "sha256": "42616c97751bc9e4a4cc41a048489a8ea1a5bca39c908d25197e1d8e3cf88a9c"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/render_interface/include/render_interface/render_plugin.hpp",
-      "bytes": 3265,
-      "sha256": "fcdd2c3c007dfae65862db8cb93436546b85f9aa89623f195137f517e2c2dbe6"
+      "bytes": 3366,
+      "sha256": "39d2782290ab9aff05c3437528dcd88189df9cdd9537abf448f588b0187ed040"
     },
     {
       "path": "references/modified-sources/LOTUSim/systems/render_interface/src/render_plugin.cpp",
-      "bytes": 6172,
-      "sha256": "d621a41a4bf7f40ebea6d031888a1daf2df235e927abb8eea733909fbac38f85"
+      "bytes": 6038,
+      "sha256": "aac7472eba1f18d12becee0b943bca9ac4b5061d164b7479c381a1f945041732"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "bytes": 169,
+      "sha256": "c7f1d76e2a6e8a268b0c86bfd60e59ca24f93d6be68d7142028d985d165b4a23"
+    },
+    {
+      "path": "scripts/check_unity_refactor.py",
+      "bytes": 6189,
+      "sha256": "e109310c70ad4d48a860ef63e2c76edb5d0c2e6ea7a3482260f2771c3d58d64d"
+    },
+    {
+      "path": "scripts/format_csharp.py",
+      "bytes": 8633,
+      "sha256": "3fe4894a1d683bc31d3a673304c95fe71068199e9bff8ab92e6acc000e76ba81"
+    },
+    {
+      "path": "scripts/format_sources.py",
+      "bytes": 6482,
+      "sha256": "e0177fad5762927599e1f7c1dd88b8f115b6c71f99f840a63bfe350ea5e04b43"
+    },
+    {
+      "path": "scripts/formatting/FormatCSharpHost.cs",
+      "bytes": 4331,
+      "sha256": "76e4ca97ceacef0cbad67c898245cf7e50d7599080776a6bc81d7d59f1e5eb3f"
     },
     {
       "path": "scripts/install_integration.py",
-      "bytes": 5161,
-      "sha256": "c2400885244d9a4d2aca164f70aabc9afba93793c13d1a59665e67c64330c440"
+      "bytes": 6067,
+      "sha256": "79d0281b831ec048610108efbc911acb2254a451e58cb8d234faaa26aab2019c"
     },
     {
       "path": "scripts/refresh_manifest.py",
-      "bytes": 2772,
-      "sha256": "d7be22e6449739d0f953117354bed5383fe228bd47a00ac0d121e47d29d24bc5"
+      "bytes": 3264,
+      "sha256": "0e3f9f75b0d0ed70e55abf5feb60c8bf77947837b8ce8d1076c59dc8646b4e61"
     },
     {
       "path": "scripts/run_dashboard.command",
@@ -11889,28 +11969,38 @@
     },
     {
       "path": "scripts/start_dashboard.py",
-      "bytes": 1655,
-      "sha256": "d8449007851314f431c0120acc2bd780e697312cb291f321bb6f9f565cdef66c"
+      "bytes": 1699,
+      "sha256": "073ce4d9138b8df3e03371908bfdc674cf9f22a49c18d28a3553dadbf1ae1c5a"
     },
     {
       "path": "scripts/start_local_stack.py",
-      "bytes": 9561,
-      "sha256": "32f81ab6e72817450f6815064a71134d49100f2fe062274a5fe6e95b9ba34983"
+      "bytes": 9934,
+      "sha256": "304ea08c641018599357056eecee77e91f2528a941c6ff9350bf4d1d00c1794c"
+    },
+    {
+      "path": "scripts/sync_source_patches.py",
+      "bytes": 14479,
+      "sha256": "26d13bf2f98e02e8b9b013532172b5efe7a6b214f53ca2911f2099327e97c7dc"
+    },
+    {
+      "path": "scripts/test_formatting_tools.py",
+      "bytes": 3264,
+      "sha256": "90bec2a5fc9126af42dc95c3fe5a54b56cefc7736dad85112d801feb37e5220f"
     },
     {
       "path": "scripts/test_local_launchers.py",
-      "bytes": 13844,
-      "sha256": "4c6067da0d4dffb3c371e30cd6265c4b942607f6ee9f97d1fca7134b1e62895c"
+      "bytes": 14203,
+      "sha256": "bfc0f227be98a9faf34b653ef6e79e98f8890d5b8767f1389103904b9836568f"
     },
     {
       "path": "scripts/test_portable_inventory.py",
-      "bytes": 3146,
-      "sha256": "0249ec323e9205841191c5b4fd2e1b853a58a837821d56def0b18eb2f0167ee3"
+      "bytes": 3815,
+      "sha256": "21d2ec676e7bf6247e7df7808024be13b2e0e5cbcb63041b027b92cfdb5ba951"
     },
     {
       "path": "scripts/verify_export.py",
-      "bytes": 1544,
-      "sha256": "18608f8dc85697458051a99790bc03c3227a36beac95ce7fe2eee4e12e048cd1"
+      "bytes": 1737,
+      "sha256": "93f39f09f0a257be66b2e6963884b25fdf17057cee3f9a2772d60767b3936ce6"
     },
     {
       "path": "validation.json",
@@ -11918,7 +12008,7 @@
       "sha256": "74f164a2b7ad73b30cb6e8ac2af416f4caaf6b8ca1aa60ce5630aa5c043554a6"
     }
   ],
-  "totalBytes": 890237935,
+  "totalBytes": 890844437,
   "dynamicOutputsExcluded": [
     "**/artifacts/**",
     "**/__pycache__/**"
@@ -11926,6 +12016,6 @@
   "selfExcluded": [
     "manifest.json"
   ],
-  "updatedAt": "2026-10-28T16:08:47.420615+00:00",
+  "updatedAt": "2026-10-28T16:52:48.597837+00:00",
   "scope": "portable source snapshot; runtime and .local are not included"
 }
