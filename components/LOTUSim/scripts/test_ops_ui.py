@@ -20,6 +20,13 @@ class Document(HTMLParser):
         if tag=='label' and 'for' in values:self.labels.append(values['for'])
 
 class OpsUiTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('node'),'Node.js required for local diagnostics contracts')
+    def test_local_diagnostics_and_frozen_journal(self):
+        for name,expected in [('test_ops_alerts.cjs','alert classification'),
+                              ('test_ops_journal.cjs','journal freeze'),
+                              ('test_context_disclosures_ui.cjs','contextual disclosure')]:
+            result=subprocess.run(['node',str(ROOT/'scripts'/name),str(UI)],capture_output=True,text=True,check=True,timeout=20)
+            self.assertIn(expected,result.stdout)
     @unittest.skipUnless(shutil.which('node'),'Node.js required for traffic-library UI contracts')
     def test_traffic_library_generation_and_revisions(self):
         result=subprocess.run(['node',str(ROOT/'scripts/test_traffic_library_ui.cjs'),str(UI)],capture_output=True,text=True,check=True,timeout=20)
