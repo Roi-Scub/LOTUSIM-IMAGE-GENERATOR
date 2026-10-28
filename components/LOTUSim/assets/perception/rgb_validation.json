@@ -1,0 +1,9 @@
+{
+  "schema": "lotusim-visual-validation-plan-1",
+  "knowledgeDirectory": "artifacts/rgb-validation/knowledge",
+  "detectorConfig": "assets/perception/rgb_observer_tiled.json",
+  "previewLimit": 12,
+  "input": "Clean RGB only; never overlay text",
+  "transport": "Gazebo Transport optional; explicit direct-RGB fallback if unavailable",
+  "confidence": "Model score and cosine similarity are not calibrated certainty; independent calibration is optional and audited"
+}

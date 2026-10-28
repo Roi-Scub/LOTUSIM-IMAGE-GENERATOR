@@ -1,0 +1,11 @@
+{
+  "version": "rgb-recognizability-heuristic-1",
+  "partialMinPixels": 32,
+  "recognizableMinPixels": 256,
+  "partialMinBoxSide": 4,
+  "recognizableMinBoxSide": 12,
+  "partialMinVisibleFraction": 0.1,
+  "recognizableMinVisibleFraction": 0.65,
+  "partialMinContrast": 0.025,
+  "recognizableMinContrast": 0.08
+}

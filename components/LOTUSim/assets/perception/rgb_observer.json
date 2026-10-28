@@ -1,0 +1,27 @@
+{
+  "schema": "lotusim-rgb-observer-config-1",
+  "model": "IDEA-Research/grounding-dino-tiny",
+  "revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+  "weightsSha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+  "modelDirectory": "artifacts/vision-models/grounding-dino-tiny",
+  "license": "Apache-2.0",
+  "device": "cpu",
+  "boxThreshold": 0.3,
+  "textThreshold": 0.25,
+  "nmsIou": 0.55,
+  "tileSize": 0,
+  "categories": [
+    {"category":"buoy","displayName":"bouée","query":"a buoy"},
+    {"category":"drone","displayName":"drone","query":"a drone"},
+    {"category":"helicopter","displayName":"hélicoptère","query":"a helicopter"},
+    {"category":"airplane","displayName":"avion","query":"an airplane"},
+    {"category":"bird","displayName":"oiseau","query":"a bird"},
+    {"category":"fishing_trawler","displayName":"chalutier","query":"a fishing trawler"},
+    {"category":"container_ship","displayName":"porte-conteneurs","query":"a container ship"},
+    {"category":"motor_yacht","displayName":"yacht","query":"a motor yacht"},
+    {"category":"speedboat","displayName":"hors-bord","query":"a speedboat"},
+    {"category":"jetski","displayName":"jetski","query":"a jet ski"},
+    {"category":"ferry","displayName":"ferry","query":"a ferry"},
+    {"category":"sailboat","displayName":"voilier","query":"a sailboat"}
+  ]
+}
