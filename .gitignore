@@ -17,6 +17,7 @@ result-*
 # Complete working clones and host-specific state are not the portable source snapshot.
 /runtime/
 /.local/
+/node_modules/
 # Generated datasets and reports are local data, not source history.
 /results/
 /datasets/

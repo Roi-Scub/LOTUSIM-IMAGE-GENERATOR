@@ -1,6 +1,10 @@
 # Preserve exact bytes across checkouts: manifest.json pins SHA-256 hashes.
 * -text
 
+# Unified patches must retain context prefixes and historical removed-line bytes.
+# Check the resulting source files, not the patch payload, for trailing whitespace.
+patches/*.patch -whitespace
+
 # Media and generated geometry are versioned; do not render enormous text diffs.
 *.png binary
 *.jpg binary

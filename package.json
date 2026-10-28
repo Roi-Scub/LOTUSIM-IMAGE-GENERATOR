@@ -1,0 +1,12 @@
+{
+  "name": "lotusim-image-generator-development",
+  "private": true,
+  "version": "0.3.0",
+  "description": "Development-only formatting and source contract tools; no application runtime dependency.",
+  "devDependencies": {
+    "@babel/parser": "7.28.5",
+    "parse5": "7.3.0",
+    "postcss": "8.5.6",
+    "prettier": "3.6.2"
+  }
+}
