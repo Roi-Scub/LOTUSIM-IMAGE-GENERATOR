@@ -30,6 +30,9 @@
   let current = null;
   let lastSuccess = 0;
   let lastEventId = null;
+  let journalFrozen = null;
+  let journalRowsSignature = '';
+  let journalExportSnapshot = null;
   let fetchPending = false;
   let eventSource = null;
   let eventStreamOpen = false;
@@ -432,6 +435,52 @@
     return ['error', 'failed', 'fatal'].includes(level) ? 'error' : ['warning', 'warn'].includes(level) ? 'warning' : 'info';
   }
   function eventTone(event) { return eventLevel(event) === 'error' ? 'error' : eventLevel(event) === 'warning' ? 'warning' : 'neutral'; }
+  function journalEventKey(event) {
+    // Some producers rebuild IDs when their bounded event window moves. The
+    // observed content and timestamp identify a message more reliably here.
+    return JSON.stringify([String(event.source || 'non précisée'), event.at ?? null,
+      eventLevel(event), String(event.message || '')]);
+  }
+  function journalEvents(data) {
+    return list(data?.events).filter(event => event && typeof event === 'object' && !Array.isArray(event))
+      .slice().sort((a, b) => (timestamp(b.at) || 0) - (timestamp(a.at) || 0)).slice(0, 80)
+      .map(event => ({id: typeof event.id === 'string' ? event.id : null,
+        at: typeof event.at === 'string' || finite(event.at) ? event.at : null,
+        source: String(event.source || 'non précisée'), level: eventLevel(event),
+        message: String(event.message || 'Événement sans message'), historical: event.historical === true}));
+  }
+  function resumeJournal() {
+    journalFrozen = null;
+    if (current) renderJournal(current);
+    if ($('autoScroll').checked) $('journalRows').scrollTop = $('journalRows').scrollHeight;
+  }
+  function toggleJournalPause() {
+    if (journalFrozen) { resumeJournal(); return; }
+    if (!current) return;
+    const events = journalEvents(current);
+    journalFrozen = {events, generatedAt: current.generatedAt || null,
+      keys: new Set(events.map(journalEventKey))};
+    renderJournal(current);
+  }
+  function exportJournal() {
+    if (!journalExportSnapshot || !journalExportSnapshot.events.length) return;
+    const now = new Date();
+    const output = {schema: 'lotusim-journal-export-1', exportedAt: now.toISOString(),
+      exportedAtParis: new Intl.DateTimeFormat('fr-FR', {timeZone: 'Europe/Paris', dateStyle: 'full', timeStyle: 'long'}).format(now),
+      displayTimeZone: 'Europe/Paris', provenance: {kind: 'local_observed_events', endpoint: '/api/state',
+        snapshotGeneratedAt: journalExportSnapshot.generatedAt, displayFrozen: journalExportSnapshot.frozen,
+        maximumSnapshotEvents: 80, exhaustiveHistory: false,
+        note: 'Événements filtrés de la fenêtre observée ; aucun journal complet, image ou état courant des services n’est exporté.'},
+      filters: journalExportSnapshot.filters, events: journalExportSnapshot.events};
+    const blob = new Blob([JSON.stringify(output, null, 2) + '\n'], {type: 'application/json;charset=utf-8'});
+    const url = URL.createObjectURL(blob), link = document.createElement('a');
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('fr-FR', {timeZone: 'Europe/Paris',
+      year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'})
+      .formatToParts(now).map(part => [part.type, part.value]));
+    link.href = url; link.download = `journal_${parts.year}-${parts.month}-${parts.day}_${parts.hour}-${parts.minute}-${parts.second}_Paris.json`;
+    document.body.append(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
   function renderActivity(data) {
     const events = list(data.events).slice().sort((a, b) => (timestamp(b.at) || 0) - (timestamp(a.at) || 0));
     $('recentEvents').replaceChildren();
@@ -447,11 +496,20 @@
     }
   }
   function renderJournal(data) {
-    const events = list(data.events);
+    const received = journalEvents(data), events = journalFrozen ? journalFrozen.events : received;
+    const pending = journalFrozen ? new Set(received.filter(event => !journalFrozen.keys.has(journalEventKey(event))).map(journalEventKey)).size : 0;
+    $('journalPause').textContent = journalFrozen ? 'Reprendre l’affichage' : 'Suspendre l’affichage';
+    $('journalPause').setAttribute('aria-pressed', String(!!journalFrozen));
+    $('journalPause').disabled = !current;
+    $('journalResume').hidden = !journalFrozen;
+    $('journalPending').textContent = journalFrozen ? `${pending} ${pending > 1 ? 'nouveaux événements' : 'nouvel événement'} dans la dernière fenêtre reçue` : '';
+    $('journalSnapshot').textContent = journalFrozen ?
+      `Affichage figé à ${journalFrozen.generatedAt ? time(journalFrozen.generatedAt, true) : 'une date non mesurée'} · collecte et indicateurs non suspendus. La fenêtre reçue est limitée à 80 événements, pas un historique exhaustif.` :
+      'Affichage automatique · fenêtre limitée aux 80 derniers événements reçus ; ce n’est pas un historique exhaustif.';
     const previous = $('eventSource').value;
     const sources = [...new Set(events.map(event => String(event.source || 'non précisée')))].sort();
     const existing = [...$('eventSource').options].slice(1).map(option => option.value);
-    if (existing.join('|') !== sources.join('|')) {
+    if (JSON.stringify(existing) !== JSON.stringify(sources)) {
       $('eventSource').replaceChildren(new Option('Toutes les sources', 'all'));
       for (const source of sources) $('eventSource').append(new Option(source, source));
       $('eventSource').value = sources.includes(previous) ? previous : 'all';
@@ -463,9 +521,18 @@
       && (!query || [event.source, event.message].filter(Boolean).join(' ').toLocaleLowerCase('fr-FR').includes(query)))
       .slice().sort((a, b) => (timestamp(a.at) || 0) - (timestamp(b.at) || 0));
     $('eventCount').textContent = `${filtered.length} événement${filtered.length > 1 ? 's' : ''}`;
+    $('journalExport').disabled = !filtered.length;
+    journalExportSnapshot = {generatedAt: journalFrozen ? journalFrozen.generatedAt : data.generatedAt || null,
+      frozen: !!journalFrozen, filters: {source, level, query}, events: filtered};
+    // Producer IDs may be reindexed when its rolling source window shifts.
+    // They are useful in exports, but do not change anything visible in a row.
+    const signature = JSON.stringify([filtered.map(({id, ...visible}) => visible), events.length > 0]);
+    if (signature === journalRowsSignature) return;
+    journalRowsSignature = signature;
     const rows = $('journalRows');
+    const previousScroll = rows.scrollTop;
     const atBottom = rows.scrollHeight - rows.scrollTop - rows.clientHeight < 35;
-    const newId = events.length ? String(events[events.length - 1].id || events[events.length - 1].at || events.length) : null;
+    const newId = JSON.stringify(events.map(journalEventKey).sort());
     const changed = newId !== lastEventId;
     rows.replaceChildren();
     if (!filtered.length) rows.append(node('p', events.length ? 'Aucun événement ne correspond à ces filtres.' : 'Aucun événement disponible.', 'empty-small'));
@@ -477,7 +544,8 @@
       row.append(clock, origin, node('div', event.message || 'Événement sans message', 'journal-message'));
       rows.append(row);
     }
-    if (changed && $('autoScroll').checked && (atBottom || lastEventId === null)) rows.scrollTop = rows.scrollHeight;
+    if (!journalFrozen && changed && $('autoScroll').checked && (atBottom || lastEventId === null)) rows.scrollTop = rows.scrollHeight;
+    else rows.scrollTop = previousScroll;
     lastEventId = newId;
   }
 
@@ -614,7 +682,10 @@
 
   $('refreshButton').addEventListener('click', () => fetchState(true));
   for (const id of ['eventSource', 'eventLevel', 'eventSearch']) $(id).addEventListener(id === 'eventSearch' ? 'input' : 'change', () => { if (current) renderJournal(current); });
-  $('autoScroll').addEventListener('change', () => { if ($('autoScroll').checked) $('journalRows').scrollTop = $('journalRows').scrollHeight; });
+  $('journalPause').addEventListener('click', toggleJournalPause);
+  $('journalResume').addEventListener('click', () => { resumeJournal(); $('journalRows').scrollTop = $('journalRows').scrollHeight; });
+  $('journalExport').addEventListener('click', exportJournal);
+  $('autoScroll').addEventListener('change', () => { if ($('autoScroll').checked && !journalFrozen) $('journalRows').scrollTop = $('journalRows').scrollHeight; });
   $('mapRange').addEventListener('change', () => { if (current) renderMap(current); });
   $('unityPreview').addEventListener('error', () => {
     previewIdentity = '';
