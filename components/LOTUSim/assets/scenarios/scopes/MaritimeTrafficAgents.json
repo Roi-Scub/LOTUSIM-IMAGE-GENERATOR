@@ -1,0 +1,58 @@
+{
+  "schema": "lotusim-traffic-scope-1",
+  "name": "MaritimeTrafficAgents",
+  "seed": 20261016,
+  "durationSeconds": 180,
+  "fps": 30,
+  "captureEveryFrames": 15,
+  "countPerModel": 1,
+  "maxPlanningAttempts": 256,
+  "observer": {"speedKnots": 12, "headingDeg": 0, "turnDeg": -8},
+  "weather": {
+    "localWindMps": 6,
+    "windTowardsDeg": 55,
+    "significantSwellHeightM": 1.2,
+    "swellSpectrumProxyWindKmh": [52, 72],
+    "notes": "Ocean spectrum wind is a rendering proxy for remote groundswell, NOT the local wind used for drone limits."
+  },
+  "water": {
+    "eastMinM": -5500, "eastMaxM": 5500,
+    "northMinM": -4000, "northMaxM": 16000,
+    "exclusionZones": [{"name": "synthetic_island_reserve", "eastM": -3200, "northM": 2400, "radiusM": 650}],
+    "notes": "Synthetic open-water area, not a chart or a bathymetric/official traffic scheme."
+  },
+  "safety": {
+    "seaClearanceM": 30,
+    "observerBufferM": 90,
+    "aircraftHorizontalM": 500,
+    "aircraftVerticalM": 300,
+    "observerAuditStepSeconds": 0.5,
+    "planningMarginM": 5,
+    "runtimePositionToleranceM": 0.5
+  },
+  "overrides": [],
+  "fastDrones": {
+    "enabled": true,
+    "model": "drone_racer_sim",
+    "minCameraDistanceM": 80,
+    "turnAngleDeg": 40,
+    "turnDurationSeconds": 8,
+    "captureHz": 10,
+    "captureBurstSeconds": 3,
+    "passes": [
+      {"kind":"crossing","speedKmh":60,"focusFraction":0.1111111111,"side":-1},
+      {"kind":"approach_bypass","speedKmh":180,"focusFraction":0.2333333333,"side":1},
+      {"kind":"crossing","speedKmh":240,"focusFraction":0.4,"side":1},
+      {"kind":"approach_bypass","speedKmh":300,"focusFraction":0.5333333333,"side":-1},
+      {"kind":"crossing","speedKmh":400,"focusFraction":0.7333333333,"side":-1},
+      {"kind":"approach_bypass","speedKmh":400,"focusFraction":0.8666666667,"side":1}
+    ],
+    "notes":"Unarmed fictional visual benchmark; no measured military or commercial aircraft performance. Full-episode continuous trajectories, isolated burst captures, no impact or interception."
+  },
+  "notes": [
+    "Every enabled appearance is planned once, not necessarily visible in every frame.",
+    "Airliner cruise is around 810-870 km/h at 9.5-11.5 km, not 1000 km/h at low altitude.",
+    "Agents negotiate complete routes before launch: straight traffic and bounded smooth-position drone flybys. Unexpected runtime deviation stops the owned run; no teleport or reactive navigation is applied.",
+    "No LLM, external API or extra ROS client is used by the planning network."
+  ]
+}

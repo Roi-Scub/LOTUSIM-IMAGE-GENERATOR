@@ -1,0 +1,336 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c7fab225b1c4a31bd15a65deba7a31a, type: 3}
+  m_Name: MaritimeRandomLotusim(Clone)
+  m_EditorClassIdentifier: 
+  seed: 20261016
+  width: 3840
+  height: 2160
+  simulationFps: 30
+  captureEveryFrames: 15
+  warmupFrames: 60
+  scenarioName: MaritimeTrafficAgents
+  captureFrames: 000000000f0000001e0000002d0000003c0000004b0000005a00000069000000780000008700000096000000a5000000b4000000c3000000d2000000e1000000f0000000ff0000000e0100001d0100002c0100003b0100004a0100005901000068010000770100008601000095010000a4010000b3010000c2010000d1010000e0010000ef010000fe0100000d0200001c0200002b0200002e0200003102000034020000370200003a0200003d020000400200004302000046020000490200004c0200004f0200005202000055020000580200005b0200005e0200006102000064020000670200006a0200006d020000700200007302000076020000790200007c0200007f020000820200008502000094020000a3020000b2020000c1020000d0020000df020000ee020000fd0200000c0300001b0300002a03000039030000480300005703000066030000750300008403000093030000a2030000b1030000c0030000cf030000de030000ed030000fc0300000b0400001a0400002904000038040000470400005604000065040000740400008304000092040000a1040000b0040000bf040000c2040000c5040000c8040000cb040000ce040000d1040000d4040000d7040000da040000dd040000e0040000e3040000e6040000e9040000ec040000ef040000f2040000f5040000f8040000fb040000fe0400000105000004050000070500000a0500000d050000100500001305000016050000190500002805000037050000460500005505000064050000730500008205000091050000a0050000af050000be050000cd050000dc050000eb050000fa050000090600001806000027060000360600004506000054060000630600007206000081060000900600009f060000ae060000bd060000cc060000db060000ea060000f90600000807000017070000260700003507000044070000530700006207000071070000800700008f0700009e070000ad070000bc070000cb070000da070000e9070000f8070000070800001608000025080000340800004308000046080000490800004c0800004f0800005208000055080000580800005b0800005e0800006108000064080000670800006a0800006d080000700800007308000076080000790800007c0800007f0800008208000085080000880800008b0800008e0800009108000094080000970800009a0800009d080000ac080000bb080000ca080000d9080000e8080000f7080000060900001509000024090000330900004209000051090000600900006f0900007e0900008d0900009c090000ab090000ba090000c9090000d8090000e7090000f6090000050a0000140a0000230a0000320a0000410a0000500a00005f0a00006e0a00007d0a00008c0a00009b0a0000aa0a0000b90a0000c80a0000d70a0000e60a0000f50a0000040b0000130b0000160b0000190b00001c0b00001f0b0000220b0000250b0000280b00002b0b00002e0b0000310b0000340b0000370b00003a0b00003d0b0000400b0000430b0000460b0000490b00004c0b00004f0b0000520b0000550b0000580b00005b0b00005e0b0000610b0000640b0000670b00006a0b00006d0b00007c0b00008b0b00009a0b0000a90b0000b80b0000c70b0000d60b0000e50b0000f40b0000030c0000120c0000210c0000300c00003f0c00004e0c00005d0c00006c0c00007b0c00008a0c0000990c0000a80c0000b70c0000c60c0000d50c0000e40c0000f30c0000020d0000110d0000200d00002f0d00003e0d00004d0d00005c0d00006b0d00007a0d0000890d0000980d0000a70d0000b60d0000c50d0000d40d0000e30d0000f20d0000010e0000100e00001f0e00002e0e00003d0e00004c0e00005b0e00006a0e0000790e0000880e0000970e0000a60e0000b50e0000c40e0000d30e0000e20e0000f10e0000000f00000f0f00001e0f00002d0f00003c0f00004b0f00004e0f0000510f0000540f0000570f00005a0f00005d0f0000600f0000630f0000660f0000690f00006c0f00006f0f0000720f0000750f0000780f00007b0f00007e0f0000810f0000840f0000870f00008a0f00008d0f0000900f0000930f0000960f0000990f00009c0f00009f0f0000a20f0000a50f0000b40f0000c30f0000d20f0000e10f0000f00f0000ff0f00000e1000001d1000002c1000003b1000004a1000005910000068100000771000008610000095100000a4100000b3100000c2100000d1100000e0100000ef100000fe1000000d1100001c1100002b1100003a110000491100005811000067110000761100008511000094110000a3110000b2110000c1110000d0110000df110000ee110000fd1100000c1200001b1200001e1200002112000024120000271200002a1200002d120000301200003312000036120000391200003c1200003f1200004212000045120000481200004b1200004e1200005112000054120000571200005a1200005d120000601200006312000066120000691200006c1200006f12000072120000751200008412000093120000a2120000b1120000c0120000cf120000de120000ed120000fc1200000b1300001a1300002913000038130000471300005613000065130000741300008313000092130000a1130000b0130000bf130000ce130000dd130000ec130000fb1300000a140000191400002814000037140000461400005514000064140000731400008214000091140000a0140000af140000be140000cd140000dc140000eb140000fa14000009150000
+  farClipM: 80000
+  trafficPlan: {fileID: 11400000, guid: 75b1222fc7bed4892b87902154895eee, type: 2}
+  durationSeconds: 180
+  verticalFovDeg: 55
+  observerSpeedMps: 6.173333
+  observerHeightM: 12.4
+  routeHeadingDeg: 0
+  viewHeadingDeg: 15
+  viewDownPitchDeg: 2
+  observerTurnDeg: -8
+  observerDeckCamera: 1
+  observerDeckOffsetM: {x: 30.3, y: 12.4, z: -5.5}
+  observerCameraStation: navigation_bridge_front
+  observerWaveTiltGain: 1.8
+  observerMaxRollDeg: 7
+  observerMaxPitchDeg: 4
+  connectedBridgeVersion: 1
+  requireSwell: 1
+  seaEvolution:
+    enabled: 1
+    periodSeconds: 36
+    minWindKmh: 52
+    maxWindKmh: 72
+    minBand: 0.7
+    maxBand: 0.95
+    patchSizeM: 512
+    directionDeg: 35
+  connectedVoyageVersion: 1
+  origin: {x: 0, y: 0, z: 0}
+  observerHullHalfExtentsM: {x: 15, y: 43, z: 78}
+  maxActiveObjects: 40
+  maxRollDeg: 2.5
+  maxPitchDeg: 1.5
+  waterTiltGain: 0.4
+  heaveGain: 0.45
+  maxHeaveM: 1.2
+  responsePerSecond: 2
+  renderTimeoutSeconds: 90
+  outputRoot: artifacts/dataset-traffic-agents
+  annotations:
+    enabled: 1
+    displayName: 
+    reviewMinVisiblePixels: 16
+    reviewMinBoxSidePixels: 2
+    recognition:
+      version: rgb-recognizability-heuristic-1
+      partialMinPixels: 32
+      recognizableMinPixels: 256
+      partialMinBoxSide: 4
+      recognizableMinBoxSide: 12
+      partialMinVisibleFraction: 0.1
+      recognizableMinVisibleFraction: 0.65
+      partialMinContrast: 0.025
+      recognizableMinContrast: 0.08
+  flotation:
+    enabled: 1
+    sampleRadiusM: 0.35
+    waterlineOffsetM: -0.15
+    heightResponsePerSecond: 6
+    tiltResponsePerSecond: 3
+    maxTiltDeg: 25
+  waterOptics:
+    absorptionDistanceM: 0.8
+    maxRefractionDistanceM: 0.6
+    refractionColor: {r: 0.06, g: 0.24, b: 0.3, a: 1}
+    scatteringColor: {r: 0.03, g: 0.16, b: 0.19, a: 1}
+  lantern:
+    enabled: 1
+    periodSeconds: 2
+    flashSeconds: 0.25
+    edgeFadeSeconds: 0.03
+    phaseOffsetSeconds: 0
+    color: {r: 1, g: 0.28, b: 0.02, a: 1}
+    peakEmissionIntensity: 1000
+    pointLightLumens: 3
+    pointLightRangeM: 2
+  lighting:
+    cycleDayEveningNight: 1
+    settleFrames: 4
+    day:
+      name: day
+      illuminant: sun
+      relativeBearingDeg: -35
+      elevationDeg: 40
+      intensityLux: 80000
+      exposureEV100: 13
+      temperatureKelvin: 5600
+    evening:
+      name: evening
+      illuminant: sun
+      relativeBearingDeg: -70
+      elevationDeg: 12
+      intensityLux: 8000
+      exposureEV100: 9
+      temperatureKelvin: 4200
+    night:
+      name: night
+      illuminant: full_moon
+      relativeBearingDeg: -135
+      elevationDeg: 35
+      intensityLux: 0.3
+      exposureEV100: -4
+      temperatureKelvin: 7500
+  sensors:
+    thermal: 1
+    nightVision: 1
+    blackHot: 0
+    thermalMinC: 5
+    thermalMaxC: 55
+    waterTemperatureC: 18
+    skyTemperatureC: -20
+    backgroundTemperatureC: 22
+    nightGain: 5
+    nightGamma: 0.8
+    nightNoise: 0.012
+    nightVignette: 0.25
+    nightTint: {r: 0.12, g: 1, b: 0.22, a: 1}
+    thermalClasses:
+    - category: buoy
+      temperatureC: 20
+      emissivity: 0.92
+    - category: drone
+      temperatureC: 35
+      emissivity: 0.92
+    - category: helicopter
+      temperatureC: 40
+      emissivity: 0.92
+    - category: airplane
+      temperatureC: 32
+      emissivity: 0.92
+    - category: bird
+      temperatureC: 39
+      emissivity: 0.98
+    - category: fishing_trawler
+      temperatureC: 26
+      emissivity: 0.92
+    - category: container_ship
+      temperatureC: 27
+      emissivity: 0.92
+    - category: motor_yacht
+      temperatureC: 26
+      emissivity: 0.92
+    - category: speedboat
+      temperatureC: 28
+      emissivity: 0.92
+    - category: jetski
+      temperatureC: 30
+      emissivity: 0.92
+    - category: ferry
+      temperatureC: 27
+      emissivity: 0.92
+    - category: sailboat
+      temperatureC: 23
+      emissivity: 0.92
+  connectedSensorsVersion: 1
+  connectedLightingVersion: 1
+  classes:
+  - category: buoy
+    displayName: "bou\xE9e"
+    classId: 1
+    count: 2
+    prefab: {fileID: 8850721854599462305, guid: 1a5f988ad00a94b72a9f2f6371f1cbec,
+      type: 3}
+    prefabVariants:
+    - {fileID: 2095523284244410730, guid: 04149b3038921459db04a4be01ab18d0, type: 3}
+    moored: 1
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 0, y: 0}
+    separationM: 5
+  - category: drone
+    displayName: drone
+    classId: 2
+    count: 8
+    prefab: {fileID: 6078880521541706090, guid: fa2d8039a80a9419c9954f6e890a554f,
+      type: 3}
+    prefabVariants:
+    - {fileID: 9086809281025130262, guid: 18dfce9ba2c4f4ddca971880499d06d8, type: 3}
+    - {fileID: 7502280199133354547, guid: 68f236080811e4759956fc337c191e76, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 68.37371, y: 99.84164}
+    speedMps: {x: 6.5636907, y: 111.11111}
+    separationM: 3
+  - category: helicopter
+    displayName: "h\xE9licopt\xE8re"
+    classId: 3
+    count: 2
+    prefab: {fileID: 601548824454675149, guid: 3700b2cdfbf3346a78d5d02d3db25efb, type: 3}
+    prefabVariants:
+    - {fileID: 8904827431597773640, guid: 0df2f9657258845e6b4e2b3af71a8daa, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 437.98422, y: 1134.9594}
+    speedMps: {x: 38.71377, y: 51.62027}
+    separationM: 20
+  - category: airplane
+    displayName: avion
+    classId: 4
+    count: 3
+    prefab: {fileID: 4623156053532310699, guid: 675ca74669fbb482fa517483557df1e1,
+      type: 3}
+    prefabVariants:
+    - {fileID: 1842870747317049998, guid: 536f188ddbdd44acdbc19f8ce6bd1029, type: 3}
+    - {fileID: 8117507799598920401, guid: 3359b93659b5744d1bd2adac2118ed01, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 2192.45, y: 10434.823}
+    speedMps: {x: 43.463566, y: 236.34094}
+    separationM: 30
+  - category: bird
+    displayName: oiseau
+    classId: 5
+    count: 2
+    prefab: {fileID: 7796383544303936974, guid: 707eac4bf4c18454b9505c542245b6aa,
+      type: 3}
+    prefabVariants:
+    - {fileID: 1021738231322762829, guid: 4feb5a76e50134c26a72d5131c102ab3, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 16.797531, y: 27.837025}
+    speedMps: {x: 9.331717, y: 10.265418}
+    separationM: 1
+  - category: fishing_trawler
+    displayName: chalutier
+    classId: 6
+    count: 1
+    prefab: {fileID: 7231219686765331199, guid: 7b38f2aa7fb0e40738e4e5a723d97b40,
+      type: 3}
+    prefabVariants: []
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 4.001024, y: 4.001024}
+    separationM: 13.200001
+  - category: container_ship
+    displayName: porte-conteneurs
+    classId: 7
+    count: 1
+    prefab: {fileID: 225931711656473825, guid: 33dd8cd19f22f49888bbeef305577178, type: 3}
+    prefabVariants: []
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 7.1583905, y: 7.1583905}
+    separationM: 101.75
+  - category: motor_yacht
+    displayName: "yacht \xE0 moteur"
+    classId: 8
+    count: 3
+    prefab: {fileID: 2505329929075158455, guid: 8dd9030eda6e34635b6f2db1cc9e4df8,
+      type: 3}
+    prefabVariants:
+    - {fileID: 7281936874417711872, guid: 5f00394ad439942e0a2c8945079a2b9d, type: 3}
+    - {fileID: 9015927500724875352, guid: ee974d5d8b8e14a278be64513efe3b0e, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 3.3780458, y: 9.138378}
+    separationM: 7.7000003
+  - category: speedboat
+    displayName: hors-bord
+    classId: 9
+    count: 6
+    prefab: {fileID: 8564823599636890826, guid: ceedbcbaa7e6243139dce577af3f763e,
+      type: 3}
+    prefabVariants:
+    - {fileID: 3010460925627919792, guid: c8f29efc648d941318ad59621b62e73f, type: 3}
+    - {fileID: 1147809415227286859, guid: c93728f2a07b041a5a6da2b9da8c1874, type: 3}
+    - {fileID: 8332173284414732604, guid: 31d37071c5c3945db9f9d95436a2df09, type: 3}
+    - {fileID: 5609805710980590202, guid: 235c8222219274067b4482823c48e4c2, type: 3}
+    - {fileID: 7071420248562128487, guid: ece752866fe8149279c8bee30ca70f8a, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 5.224557, y: 8.515044}
+    separationM: 5
+  - category: jetski
+    displayName: jetski
+    classId: 10
+    count: 2
+    prefab: {fileID: 2995771794638765957, guid: 08fb758b811f441e9ac90fb4499c8ebe,
+      type: 3}
+    prefabVariants:
+    - {fileID: 1884982279824368095, guid: 57db6fe1087b443c2a043e7f06b45a7b, type: 3}
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 4.115556, y: 5.8842263}
+    separationM: 5
+  - category: ferry
+    displayName: ferry
+    classId: 11
+    count: 1
+    prefab: {fileID: 8783373055046517898, guid: 5b946c7a7c4294343acde0eb2e5e3c7c,
+      type: 3}
+    prefabVariants: []
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 8.588463, y: 8.588463}
+    separationM: 39.600002
+  - category: sailboat
+    displayName: voilier
+    classId: 12
+    count: 1
+    prefab: {fileID: 4555994241004004787, guid: f3db63fad79bd4a8b98fd19e6f4bc05f,
+      type: 3}
+    prefabVariants: []
+    moored: 0
+    distanceM: {x: 50, y: 60000}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 2.1198623, y: 2.1198623}
+    separationM: 6.4900002
