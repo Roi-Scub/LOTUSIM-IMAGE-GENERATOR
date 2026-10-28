@@ -1,0 +1,12 @@
+Boat — Nicosama
+Source: https://sketchfab.com/3d-models/boat-dc676eac5985450a9271f9b31eb47778
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Download: https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/smolbot.glb
+SHA-256: 669a1a5bb2e7133e65db5ec6fb9d675480bc124c1cfd03571008d172a0dde2f9
+Changes:
+- Source retained with pinned mirror/hash and original creator attribution
+- Node transforms and simulation units baked; no downloaded scripts imported
+- Opaque HDRP adaptation; alpha/IOR/transmission may differ from source
+- Rigid source pose is owned by LOTUSim; Unity changes only visual child
+- Visual/collision body parameters are approximate, not validated naval/aeronautical engineering
+Creator does not endorse this integration. Trademark/publicity rights not granted. Retain credits with redistributed models/datasets.

@@ -1,0 +1,13 @@
+drone amvlab — AMV Lab
+Source: https://github.com/amvlab/aircraft-models
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Download: https://raw.githubusercontent.com/amvlab/aircraft-models/91d835e8e851b2317fe79af291c9fed6153fd525/models/drone_nologo.glb
+SHA-256: b3b1089986443bec395c57852c68e1dbf5bf990e28472656d9b9ad6c377931d1
+Changes:
+- Source retained with pinned mirror/hash and original creator attribution
+- Node transforms and simulation units baked; no downloaded scripts imported
+- Opaque HDRP adaptation; alpha/IOR/transmission may differ from source
+- Rigid source pose is owned by LOTUSim; Unity changes only visual child
+- Visual/collision body parameters are approximate, not validated naval/aeronautical engineering
+- Procedural opposite propeller rotation; visual cadence, not calibrated RPM
+Creator does not endorse this integration. Trademark/publicity rights not granted. Retain credits with redistributed models/datasets.

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<sdf version="1.10"><model name="airplane">
+  <static>true</static><link name="body"><visual name="appearance"><geometry><mesh><uri>model://airplane/meshes/airplane.obj</uri></mesh></geometry></visual></link>
+  <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>4</label></plugin>
+</model></sdf>

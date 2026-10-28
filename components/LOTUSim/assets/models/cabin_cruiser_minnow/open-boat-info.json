@@ -1,0 +1,58 @@
+{
+  "key": "cabin_cruiser_minnow",
+  "category": "motor_yacht",
+  "lengthM": 11.6,
+  "title": "SS Minnow III",
+  "author": "gogiart",
+  "source": "https://sketchfab.com/3d-models/ss-minnow-iii-a2aa3f9dc66446a4b2c275b9380fc41e",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/ss_minnow_iii.glb",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "0acef1f1d323f1476cd6c33adbca97c41d854306cfc6d61c4cd11cdd664102f7",
+  "bytes": 11375012,
+  "declaredTriangles": 186622,
+  "asset": {
+    "extras": {
+      "author": "gogiart (https://sketchfab.com/agt14032013)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/ss-minnow-iii-a2aa3f9dc66446a4b2c275b9380fc41e",
+      "title": "SS Minnow III"
+    },
+    "generator": "Sketchfab-17.15.0",
+    "version": "2.0"
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "primitives": 52,
+  "images": 30,
+  "skins": 0,
+  "beamM": 3.173015954464579,
+  "draftM": 0.92,
+  "heightM": 5.897163410999941,
+  "vertices": 155349,
+  "triangles": 186622,
+  "materialBatches": 45,
+  "maxTextureSize": 1024,
+  "boundsMin": [
+    -5.799999999999999,
+    -0.92,
+    -1.5865079772322894
+  ],
+  "boundsMax": [
+    5.799999999999999,
+    4.977163410999941,
+    1.5865079772322894
+  ],
+  "changes": [
+    "Mirror GLB conversion retained",
+    "Baked source node transforms/rest skin pose",
+    "Simulation scale and artistic waterline; not certified dimensions",
+    "Unity +X bow +Y up +Z port",
+    "Grouped meshes by source material; helper line edges omitted, no surface simplification",
+    "HDRP metallic/roughness/AO/normal map conversion",
+    "Opaque glass/tints to match existing annotation policy; alpha registration decal omitted",
+    "IOR/specular/transmission extensions approximated, not physically equivalent",
+    "Existing approximate nine-point wave response added; no propulsion/hydrodynamic calibration"
+  ]
+}

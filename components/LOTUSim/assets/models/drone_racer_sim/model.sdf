@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<sdf version="1.10"><model name="drone_racer_sim">
+  <static>true</static><link name="body"><visual name="appearance"><geometry><mesh><uri>model://small_drone/meshes/small_drone.obj</uri></mesh></geometry></visual></link>
+  <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>2</label></plugin>
+</model></sdf>

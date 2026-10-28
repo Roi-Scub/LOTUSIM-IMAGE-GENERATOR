@@ -1,0 +1,86 @@
+{
+  "key": "buoy_navigation_ozzy",
+  "category": "buoy",
+  "author": "OzzyDan",
+  "title": "Buoy",
+  "source": "https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/buoy.glb",
+  "mirrorRepository": "srcejon/sdrangel-3d-models",
+  "mirrorCommit": "59d1ee24ebc2c24343afb54b26928f965a625140",
+  "sha256": "bf25eed9c14ce3f01c436c7a9748c22ac06c78ee43a7301739cda63919fcaee9",
+  "bytes": 185144,
+  "format": "glb",
+  "asset": {
+    "extras": {
+      "author": "OzzyDan (https://sketchfab.com/ozzydan)",
+      "created": "Tue Dec 21 10:09:20 2021",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13",
+      "title": "Buoy"
+    },
+    "generator": "Gestaltor 2021.6.1 Triticale Community",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "images": 1,
+  "nodes": 3,
+  "skins": 0,
+  "animations": 0,
+  "lengthM": 2.5,
+  "beamM": 0.8841537044785062,
+  "draftM": 0.45,
+  "heightM": 2.5,
+  "vertices": 945,
+  "triangles": 702,
+  "materialBatches": 1,
+  "maxTextureSize": 1024,
+  "boundsMin": [
+    -0.4420768522392531,
+    -0.45,
+    -0.4420768522392531
+  ],
+  "boundsMax": [
+    0.4420768522392531,
+    2.05,
+    0.4420768522392531
+  ],
+  "normalization": {
+    "basis": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    ],
+    "scale": 1.6855586656962667,
+    "shift": [
+      -0.0,
+      -0.45,
+      3.0531133177191805e-16
+    ]
+  },
+  "changes": [
+    "Mirror GLB conversion retained",
+    "Baked source node transforms/rest skin pose",
+    "Simulation scale and artistic waterline; not certified dimensions",
+    "Unity +X bow +Y up +Z port",
+    "Grouped meshes by source material; helper line edges omitted, no surface simplification",
+    "HDRP metallic/roughness/AO/normal map conversion",
+    "Opaque glass/tints to match existing annotation policy; alpha registration decal omitted",
+    "IOR/specular/transmission extensions approximated, not physically equivalent",
+    "Existing approximate nine-point wave response added; no propulsion/hydrodynamic calibration"
+  ]
+}

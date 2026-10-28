@@ -1,0 +1,98 @@
+newmtl GelcoatWhite
+Kd 0.800000012 0.819999993 0.800000012
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl AntifoulingRed
+Kd 0.300000012 0.0450000018 0.0250000004
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl BlackPolymer
+Kd 0.0149999997 0.0209999997 0.0280000009
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl TeakDeck
+Kd 0.360000014 0.209999993 0.100000001
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl OpaqueTintedGlazing
+Kd 0.00899999961 0.0240000002 0.0350000001
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl StainlessSteel
+Kd 0.5 0.529999971 0.550000012
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl WeatheredSteel
+Kd 0.0900000036 0.119999997 0.140000001
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl RescueOrange
+Kd 0.920000017 0.209999993 0.0350000001
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl Sailcloth
+Kd 0.819999993 0.800000012 0.720000029
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl Rope
+Kd 0.400000006 0.310000002 0.170000002
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl NonSlipDeck
+Kd 0.150000006 0.180000007 0.180000007
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl NavigationRed
+Kd 0.479999989 0.00200000009 0.00300000003
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl NavigationGreen
+Kd 0.00200000009 0.349999994 0.0250000004
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+
+newmtl NavigationWhite
+Kd 0.839999974 0.839999974 0.75
+Ks 0.15 0.15 0.15
+Ns 48
+d 1
+illum 2
+

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<sdf version="1.10"><model name="seagull">
+  <static>true</static><link name="body"><visual name="appearance"><geometry><mesh><uri>model://seagull/meshes/seagull.obj</uri></mesh></geometry></visual></link>
+  <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>5</label></plugin>
+</model></sdf>

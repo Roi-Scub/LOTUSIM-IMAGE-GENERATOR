@@ -1,0 +1,4 @@
+newmtl feathers
+Kd 1 1 1
+d 1
+map_Kd Seagull-Base_Color.png

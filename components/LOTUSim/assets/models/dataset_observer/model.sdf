@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<sdf version="1.10"><model name="dataset_observer"><static>true</static><link name="body">
+  <visual name="hull"><pose>0 0 0.05 0 0 0</pose><geometry><box><size>8 2.6 0.8</size></box></geometry><material><diffuse>0.16 0.23 0.28 1</diffuse></material></visual>
+  <visual name="cabin"><pose>-1 0 0.9 0 0 0</pose><geometry><box><size>2.6 1.7 1.1</size></box></geometry><material><diffuse>0.75 0.8 0.82 1</diffuse></material></visual>
+  <visual name="camera_mast"><pose>-1 0 2.2 0 0 0</pose><geometry><cylinder><radius>0.04</radius><length>1.5</length></cylinder></geometry></visual>
+</link></model></sdf>

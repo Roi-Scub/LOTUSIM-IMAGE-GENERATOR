@@ -1,0 +1,1 @@
+<?xml version="1.0"?><sdf version="1.10"><model name="drone_amvlab"><static>true</static><link name="hull"><visual name="appearance"><geometry><mesh><uri>model://drone_amvlab/meshes/drone_amvlab.obj</uri></mesh></geometry></visual></link><plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>2</label></plugin></model></sdf>

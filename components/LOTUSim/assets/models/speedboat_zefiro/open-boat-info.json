@@ -1,0 +1,61 @@
+{
+  "key": "speedboat_zefiro",
+  "category": "speedboat",
+  "lengthM": 6.5,
+  "title": "ZEFIRO",
+  "author": "angelo raffaele catalano",
+  "source": "https://sketchfab.com/3d-models/zefiro-5c29921a556346f09684eadfbc51a91d",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/zefiro_6.5.glb",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "780dc707e9a07ee4fc1cf6cad6e46848000778d568b8d47a70cdf849f8219710",
+  "bytes": 2707916,
+  "declaredTriangles": 84588,
+  "asset": {
+    "extras": {
+      "author": "angelo raffaele catalano (https://sketchfab.com/angeloraffaelecatalano)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/zefiro-5c29921a556346f09684eadfbc51a91d",
+      "title": "ZEFIRO"
+    },
+    "generator": "Sketchfab-12.65.0",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_materials_clearcoat",
+    "KHR_materials_transmission"
+  ],
+  "extensionsRequired": [],
+  "primitives": 28,
+  "images": 0,
+  "skins": 0,
+  "beamM": 2.0673696835350577,
+  "draftM": 0.52,
+  "heightM": 1.7896408605618808,
+  "vertices": 49635,
+  "triangles": 84524,
+  "materialBatches": 13,
+  "maxTextureSize": 0,
+  "boundsMin": [
+    -3.25,
+    -0.52,
+    -1.0336848417675286
+  ],
+  "boundsMax": [
+    3.25,
+    1.2696408605618807,
+    1.033684841767529
+  ],
+  "changes": [
+    "Mirror GLB conversion retained",
+    "Baked source node transforms/rest skin pose",
+    "Simulation scale and artistic waterline; not certified dimensions",
+    "Unity +X bow +Y up +Z port",
+    "Grouped meshes by source material; helper line edges omitted, no surface simplification",
+    "HDRP metallic/roughness/AO/normal map conversion",
+    "Opaque glass/tints to match existing annotation policy; alpha registration decal omitted",
+    "IOR/specular/transmission extensions approximated, not physically equivalent",
+    "Existing approximate nine-point wave response added; no propulsion/hydrodynamic calibration"
+  ]
+}

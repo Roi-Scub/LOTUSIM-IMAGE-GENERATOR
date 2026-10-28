@@ -1,0 +1,18 @@
+motoryacht 35 — angelo raffaele catalano
+Source: https://sketchfab.com/3d-models/motoryacht-35-0bdd7a0de7254426890bb5745bb7da6d
+License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Mirror: https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/motoryacht_10.7r.glb
+SHA-256: f3272a5c660705b0c4c1a0dca4195a7f60822f0d09d290a1a37ff6fa0677985b
+
+Changes by LOTUSim integration:
+- Mirror GLB conversion retained
+- Baked source node transforms/rest skin pose
+- Simulation scale and artistic waterline; not certified dimensions
+- Unity +X bow +Y up +Z port
+- Grouped meshes by source material; helper line edges omitted, no surface simplification
+- HDRP metallic/roughness/AO/normal map conversion
+- Opaque glass/tints to match existing annotation policy; alpha registration decal omitted
+- IOR/specular/transmission extensions approximated, not physically equivalent
+- Existing approximate nine-point wave response added; no propulsion/hydrodynamic calibration
+
+The creators do not endorse this project. Trademark/publicity rights are not licensed by CC BY. Keep this credit and the license with redistributions, including generated datasets.

@@ -1,0 +1,38 @@
+{
+    "model": "container_ship",
+    "displayName": "porte-conteneurs",
+    "prefab": "Assets/Prefabs/container_ship.prefab",
+    "source": "original procedural marine geometry",
+    "forwardAxis": "Unity +X / Gazebo +X",
+    "classId": 7,
+    "triangles": 513956,
+    "vertices": 778529,
+    "geometryOperations": 129802,
+    "materialSlots": 19,
+    "boundsMin": {
+        "x": -92.5,
+        "y": -8.0,
+        "z": -14.984155654907227
+    },
+    "boundsMax": {
+        "x": 92.5,
+        "y": 28.700000762939454,
+        "z": 14.984155654907227
+    },
+    "flotation": {
+        "lengthM": 185.0,
+        "beamM": 30.0,
+        "draftM": 8.0,
+        "blockCoefficient": 0.6600000262260437,
+        "waterDensityKgM3": 1025.0,
+        "dampingRatio": 0.8500000238418579,
+        "maxRollDeg": 8.0,
+        "maxPitchDeg": 4.0,
+        "waterlineOffsetM": 0.0,
+        "heaveFrequencyScale": 0.699999988079071,
+        "angularFrequencyScale": 0.6000000238418579
+    },
+    "defaultRootKinematic": true,
+    "freeRigidbodyAvailable": true,
+    "validatedHydrodynamics": false
+}

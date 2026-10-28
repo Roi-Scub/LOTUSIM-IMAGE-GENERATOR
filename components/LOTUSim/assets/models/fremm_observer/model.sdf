@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+  <model name="fremm_observer">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="fremm">
+        <!-- Original FREMM bow points along +Y; timeline actors use +X. -->
+        <pose>0 0 0 0 0 -1.5707963267948966</pose>
+        <geometry><mesh><uri>model://fremm/meshes/fremm.dae</uri><scale>1 1 1</scale></mesh></geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

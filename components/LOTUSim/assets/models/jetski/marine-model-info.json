@@ -1,0 +1,38 @@
+{
+    "model": "jetski",
+    "displayName": "jetski",
+    "prefab": "Assets/Prefabs/jetski.prefab",
+    "source": "original procedural marine geometry",
+    "forwardAxis": "Unity +X / Gazebo +X",
+    "classId": 10,
+    "triangles": 8252,
+    "vertices": 10374,
+    "geometryOperations": 1635,
+    "materialSlots": 8,
+    "boundsMin": {
+        "x": -1.6340000629425049,
+        "y": -0.20000001788139344,
+        "z": -0.5993662476539612
+    },
+    "boundsMax": {
+        "x": 1.6000001430511475,
+        "y": 0.8739999532699585,
+        "z": 0.5993662476539612
+    },
+    "flotation": {
+        "lengthM": 3.200000047683716,
+        "beamM": 1.2000000476837159,
+        "draftM": 0.20000000298023225,
+        "blockCoefficient": 0.3799999952316284,
+        "waterDensityKgM3": 1025.0,
+        "dampingRatio": 0.8500000238418579,
+        "maxRollDeg": 30.0,
+        "maxPitchDeg": 22.0,
+        "waterlineOffsetM": 0.0,
+        "heaveFrequencyScale": 1.0,
+        "angularFrequencyScale": 0.6000000238418579
+    },
+    "defaultRootKinematic": true,
+    "freeRigidbodyAvailable": true,
+    "validatedHydrodynamics": false
+}

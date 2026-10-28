@@ -1,0 +1,32 @@
+{
+  "key": "seagull_dayvable",
+  "category": "bird",
+  "author": "Dayvable",
+  "title": "Seagull",
+  "source": "https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/viniciusbarros/msc_game_obstacle_course/8c2c2b250ff4e2f5fc97da208dbcdd957345e1cf/ExternalMedia/Magpie/source/magpie2.fbx",
+  "mirrorRepository": "viniciusbarros/msc_game_obstacle_course",
+  "mirrorCommit": "8c2c2b250ff4e2f5fc97da208dbcdd957345e1cf",
+  "sha256": "37b47e2fee393ad0ebbac769c81f0b2aa00ae73c18a9146590f8d845229df20f",
+  "bytes": 1014988,
+  "format": "fbx",
+  "kind": "bird",
+  "lengthM": 0.823181152,
+  "beamM": 1.45,
+  "draftM": 0,
+  "heightM": 1.17536771,
+  "vertices": 3024,
+  "triangles": 4412,
+  "maxTextureSize": 1024,
+  "animationFrames": 24,
+  "animationSeconds": 3.625,
+  "materials": [],
+  "changes": [
+    "Derived FBX by viniciusbarros from Dayvable Seagull, retained with original white feather texture",
+    "Unity source wing-flap clip baked to opaque MeshRenderer frames; source retained",
+    "Approximate scale and collider/weight; source trajectory owned by LOTUSim",
+    "No lights added to bird; no validated bird aerodynamics"
+  ]
+}

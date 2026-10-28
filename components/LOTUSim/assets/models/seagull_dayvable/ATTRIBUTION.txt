@@ -1,0 +1,11 @@
+Seagull — Dayvable; FBX/rig adaptation by viniciusbarros.
+Source: https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174
+Derived source: https://raw.githubusercontent.com/viniciusbarros/msc_game_obstacle_course/8c2c2b250ff4e2f5fc97da208dbcdd957345e1cf/ExternalMedia/Magpie/source/magpie2.fbx
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+SHA-256: 37b47e2fee393ad0ebbac769c81f0b2aa00ae73c18a9146590f8d845229df20f
+Changes:
+- Derived FBX by viniciusbarros from Dayvable Seagull, retained with original white feather texture
+- Unity source wing-flap clip baked to opaque MeshRenderer frames; source retained
+- Approximate scale and collider/weight; source trajectory owned by LOTUSim
+- No lights added to bird; no validated bird aerodynamics
+No creator endorsement. Keep credits with redistributed assets/datasets.
