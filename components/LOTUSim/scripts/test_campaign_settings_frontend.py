@@ -7,6 +7,9 @@ ROOT=Path(__file__).resolve().parents[1]
 
 @unittest.skipUnless(shutil.which('node'),'Node is needed for frontend contracts')
 class SettingsFrontendTests(unittest.TestCase):
+    def test_continuous_capture_cadence(self):
+        result=subprocess.run(['node',str(ROOT/'scripts/test_capture_cadence_ui.cjs')],capture_output=True,text=True,check=True,timeout=20)
+        self.assertIn('capture-cadence UI checks passed',result.stdout)
     def test_settings_to_cooperative_traffic_contract(self):
         result=subprocess.run(['node',str(ROOT/'scripts/test_settings_traffic_generation_ui.cjs')],capture_output=True,text=True,check=True,timeout=20)
         self.assertIn('settings-to-cooperative-traffic UI checks passed',result.stdout)

@@ -52,7 +52,23 @@
       altitudeM:round(defaultAltitude), speedMps:round(Math.max(0, Math.min(maximum, catalogueSpeed * speedFactor))),
       headingDeg:0, distanceMode:'metres'};
   }
-  const math = {SCHEMA,KNOT,projectedHeight,distanceForPixels,totals,speedPresentation,displaySpeed,defaultObject};
+
+  function captureCadence(durationSeconds,capture){
+    if(typeof durationSeconds!=='number'||!Number.isFinite(durationSeconds)||durationSeconds<4||durationSeconds>600)throw Error('La durée doit être comprise entre 4 et 600 secondes simulées.');
+    if(!capture||capture.mode==='legacy')return {mode:'legacy',capture:null,count:null};
+    const fraction=value=>{const parts=String(value).toLowerCase().split('e'),mantissa=parts[0],decimals=(mantissa.split('.')[1]||'').length,scale=decimals-Number(parts[1]||0),digits=BigInt(mantissa.replace('.',''));return scale<0?{n:digits*10n**BigInt(-scale),d:1n}:{n:digits,d:10n**BigInt(scale)};};
+    const duration=fraction(durationSeconds),fps=30,simulationFrames=Math.ceil(durationSeconds*fps);
+    let count,interval=null;
+    if(capture.mode==='count'){count=capture.count;if(!Number.isInteger(count)||count<1||count>2000||count>simulationFrames)throw Error('Choisir de 1 à 2 000 images, sans dépasser le nombre de frames moteur disponibles.');}
+    else if(capture.mode==='interval'){if(typeof capture.intervalSeconds!=='number'||!Number.isFinite(capture.intervalSeconds)||capture.intervalSeconds<1/30)throw Error('L’intervalle minimum est 1/30 seconde simulée (0,033333… s).');interval=fraction(capture.intervalSeconds);const numerator=duration.n*interval.d,denominator=duration.d*interval.n;count=Number((numerator+denominator-1n)/denominator);if(count>2001)throw Error('Cette cadence dépasse la limite de 2 000 photos ; augmenter l’intervalle ou réduire la durée.');}
+    else throw Error('Mode de capture non pris en charge.');
+    const frames=[],requestedTimesSeconds=[],effectiveTimesSeconds=[];let maxQuantizationErrorSeconds=0,discardedAtOrAfterEndCount=0;
+    for(let index=0;index<count;index++){const numerator=interval?BigInt(index)*interval.n:BigInt(index)*duration.n,denominator=interval?interval.d:duration.d*BigInt(count),frame=Number((2n*numerator*30n+denominator)/(2n*denominator));if(frame>=simulationFrames){discardedAtOrAfterEndCount++;continue;}if(frames.at(-1)===frame)throw Error('Plusieurs prises se confondent sur la grille de 30 images/s : réduire le nombre demandé.');const requested=Number(numerator)/Number(denominator),effective=frame/fps;frames.push(frame);requestedTimesSeconds.push(requested);effectiveTimesSeconds.push(effective);maxQuantizationErrorSeconds=Math.max(maxQuantizationErrorSeconds,Math.abs(effective-requested));}
+    if(capture.mode==='count'&&frames.length!==count)throw Error('Ce nombre de prises ne tient pas sur la grille temporelle ; choisir un nombre inférieur.');
+    if(frames.length>2000)throw Error('Cette cadence dépasse la limite de 2 000 photos ; augmenter l’intervalle ou réduire la durée.');
+    return {mode:capture.mode,capture:{...capture},count:frames.length,fps,simulationFrames,frames,requestedTimesSeconds,effectiveTimesSeconds,maxQuantizationErrorSeconds,discardedAtOrAfterEndCount};
+  }
+  const math = {SCHEMA,KNOT,projectedHeight,distanceForPixels,totals,speedPresentation,displaySpeed,defaultObject,captureCadence};
   if (typeof module !== 'undefined' && module.exports) module.exports = math;
   if (typeof document === 'undefined') return;
 
@@ -66,6 +82,7 @@
   const uid = prefix => prefix + '_' + (globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '_' + (++uidCounter));
   const savedDisabled = new Map();
   const palette = ['#65d9bf','#8db9ec','#b7a2e6','#efba6e','#62d5e4','#da9cb7'];
+  let trafficCountBlock=null,trafficCountEdited=false;
 
   function element(tag, text, className) {
     const result = document.createElement(tag);
@@ -264,7 +281,19 @@
     const select=$('settingsTrafficBlock');if(!select||!draft)return;const previous=select.value;
     select.replaceChildren(choice('','Choisir explicitement un bloc…'),...array(draft.blocks).map(block=>choice(block.id,(block.name||block.id)+' · '+array(block.objects).reduce((sum,item)=>sum+(isNumber(item.count)?item.count:0),0)+' objets · '+block.images+' images demandées')));
     select.value=array(draft.blocks).some(block=>block.id===previous)?previous:draft.blocks.length===1?draft.blocks[0].id:'';
+    renderTrafficCapture();
   }
+  function renderTrafficCapture(){
+    const block=array(draft?.blocks).find(value=>value.id===$('settingsTrafficBlock').value),mode=$('settingsTrafficCaptureMode');if(!['count','interval'].includes(mode.value))mode.value='count';
+    if((block?.id||null)!==trafficCountBlock){trafficCountBlock=block?.id||null;trafficCountEdited=false;}
+    if(block&&!trafficCountEdited)$('settingsTrafficCaptureCount').value=String(block.images);
+    if(!$('settingsTrafficCaptureInterval').value)$('settingsTrafficCaptureInterval').value='2';
+    $('settingsTrafficCaptureCountField').hidden=mode.value!=='count';$('settingsTrafficCaptureIntervalField').hidden=mode.value!=='interval';
+    $('settingsTrafficCaptureCount').disabled=busy||mode.value!=='count';$('settingsTrafficCaptureInterval').disabled=busy||mode.value!=='interval';
+    const target=$('settingsTrafficCapturePreview');target.className='traffic-help traffic-capture-preview';if(!block){target.textContent='Choisir un bloc pour calculer le calendrier de photos de cet épisode continu.';return;}
+    try{const schedule=captureCadence(Number($('settingsTrafficDuration').value),settingsTrafficCapture());target.textContent=fmt(schedule.count,0)+' photos prévues · de 0 à '+fmt(schedule.effectiveTimesSeconds.at(-1),6)+' s simulées (fin de l’épisode exclue). Grille moteur : 30 images/s.'+(schedule.maxQuantizationErrorSeconds>1e-9?' Écart maximal de quantification : '+fmt(schedule.maxQuantizationErrorSeconds,6)+' s.':' Aucun décalage de quantification.')+(schedule.discardedAtOrAfterEndCount?' '+schedule.discardedAtOrAfterEndCount+' prise hors grille finale exclue.':'');}catch(error){target.textContent=error.message;target.className+=' error';}
+  }
+  function settingsTrafficCapture(){return $('settingsTrafficCaptureMode').value==='interval'?{mode:'interval',intervalSeconds:Number($('settingsTrafficCaptureInterval').value)}:{mode:'count',count:Number($('settingsTrafficCaptureCount').value)};}
   function hydrate(source) {
     if (!source || typeof source !== 'object' || Array.isArray(source) || source.schema !== SCHEMA) {
       throw Error('Format de campagne incompatible : schéma ' + SCHEMA + ' attendu.');
@@ -575,6 +604,7 @@
     if(!array(draft.blocks).some(block=>block.id===blockId)){notice('Choisir le bloc à transformer en scénario continu. Les blocs d’images ne sont pas fusionnés.','error');$('settingsTrafficBlock').focus();return;}
     if(!Number.isFinite(durationSeconds)||durationSeconds<4||durationSeconds>600||!['open_water','crossing','parallel'].includes(actionProfile)||!['catalogue','requested'].includes(speedPolicy)){notice('Vérifier la durée de 4 à 600 secondes et les politiques du scénario coopératif.','error');return;}
     if(typeof draft.name!=='string'||!draft.name.trim()||draft.name.trim().length>80){notice('Le nom utilisé pour ce scénario doit contenir de 1 à 80 caractères. Ajuster le nom de la campagne avant de générer.','error');return;}
+    let capture;try{renderTrafficCapture();capture=captureCadence(durationSeconds,settingsTrafficCapture()).capture;}catch(error){notice(error.message,'error');return;}
     syncPixelDistances();const payload=clone(draft);setBusy(true);notice('Validation de la configuration courante avant planification coopérative…');
     try{
       const checked=await fetch('/api/settings/validate',{method:'POST',headers:{'Content-Type':'application/json','X-LOTUSim-Settings':'1'},body:JSON.stringify(payload)}),validation=await checked.json();
@@ -582,7 +612,7 @@
       if(!checked.ok||!validation.valid){notice('La configuration doit être valide avant de générer le scénario coopératif. Le brouillon reste intact.','error');return;}
       const campaign=validation.campaign||payload;
       notice('Génération des trajectoires du bloc sélectionné et contrôles coopératifs limités…');
-      const response=await fetch('/api/traffic/generate',{method:'POST',headers:{'Content-Type':'application/json','X-LOTUSim-Traffic':'1'},body:JSON.stringify({name:campaign.name.trim(),seed:campaign.seed,durationSeconds,actionProfile,speedPolicy,headingPolicy:'profile',blockId,campaign})}),result=await response.json();
+      const response=await fetch('/api/traffic/generate',{method:'POST',headers:{'Content-Type':'application/json','X-LOTUSim-Traffic':'1'},body:JSON.stringify({name:campaign.name.trim(),seed:campaign.seed,durationSeconds,actionProfile,speedPolicy,headingPolicy:'profile',blockId,campaign,capture})}),result=await response.json();
       if(!response.ok)throw Error(result.message||result.error||array(result.errors).slice(0,5).map(issue=>[issue.path,issue.message].filter(value=>typeof value==='string').join(' : ')).join(' ; ')||'Le planificateur a refusé ces contraintes.');
       const planId=result.planId||result.id;if(typeof planId!=='string'||!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(planId)||result.applied!==false)throw Error('Réponse de scénario incompatible. Aucun lancement autorisé.');
       notice('Scénario coopératif enregistré en bibliothèque. La campagne d’images indépendante et son brouillon n’ont pas été remplacés.','success');
@@ -658,6 +688,9 @@
   $('settingsSave').addEventListener('click',()=>action('save'));
   $('settingsPrepare').addEventListener('click',()=>action('prepare'));
   $('settingsGenerateTraffic').addEventListener('click',generateTrafficScenario);
+  for(const id of ['settingsTrafficBlock','settingsTrafficCaptureMode'])$(id).addEventListener('change',renderTrafficCapture);
+  for(const id of ['settingsTrafficDuration','settingsTrafficCaptureInterval'])$(id).addEventListener('input',renderTrafficCapture);
+  $('settingsTrafficCaptureCount').addEventListener('input',()=>{trafficCountEdited=true;renderTrafficCapture();});
   $('settingsAddBlock').addEventListener('click',()=>{
     const remaining=isNumber(draft.totalImages)?draft.totalImages-totals(draft).allocatedImages:0;
     draft.blocks.push({id:uid('block'),name:'Bloc '+(draft.blocks.length+1),images:remaining>0?remaining:10,
