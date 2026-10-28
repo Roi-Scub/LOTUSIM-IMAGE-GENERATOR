@@ -1,0 +1,131 @@
+diff --git a/flake.nix b/flake.nix
+index 3a687ca..cef4090 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -158,7 +158,13 @@
+           buildPhase = ''
+             runHook preBuild
+             export HOME=$TMPDIR
++            # A colcon package may itself compile several C++ files at once.
++            # Keep both the package executor and the nested CMake/Make build
++            # serial: the Docker VM has limited memory under macOS/Rosetta.
++            export CMAKE_BUILD_PARALLEL_LEVEL=1
++            export MAKEFLAGS=-j1
+             colcon --log-base $TMPDIR/log build \
++              --executor sequential \
+               --merge-install \
+               --install-base $out \
+               --build-base $TMPDIR/build \
+@@ -295,6 +301,24 @@
+           name = "lotusim-gl-wrapper.sh";
+         };
+ 
++        # Optional CPU renderer for containers without a passed-through GPU.
++        # Register the Mesa EGL vendor explicitly: libglvnd in the Nix closure
++        # otherwise finds no device, even though Ogre's GL3Plus plugin exists.
++        softwareRenderer = pkgs.writeShellApplication {
++          name = "lotusim-software-render";
++          text = ''
++            if [ "$#" -eq 0 ]; then
++              echo "Usage: lotusim-software-render COMMAND [ARG ...]" >&2
++              exit 2
++            fi
++            export LIBGL_ALWAYS_SOFTWARE=true
++            export GALLIUM_DRIVER=llvmpipe
++            export LIBGL_DRIVERS_PATH="${pkgs.mesa}/lib/dri"
++            export __EGL_VENDOR_LIBRARY_FILENAMES="${pkgs.mesa}/share/glvnd/egl_vendor.d/50_mesa.json"
++            exec "$@"
++          '';
++        };
++
+         # xdyn, the physics server each vessel talks to over a websocket. Static musl,
+         # and the derivation installs the three binaries LOTUSim needs — not the `gz`
+         # that would shadow Gazebo's on PATH.
+@@ -500,6 +524,7 @@
+       {
+         packages = {
+           inherit lotusim workspace messages container ui-backend ui-frontend ui;
++          software-renderer = softwareRenderer;
+           assets = assetsPackage;
+           workspace-tests = workspaceTests;
+           default = lotusim;
+@@ -570,5 +595,15 @@
+             echo "LOTUSim devShell — ROS 2 jazzy / Gazebo Harmonic"
+           '';
+         };
++
++        # Keep Mesa out of the default shell; normal ROS/Unity startup is unchanged.
++        devShells.software-rendering = self.devShells.${system}.default.overrideAttrs (old: {
++          name = "lotusim-software-rendering";
++          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ softwareRenderer ];
++          shellHook = old.shellHook + ''
++            export LOTUSIM_GL_WRAPPER=lotusim-software-render
++            echo "Gazebo rendering — Mesa llvmpipe (CPU, no GPU required)"
++          '';
++        });
+       });
+ }
+diff --git a/mise.toml b/mise.toml
+index ae3c4e2..b2e5457 100644
+--- a/mise.toml
++++ b/mise.toml
+@@ -150,7 +150,10 @@ glwrap=""
+ if wrapper=$(bash scripts/gl-wrapper.sh); then
+   glwrap="$wrapper"
+   if [ -n "$glwrap" ]; then
+-    echo "GPU driver bridge: $glwrap"
++    case "$glwrap" in
++      *lotusim-software-render*) echo "Rendering driver: Mesa llvmpipe (CPU)" ;;
++      *) echo "GPU driver bridge: $glwrap" ;;
++    esac
+     # On a hybrid/Optimus laptop the chain is <integrated-GPU-wrapper> <nixGLNvidia>
+     # (see gl-wrapper.sh) — without these, that chain renders on the integrated
+     # GPU by default since it's the one that owns the X screen.
+@@ -170,12 +173,39 @@ elif [ "${usage_gui:-false}" = "true" ]; then
+   echo "NVIDIA and hybrid machines: see the README." >&2
+   exit 1
+ else
+-  echo "GPU driver bridge: none — camera and gpu_lidar sensors will not render." >&2
++  echo "GPU driver bridge: none — rendering sensors need a configured GL/EGL driver." >&2
++  echo "For CPU rendering, use: nix develop .#software-rendering" >&2
+ fi
+ 
+ exec $glwrap gz sim $verbosity $headless $render_flags -r "$world_file"
+ '''
+ 
++[tasks."capture:buoy"]
++description = "Capture buoy RGB images and automatic 2D annotations (Ctrl-C to stop)"
++dir = "{{config_root}}"
++shell = "bash -c"
++run = '''
++set -euo pipefail
++capture_log_dir=$(mktemp -d "${TMPDIR:-/tmp}/lotusim-buoy.XXXXXX")
++
++# Gazebo Harmonic's Sensors system gates rendering on HasConnections().
++# This bounding-box sensor doesn't count <save> as a connection, so keep
++# a real subscriber alive even when only saving the dataset to disk.
++gz topic -e -t /dataset/buoy/boxes > "$capture_log_dir/boxes.log" 2>&1 &
++capture_subscriber_pid=$!
++cleanup_capture() {
++  kill "$capture_subscriber_pid" 2>/dev/null || true
++  wait "$capture_subscriber_pid" 2>/dev/null || true
++}
++trap cleanup_capture EXIT
++trap 'exit 130' INT
++trap 'exit 143' TERM
++
++echo "Camera subscriber log: $capture_log_dir/boxes.log"
++echo "Dataset: $LOTUSIM_PATH/artifacts/annotated-buoy/{images,boxes}/"
++mise run sim --debug annotated_buoy.world
++'''
++
+ [tasks."lint:tidy"]
+ description = "Run clang-tidy over the workspace sources"
+ dir = "{{config_root}}"
+@@ -204,4 +234,4 @@ if command -v podman >/dev/null; then
+ else
+   ./result | docker load
+ fi
+-'''
+\ No newline at end of file
++'''

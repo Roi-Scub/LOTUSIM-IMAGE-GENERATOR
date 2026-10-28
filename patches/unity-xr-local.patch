@@ -1,0 +1,21 @@
+diff --git a/Assets/XR/XRGeneralSettingsPerBuildTarget.asset b/Assets/XR/XRGeneralSettingsPerBuildTarget.asset
+index 9e3bb63..35dffc6 100644
+--- a/Assets/XR/XRGeneralSettingsPerBuildTarget.asset
++++ b/Assets/XR/XRGeneralSettingsPerBuildTarget.asset
+@@ -15,9 +15,7 @@ MonoBehaviour:
+   m_RequiresSettingsUpdate: 0
+   m_AutomaticLoading: 0
+   m_AutomaticRunning: 0
+-  m_Loaders:
+-  - {fileID: 11400000, guid: 346ef0609c18a8142bb211a20117db52, type: 2}
+-  - {fileID: 11400000, guid: ccf8c5ceee2bc9a40ac4e88ea48beffc, type: 2}
++  m_Loaders: []
+ --- !u!114 &11400000
+ MonoBehaviour:
+   m_ObjectHideFlags: 0
+@@ -46,4 +44,4 @@ MonoBehaviour:
+   m_Name: Standalone Settings
+   m_EditorClassIdentifier: 
+   m_LoaderManagerInstance: {fileID: -1447290349006288685}
+-  m_InitManagerOnStart: 1
++  m_InitManagerOnStart: 0

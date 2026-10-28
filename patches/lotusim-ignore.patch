@@ -1,0 +1,16 @@
+diff --git a/.gitignore b/.gitignore
+index aa222f0..07dbcb7 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -14,4 +14,9 @@ log/
+ # nix
+ result
+ result-*
+-.direnv/
+\ No newline at end of file
++.direnv/
++
++# Locally generated camera datasets (keep the world/model/scripts in Git).
++/artifacts/annotated-buoy/
++/.venv-vision/
++/artifacts/vision-models/

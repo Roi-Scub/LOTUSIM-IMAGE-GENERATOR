@@ -1,0 +1,626 @@
+diff --git a/Assets/Scenes/Defense/defenseScenario.unity b/Assets/Scenes/Defense/defenseScenario.unity
+index 4e8bfe6..bbf6051 100644
+--- a/Assets/Scenes/Defense/defenseScenario.unity
++++ b/Assets/Scenes/Defense/defenseScenario.unity
+@@ -38,7 +38,7 @@ RenderSettings:
+   m_ReflectionIntensity: 1
+   m_CustomReflection: {fileID: 0}
+   m_Sun: {fileID: 0}
+-  m_IndirectSpecularColor: {r: 8.918126, g: 7.549958, b: 7.7309275, a: 1}
++  m_IndirectSpecularColor: {r: 1889.4896, g: 1682.0315, b: 1698.379, a: 1}
+   m_UseRadianceAmbientProbe: 0
+ --- !u!157 &3
+ LightmapSettings:
+@@ -10091,7 +10091,7 @@ MonoBehaviour:
+   m_PrefabInstance: {fileID: 0}
+   m_PrefabAsset: {fileID: 0}
+   m_GameObject: {fileID: 1037906444}
+-  m_Enabled: 1
++  m_Enabled: 0
+   m_EditorHideFlags: 0
+   m_Script: {fileID: 11500000, guid: 8598b9f2b5da98a228ead4987c86a520, type: 3}
+   m_Name: 
+@@ -12005,7 +12005,7 @@ MonoBehaviour:
+   m_Script: {fileID: 11500000, guid: aa3820b9bc7311b1dbd7253562a4d289, type: 3}
+   m_Name: 
+   m_EditorClassIdentifier: 
+-  m_namespace: defenseScenario
++  m_namespace: lotusim
+   selectedInterfaceType: ROS2
+ --- !u!114 &1729757557
+ MonoBehaviour:
+diff --git a/Assets/Scenes/Launcher.unity b/Assets/Scenes/Launcher.unity
+index 616f111..e33669a 100644
+--- a/Assets/Scenes/Launcher.unity
++++ b/Assets/Scenes/Launcher.unity
+@@ -1013,11 +1013,11 @@ MonoBehaviour:
+   controlPanel: {fileID: 238415244}
+   feedbackText: {fileID: 645999264}
+   maxPlayersPerRoom: 20
+-  loaderAnime: {fileID: 1525105365}
+   spectatorToggle: {fileID: 760513177}
+   rosIpInputField: {fileID: 1217862828}
+   rosPortInputField: {fileID: 235318841}
+   roomName: defenseScenario
++  autoConnectAsSpectatorOnStart: 1
+   gameVersion: 1
+ --- !u!1 &498603527
+ GameObject:
+@@ -1364,14 +1364,6 @@ MonoBehaviour:
+   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
+   m_Name: 
+   m_EditorClassIdentifier: 
+-  m_Version: 11
+-  m_ObsoleteShadowResolutionTier: 1
+-  m_ObsoleteUseShadowQualitySettings: 0
+-  m_ObsoleteCustomShadowResolution: 512
+-  m_ObsoleteContactShadows: 0
+-  m_PointlightHDType: 0
+-  m_SpotLightShape: 0
+-  m_AreaLightShape: 0
+   m_Intensity: 100000
+   m_EnableSpotReflector: 1
+   m_LuxAtDistance: 1
+@@ -1474,6 +1466,14 @@ MonoBehaviour:
+   m_AreaLightEmissiveMeshShadowCastingMode: 0
+   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
+   m_AreaLightEmissiveMeshLayer: -1
++  m_Version: 11
++  m_ObsoleteShadowResolutionTier: 1
++  m_ObsoleteUseShadowQualitySettings: 0
++  m_ObsoleteCustomShadowResolution: 512
++  m_ObsoleteContactShadows: 0
++  m_PointlightHDType: 0
++  m_SpotLightShape: 0
++  m_AreaLightShape: 0
+ --- !u!1 &711896113
+ GameObject:
+   m_ObjectHideFlags: 0
+@@ -7015,7 +7015,8 @@ GameObject:
+   m_Component:
+   - component: {fileID: 1525020820}
+   - component: {fileID: 1525020819}
+-  - component: {fileID: 1525020818}
++  - component: {fileID: 1525020821}
++  - component: {fileID: 1525020822}
+   m_Layer: 0
+   m_Name: EventSystem
+   m_TagString: Untagged
+@@ -7023,26 +7024,6 @@ GameObject:
+   m_NavMeshLayer: 0
+   m_StaticEditorFlags: 0
+   m_IsActive: 1
+---- !u!114 &1525020818
+-MonoBehaviour:
+-  m_ObjectHideFlags: 0
+-  m_CorrespondingSourceObject: {fileID: 0}
+-  m_PrefabInstance: {fileID: 0}
+-  m_PrefabAsset: {fileID: 0}
+-  m_GameObject: {fileID: 1525020817}
+-  m_Enabled: 1
+-  m_EditorHideFlags: 0
+-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+-  m_Name: 
+-  m_EditorClassIdentifier: 
+-  m_SendPointerHoverToParent: 1
+-  m_HorizontalAxis: Horizontal
+-  m_VerticalAxis: Vertical
+-  m_SubmitButton: Submit
+-  m_CancelButton: Cancel
+-  m_InputActionsPerSecond: 10
+-  m_RepeatDelay: 0.5
+-  m_ForceModuleActive: 0
+ --- !u!114 &1525020819
+ MonoBehaviour:
+   m_ObjectHideFlags: 0
+@@ -7073,6 +7054,67 @@ Transform:
+   m_Children: []
+   m_Father: {fileID: 0}
+   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
++--- !u!114 &1525020821
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1525020817}
++  m_Enabled: 0
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
++  m_Name: 
++  m_EditorClassIdentifier: 
++  m_SendPointerHoverToParent: 1
++  m_MoveRepeatDelay: 0.5
++  m_MoveRepeatRate: 0.1
++  m_XRTrackingOrigin: {fileID: 0}
++  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018,
++    type: 3}
++  m_DeselectOnBackgroundClick: 1
++  m_PointerBehavior: 0
++  m_CursorLockBehavior: 0
++--- !u!114 &1525020822
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1525020817}
++  m_Enabled: 1
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
++  m_Name: 
++  m_EditorClassIdentifier: 
++  m_SendPointerHoverToParent: 1
++  m_HorizontalAxis: Horizontal
++  m_VerticalAxis: Vertical
++  m_SubmitButton: Submit
++  m_CancelButton: Cancel
++  m_InputActionsPerSecond: 10
++  m_RepeatDelay: 0.5
++  m_ForceModuleActive: 0
+ --- !u!1 &1525105364
+ GameObject:
+   m_ObjectHideFlags: 0
+@@ -7102,9 +7144,6 @@ MonoBehaviour:
+   m_Script: {fileID: 11500000, guid: cb0e57d1a8e152cf38a9602427ff5aef, type: 3}
+   m_Name: 
+   m_EditorClassIdentifier: 
+-  speed: 180
+-  radius: 1
+-  particles: {fileID: 722631231}
+ --- !u!4 &1525105366
+ Transform:
+   m_ObjectHideFlags: 0
+@@ -7560,53 +7599,6 @@ MonoBehaviour:
+   m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
+   m_Name: 
+   m_EditorClassIdentifier: 
+-  m_Version: 9
+-  m_ObsoleteRenderingPath: 0
+-  m_ObsoleteFrameSettings:
+-    overrides: 0
+-    enableShadow: 0
+-    enableContactShadows: 0
+-    enableShadowMask: 0
+-    enableSSR: 0
+-    enableSSAO: 0
+-    enableSubsurfaceScattering: 0
+-    enableTransmission: 0
+-    enableAtmosphericScattering: 0
+-    enableVolumetrics: 0
+-    enableReprojectionForVolumetrics: 0
+-    enableLightLayers: 0
+-    enableExposureControl: 1
+-    diffuseGlobalDimmer: 0
+-    specularGlobalDimmer: 0
+-    shaderLitMode: 0
+-    enableDepthPrepassWithDeferredRendering: 0
+-    enableTransparentPrepass: 0
+-    enableMotionVectors: 0
+-    enableObjectMotionVectors: 0
+-    enableDecals: 0
+-    enableRoughRefraction: 0
+-    enableTransparentPostpass: 0
+-    enableDistortion: 0
+-    enablePostprocess: 0
+-    enableOpaqueObjects: 0
+-    enableTransparentObjects: 0
+-    enableRealtimePlanarReflection: 0
+-    enableMSAA: 0
+-    enableAsyncCompute: 0
+-    runLightListAsync: 0
+-    runSSRAsync: 0
+-    runSSAOAsync: 0
+-    runContactShadowsAsync: 0
+-    runVolumeVoxelizationAsync: 0
+-    lightLoopSettings:
+-      overrides: 0
+-      enableDeferredTileAndCluster: 0
+-      enableComputeLightEvaluation: 0
+-      enableComputeLightVariants: 0
+-      enableComputeMaterialVariants: 0
+-      enableFptlForForwardOpaque: 0
+-      enableBigTilePrepass: 0
+-      isFptlEnabled: 0
+   clearColorMode: 0
+   backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+   clearDepth: 1
+@@ -7677,6 +7669,53 @@ MonoBehaviour:
+       data1: 0
+       data2: 0
+   defaultFrameSettings: 0
++  m_Version: 9
++  m_ObsoleteRenderingPath: 0
++  m_ObsoleteFrameSettings:
++    overrides: 0
++    enableShadow: 0
++    enableContactShadows: 0
++    enableShadowMask: 0
++    enableSSR: 0
++    enableSSAO: 0
++    enableSubsurfaceScattering: 0
++    enableTransmission: 0
++    enableAtmosphericScattering: 0
++    enableVolumetrics: 0
++    enableReprojectionForVolumetrics: 0
++    enableLightLayers: 0
++    enableExposureControl: 1
++    diffuseGlobalDimmer: 0
++    specularGlobalDimmer: 0
++    shaderLitMode: 0
++    enableDepthPrepassWithDeferredRendering: 0
++    enableTransparentPrepass: 0
++    enableMotionVectors: 0
++    enableObjectMotionVectors: 0
++    enableDecals: 0
++    enableRoughRefraction: 0
++    enableTransparentPostpass: 0
++    enableDistortion: 0
++    enablePostprocess: 0
++    enableOpaqueObjects: 0
++    enableTransparentObjects: 0
++    enableRealtimePlanarReflection: 0
++    enableMSAA: 0
++    enableAsyncCompute: 0
++    runLightListAsync: 0
++    runSSRAsync: 0
++    runSSAOAsync: 0
++    runContactShadowsAsync: 0
++    runVolumeVoxelizationAsync: 0
++    lightLoopSettings:
++      overrides: 0
++      enableDeferredTileAndCluster: 0
++      enableComputeLightEvaluation: 0
++      enableComputeLightVariants: 0
++      enableComputeMaterialVariants: 0
++      enableFptlForForwardOpaque: 0
++      enableBigTilePrepass: 0
++      isFptlEnabled: 0
+ --- !u!1 &1919703929
+ GameObject:
+   m_ObjectHideFlags: 0
+diff --git a/Assets/Scenes/MultiUser/Launcher.unity b/Assets/Scenes/MultiUser/Launcher.unity
+index 99573f4..afd443e 100644
+--- a/Assets/Scenes/MultiUser/Launcher.unity
++++ b/Assets/Scenes/MultiUser/Launcher.unity
+@@ -683,6 +683,7 @@ MonoBehaviour:
+   maxPlayersPerRoom: 20
+   loaderAnime: {fileID: 1525105365}
+   spectatorToggle: {fileID: 760513177}
++  autoConnectAsSpectatorOnStart: 1
+ --- !u!1 &498603527
+ GameObject:
+   m_ObjectHideFlags: 0
+diff --git a/Assets/Scripts/MultiUser/Launcher.cs b/Assets/Scripts/MultiUser/Launcher.cs
+index 950defa..6106908 100644
+--- a/Assets/Scripts/MultiUser/Launcher.cs
++++ b/Assets/Scripts/MultiUser/Launcher.cs
+@@ -34,6 +34,9 @@ namespace Com.MyCompany.MyGame
+     /// </summary>
+     public class Launcher : MonoBehaviourPunCallbacks
+     {
++        // Keep exactly one Launcher alive to own Photon callbacks and auto-connect.
++        private static Launcher s_instance;
++
+         #region Public Fields
+ 
+         public static bool IsSpectator = false;
+@@ -59,6 +62,9 @@ namespace Com.MyCompany.MyGame
+         [Tooltip("Name of the room to join/create (used both online and offline)")]
+         [SerializeField] private string roomName = "defenseScenario";
+ 
++        [Tooltip("Automatically connect as a spectator when the Launcher scene starts.")]
++        [SerializeField] private bool autoConnectAsSpectatorOnStart = true;
++
+         #endregion
+ 
+         #region Private Fields
+@@ -86,11 +92,57 @@ namespace Com.MyCompany.MyGame
+ 
+         void Awake()
+         {
+-            Debug.Log("Launcher Awake");
++            if (s_instance != null && s_instance != this)
++            {
++                Debug.LogWarning(
++                    $"[Launcher] Duplicate Launcher on '{gameObject.scene.name}' was disabled; " +
++                    $"'{s_instance.gameObject.scene.name}' owns the Photon connection."
++                );
++                enabled = false;
++                return;
++            }
++
++            s_instance = this;
++            Debug.Log($"[Launcher] Awake: this instance owns the connection in scene '{gameObject.scene.name}'.");
+             // Ensure scene sync on master client
+             PhotonNetwork.AutomaticallySyncScene = true;
+         }
+ 
++        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
++        private static void ResetLauncherOwner()
++        {
++            // Also reset when entering Play Mode with domain reload disabled.
++            s_instance = null;
++        }
++
++        private void Start()
++        {
++            Debug.Log(
++                $"[Launcher] Start: autoConnectAsSpectatorOnStart={autoConnectAsSpectatorOnStart}."
++            );
++
++            if (!autoConnectAsSpectatorOnStart)
++            {
++                Debug.LogWarning("[Launcher] Automatic spectator connection is disabled; showing the landing page.");
++                return;
++            }
++
++            // Preserve the configured ROS endpoint instead of saving empty UI fields
++            // over PlayerPrefs when connecting without interacting with the Launcher.
++            if (rosIpInputField != null && string.IsNullOrWhiteSpace(rosIpInputField.text))
++                rosIpInputField.text = PlayerPrefs.GetString("ROS_IP", "127.0.0.1");
++
++            if (rosPortInputField != null && string.IsNullOrWhiteSpace(rosPortInputField.text))
++                rosPortInputField.text = PlayerPrefs.GetString("ROS_Port", "10000");
++
++            IsSpectator = true;
++            if (spectatorToggle != null)
++                spectatorToggle.isOn = true;
++
++            Debug.Log("Launcher: auto-connecting as spectator.");
++            Connect();
++        }
++
+         #endregion
+ 
+         #region Public Methods
+@@ -262,9 +314,10 @@ namespace Com.MyCompany.MyGame
+         /// </summary>
+         public override void OnConnectedToMaster()
+         {
+-            Debug.Log("OnConnectedToMaster callback received.");
++            Debug.Log($"[Launcher] OnConnectedToMaster received; isConnecting={isConnecting}.");
+             if (isConnecting)
+             {
++                Debug.Log($"[Launcher] Joining or creating Photon room '{roomName}'.");
+                 LogFeedback("OnConnectedToMaster: joining/creating room...");
+                 PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom }, TypedLobby.Default);
+             }
+@@ -286,7 +339,7 @@ namespace Com.MyCompany.MyGame
+         public override void OnJoinedRoom()
+         {
+             LogFeedback("<Color=Green>OnJoinedRoom</Color> with " + PhotonNetwork.CurrentRoom.PlayerCount + " Player(s)");
+-            Debug.Log("Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
++            Debug.Log("[Launcher] OnJoinedRoom received; loading gameplay scene 'defenseScenario'.");
+ 
+             isConnecting = false;
+             controlPanel?.SetActive(true);
+@@ -316,6 +369,12 @@ namespace Com.MyCompany.MyGame
+             }
+         }
+ 
++        private void OnDestroy()
++        {
++            if (s_instance == this)
++                s_instance = null;
++        }
++
+         /// <summary>
+         /// Called when JoinRoom/CreateRoom fails.
+         /// </summary>
+diff --git a/Assets/Scripts/camera/CameraDynamicTargetsNavigator.cs b/Assets/Scripts/camera/CameraDynamicTargetsNavigator.cs
+index a6f9bde..0c22ee5 100644
+--- a/Assets/Scripts/camera/CameraDynamicTargetsNavigator.cs
++++ b/Assets/Scripts/camera/CameraDynamicTargetsNavigator.cs
+@@ -53,9 +53,9 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+     [Tooltip("How quickly the camera rotates to face the target.")]
+     public float rotationSmoothTime = 0.3f;
+ 
+-    [Header("Locking Behavior")]
+-    [Tooltip("Delay before the camera locks onto a target when motion stabilizes.")]
+-    public float lockDelay = 1.5f;
++    [Header("Automatic Target Discovery")]
++    [Tooltip("How often to look for scene objects spawned after the camera starts.")]
++    public float targetRefreshInterval = 0.5f;
+ 
+     [Header("Ignored Scene Roots")]
+     [Tooltip("Root objects to ignore when scanning for camera targets.")]
+@@ -63,9 +63,7 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+ 
+     private readonly List<TargetData> targets = new();
+     private int currentTargetIndex;
+-    private bool cameraLocked;
+-    private bool isLocking;
+-    private float lockTimer;
++    private float targetRefreshTimer;
+ 
+     private Vector3 moveVelocity;
+     private float zoomVelocity;
+@@ -88,25 +86,30 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+         }
+ 
+         RefreshTargets();
++        targetRefreshTimer = targetRefreshInterval;
+     }
+ 
+     private void Update()
+     {
++        targetRefreshTimer -= Time.deltaTime;
++        if (targetRefreshTimer <= 0f)
++        {
++            RefreshTargets(selectNewTarget: true);
++            targetRefreshTimer = Mathf.Max(0.1f, targetRefreshInterval);
++        }
++
+         if (targets.Count == 0) return;
+ 
+         HandleInput();
++        if (targets.Count == 0) return;
+ 
+         TargetData targetData = targets[currentTargetIndex];
+-        Vector3 targetPosition = targetData.target.position + targetData.offset;
+-
+-        if (!cameraLocked)
+-        {
+-            MoveTowardsTarget(targetPosition);
+-            AdjustZoom(targetData.zoom);
+-            RotateTowardsTarget(targetData.target);
++        Vector3 targetPosition = targetData.target.TransformPoint(targetData.offset);
+ 
+-            HandleLocking(targetPosition, targetData.zoom);
+-        }
++        // Keep following even after the camera has settled; the target may move at any time.
++        MoveTowardsTarget(targetPosition);
++        AdjustZoom(targetData.zoom);
++        RotateTowardsTarget(targetData.target);
+     }
+ 
+     // -------------------------------------------------------------------------------------
+@@ -162,39 +165,6 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+         }
+     }
+ 
+-    /// <summary>
+-    /// Handles the gradual locking of the camera once it stabilizes on a target.
+-    /// </summary>
+-    private void HandleLocking(Vector3 targetPosition, float targetZoom)
+-    {
+-        float positionError = Vector3.Distance(transform.position, targetPosition);
+-        float zoomError = Mathf.Abs(cam.fieldOfView - targetZoom);
+-
+-        bool nearTarget = positionError < 1f && zoomError < 1f;
+-
+-        if (nearTarget)
+-        {
+-            if (!isLocking)
+-            {
+-                isLocking = true;
+-                lockTimer = lockDelay;
+-            }
+-
+-            lockTimer -= Time.deltaTime;
+-
+-            if (lockTimer <= 0f)
+-            {
+-                cameraLocked = true;
+-                isLocking = false;
+-            }
+-        }
+-        else
+-        {
+-            isLocking = false;
+-            lockTimer = 0f;
+-        }
+-    }
+-
+     #endregion
+     // -------------------------------------------------------------------------------------
+ 
+@@ -203,9 +173,20 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+     /// <summary>
+     /// Refreshes the list of valid scene root targets for the camera to navigate between.
+     /// </summary>
+-    public void RefreshTargets()
++    public void RefreshTargets(bool selectNewTarget = false)
+     {
+-        targets.Clear();
++        Transform previousTarget = targets.Count > 0 && currentTargetIndex < targets.Count
++            ? targets[currentTargetIndex].target
++            : null;
++        HashSet<Transform> previousTargets = new();
++        foreach (TargetData existingTarget in targets)
++        {
++            if (existingTarget.target != null)
++                previousTargets.Add(existingTarget.target);
++        }
++
++        List<TargetData> refreshedTargets = new();
++        Transform newlySpawnedTarget = null;
+ 
+         foreach (GameObject rootObj in SceneManager.GetActiveScene().GetRootGameObjects())
+         {
+@@ -225,13 +206,31 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+             float maxDimension = Mathf.Max(combinedBounds.size.x, combinedBounds.size.y, combinedBounds.size.z);
+             float scaleFactor = Mathf.Max(maxDimension, 0.5f);
+ 
++            // Local-space offset: stay above and behind the target as it turns and moves.
+             Vector3 offset = new(0, scaleFactor * 0.5f, -scaleFactor * 1.5f);
+             float zoom = 60f; // Could be dynamic later if needed
+ 
+-            targets.Add(new TargetData(rootObj.transform, offset, zoom));
++            refreshedTargets.Add(new TargetData(rootObj.transform, offset, zoom));
++            if (selectNewTarget && newlySpawnedTarget == null && !previousTargets.Contains(rootObj.transform))
++                newlySpawnedTarget = rootObj.transform;
+         }
+ 
+-        currentTargetIndex = Mathf.Clamp(currentTargetIndex, 0, Mathf.Max(0, targets.Count - 1));
++        targets.Clear();
++        targets.AddRange(refreshedTargets);
++
++        if (newlySpawnedTarget != null)
++        {
++            currentTargetIndex = targets.FindIndex(target => target.target == newlySpawnedTarget);
++            ResetFollowSmoothing();
++            return;
++        }
++
++        int previousTargetIndex = previousTarget == null
++            ? -1
++            : targets.FindIndex(target => target.target == previousTarget);
++        currentTargetIndex = previousTargetIndex >= 0
++            ? previousTargetIndex
++            : Mathf.Clamp(currentTargetIndex, 0, Mathf.Max(0, targets.Count - 1));
+     }
+ 
+     private bool IsIgnored(string name)
+@@ -263,21 +262,24 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
+     private void NextTarget()
+     {
+         RefreshTargets();
++        if (targets.Count == 0) return;
+         currentTargetIndex = (currentTargetIndex + 1) % targets.Count;
+-        ResetLockState();
++        ResetFollowSmoothing();
+     }
+ 
+     private void PreviousTarget()
+     {
++        RefreshTargets();
++        if (targets.Count == 0) return;
+         currentTargetIndex = (currentTargetIndex - 1 + targets.Count) % targets.Count;
+-        ResetLockState();
++        ResetFollowSmoothing();
+     }
+ 
+-    private void ResetLockState()
++    private void ResetFollowSmoothing()
+     {
+-        cameraLocked = false;
+-        isLocking = false;
+-        lockTimer = 0f;
++        moveVelocity = Vector3.zero;
++        zoomVelocity = 0f;
++        lookDirectionVelocity = Vector3.zero;
+     }
+ 
+     #endregion
