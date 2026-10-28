@@ -9,8 +9,8 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 696,
-      "sha256": "5d1f44bbcb150330ed84f699c091bb54f64697c191e0111505e9559a59f64da4"
+      "bytes": 828,
+      "sha256": "e0f01d1ab4868f15c6775862225ea2b6ed34bc6b2ac2ec80a2ee7999d121e885"
     },
     {
       "path": "AGENTS.md",
@@ -19,8 +19,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2714,
-      "sha256": "70fb28ea3ee8953a35200f655aebe9e4d60ec16d669c10877756e83356c16d43"
+      "bytes": 3603,
+      "sha256": "aef574edefc152039adc80e23f0e878d2ef3f89244875c10424bf05ec85718b7"
     },
     {
       "path": "LICENSE",
@@ -30,12 +30,12 @@
     {
       "path": "README.md",
       "bytes": 7316,
-      "sha256": "dd0dc90cd4c30f50e2095328c2e433357f8187ad5f5d38703d01184aa345e478"
+      "sha256": "ecfe4d02a30a06fa163152fe2e3827f42b602680f25f81fe9b05f9f89a02afb5"
     },
     {
       "path": "VERSION",
       "bytes": 6,
-      "sha256": "1f930dd1f133c1f97a94fe3acb8db34372cf4c01ffdb2b3ff4ca72f9494121e9"
+      "sha256": "d915cc95d6ca8f47ae297713ed46d4e5c5d99ddd29fc3c61e263bdf305f2b5b0"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Dataset.meta",
@@ -10849,8 +10849,8 @@
     },
     {
       "path": "components/LOTUSim/docs/guide-dashboard-operations.md",
-      "bytes": 6161,
-      "sha256": "cc4b7c4a485aebc5f8fbf187d2e7c5ba7087e33fd57511819d5460b84b85320f"
+      "bytes": 8497,
+      "sha256": "5ff9f97fefed213a3a6b130e83f886062ac0575db5f0a2c44df5283d60a8d7c2"
     },
     {
       "path": "components/LOTUSim/docs/guide-demarrage-macos-docker-unity.md",
@@ -10923,6 +10923,11 @@
       "sha256": "5fb79319070d8b4342cf52171019cebd8f22e9f858d11cfca04be8fed026fa62"
     },
     {
+      "path": "components/LOTUSim/scripts/qa_actual_operations_ux.cjs",
+      "bytes": 11624,
+      "sha256": "adc23d3658b3a5dba785b53f3c6c34db7202823b3dbeedadf8820d7246101ef3"
+    },
+    {
       "path": "components/LOTUSim/scripts/qa_actual_traffic_library_ui.cjs",
       "bytes": 10512,
       "sha256": "27f37025622c66db54577c79e5ce741d324bd47c996786be698c9f6c2b339248"
@@ -10936,6 +10941,11 @@
       "path": "components/LOTUSim/scripts/qa_engine_neutral_ui.cjs",
       "bytes": 16369,
       "sha256": "60207f18d8905c034075fc0080bfd85245f01f8efccd9451eaf39c6484a7dc66"
+    },
+    {
+      "path": "components/LOTUSim/scripts/qa_operations_ux.cjs",
+      "bytes": 18658,
+      "sha256": "b833162d0bb22bcbf328166edd6c3bf304e87ab512ab69ee8d061e18d0efa436"
     },
     {
       "path": "components/LOTUSim/scripts/qa_traffic_library_ui.cjs",
@@ -10986,6 +10996,11 @@
       "path": "components/LOTUSim/scripts/test_capture_schedule.py",
       "bytes": 13703,
       "sha256": "d7a1f271247e82bf63247bfeee3a942581161824d96e0853258a411d016c9d87"
+    },
+    {
+      "path": "components/LOTUSim/scripts/test_context_disclosures_ui.cjs",
+      "bytes": 7266,
+      "sha256": "8405c6f46c5d70d3486811017d8a26928a3338dab30b72e75c7b70db40639101"
     },
     {
       "path": "components/LOTUSim/scripts/test_cooperative_scenario.py",
@@ -11073,9 +11088,19 @@
       "sha256": "3908974df743456787f092f26ffafa5e97d04016b342855ec0abf853622f8c7d"
     },
     {
+      "path": "components/LOTUSim/scripts/test_ops_alerts.cjs",
+      "bytes": 8753,
+      "sha256": "20c23f6d8d5f10d38f10e8a4f10f627110fd1cd9f96519b8d0efcb487df177c9"
+    },
+    {
       "path": "components/LOTUSim/scripts/test_ops_collector.py",
       "bytes": 15495,
       "sha256": "b43144af1a8874492c9e963771d17fd2ea44ea12cb9ed4c61a34c2256a0ef38c"
+    },
+    {
+      "path": "components/LOTUSim/scripts/test_ops_journal.cjs",
+      "bytes": 13078,
+      "sha256": "168c50010113055156618e8312f2a308755b11d47b1c3f33728991bce1035a6c"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_runtime.py",
@@ -11084,13 +11109,13 @@
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_server.py",
-      "bytes": 7924,
-      "sha256": "7933b13cb99d032a2922bac4a1f964ca7198fc4c5d2f91b20fe74bc9568b5b26"
+      "bytes": 8471,
+      "sha256": "18837dfd2ba8cecf406b7157b7234b97929a394e8a4d83668b6b48edbf20b4ee"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_ui.py",
-      "bytes": 5070,
-      "sha256": "c40cc288fb65131a347443f6d88aca099eee4f59e2a5484a0e09887c6a1b3091"
+      "bytes": 5647,
+      "sha256": "4c3d65494f5e5c4e17c10afec1a2735de3cc95cf9badd573dd971dce188253f8"
     },
     {
       "path": "components/LOTUSim/scripts/test_ops_ui_behavior.cjs",
@@ -11289,13 +11314,18 @@
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard.py",
-      "bytes": 36394,
-      "sha256": "d5f4231acc45be5d57e95f4e026ccb8f7790d956bb30acccfaefc077a3ccaee2"
+      "bytes": 36477,
+      "sha256": "a10ee1e8871cf14a2085f2573e0e5fec35fa6804b95b7dc8d2aadbe56c45ede3"
+    },
+    {
+      "path": "components/LOTUSim/tools/ops_dashboard_ui/alerts.js",
+      "bytes": 10334,
+      "sha256": "cf15dbb28477b1e794deadc3361f7b179c85400b5f1b9e7e39f171f462292f92"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/app.js",
-      "bytes": 41371,
-      "sha256": "2b20bc555bb25919bbd4603a9a4d0d29d82155a35464938ddb5087cb8ee07e68"
+      "bytes": 47031,
+      "sha256": "c04ef48efa930fe738f668d284d047bf719f8e092d46c0949e26d63854731207"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/assets.css",
@@ -11304,18 +11334,23 @@
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/assets.js",
-      "bytes": 41563,
-      "sha256": "241f2655457e457311656cf2b180349ccc7c815856f53d8c75a873467dd572f9"
+      "bytes": 42065,
+      "sha256": "9d65aaf2487951952fc37082185652ee4fbb85ebe8dd46a25bbd3966acc4ec76"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/index.html",
-      "bytes": 35859,
-      "sha256": "cab56a90459b48ccadfd04e4c7306aa29df1fa2509ab652bff8a84c294ea3559"
+      "bytes": 38063,
+      "sha256": "ebca4cb3ea7e22520cfb80b2611a827e46e4b13b4c21699e9d3c11769eb1ea01"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/mesh-viewer.js",
       "bytes": 15753,
       "sha256": "94ebc14af5cb3a0b5cfbef6086a13929dff2b51b045da099c6bc3223b76c2f3c"
+    },
+    {
+      "path": "components/LOTUSim/tools/ops_dashboard_ui/operations-ux.css",
+      "bytes": 4671,
+      "sha256": "315cc10d5ef9e527d9206d7d3cf3d7a263e1e7738f0a20d9c63a1fc55a0139ba"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/settings.css",
@@ -11324,8 +11359,8 @@
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/settings.js",
-      "bytes": 61163,
-      "sha256": "d1227ce769f27a11188ece321e8413e54606a8ca16a0b0e7488e74cd7c3ab1ba"
+      "bytes": 62908,
+      "sha256": "fd4e139f106ac94fda3d08de611c509927cb146430fc68dddb09238c0b636a3d"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/styles.css",
@@ -11339,8 +11374,8 @@
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/traffic.js",
-      "bytes": 38220,
-      "sha256": "46eb19453e158df70d49bbdca518f28e4114b51f0e45c016572bdba9e5fa0332"
+      "bytes": 39814,
+      "sha256": "3cbe8980a7230b2bfcc8982a5fb622b62f4bef7f9db6fea2146e6bbdcb5d3c11"
     },
     {
       "path": "components/LOTUSim/tools/ops_dashboard_ui/vendor/three/LICENSE",
@@ -11829,8 +11864,8 @@
     },
     {
       "path": "scripts/refresh_manifest.py",
-      "bytes": 2535,
-      "sha256": "88d32667f977d8c5fccc1d830c67acd2fb4009271b130c88e615dd6168a7b7f6"
+      "bytes": 2772,
+      "sha256": "d7be22e6449739d0f953117354bed5383fe228bd47a00ac0d121e47d29d24bc5"
     },
     {
       "path": "scripts/run_dashboard.command",
@@ -11868,6 +11903,11 @@
       "sha256": "4c6067da0d4dffb3c371e30cd6265c4b942607f6ee9f97d1fca7134b1e62895c"
     },
     {
+      "path": "scripts/test_portable_inventory.py",
+      "bytes": 3146,
+      "sha256": "0249ec323e9205841191c5b4fd2e1b853a58a837821d56def0b18eb2f0167ee3"
+    },
+    {
       "path": "scripts/verify_export.py",
       "bytes": 1544,
       "sha256": "18608f8dc85697458051a99790bc03c3227a36beac95ce7fe2eee4e12e048cd1"
@@ -11878,7 +11918,7 @@
       "sha256": "74f164a2b7ad73b30cb6e8ac2af416f4caaf6b8ca1aa60ce5630aa5c043554a6"
     }
   ],
-  "totalBytes": 890143899,
+  "totalBytes": 890237935,
   "dynamicOutputsExcluded": [
     "**/artifacts/**",
     "**/__pycache__/**"
@@ -11886,6 +11926,6 @@
   "selfExcluded": [
     "manifest.json"
   ],
-  "updatedAt": "2026-10-28T11:05:52.448096+00:00",
+  "updatedAt": "2026-10-28T16:08:47.420615+00:00",
   "scope": "portable source snapshot; runtime and .local are not included"
 }

@@ -20,15 +20,51 @@ bash tools/start_ops_dashboard.command --unity "/chemin/LOTUSim-Unity-modules"
 
 `--port 8767` permet un autre port ; aucun processus existant n’est fermé si le port demandé est occupé. Le raccourci Unity utilise toujours 8766. `--no-docker` désactive l’inspection Docker.
 
-## Les cinq vues
+## Les vues du dashboard
 
 - **Vue d’ensemble** : services, aperçu de la caméra dataset, compteurs, chaîne de production et positions ENU du dernier instantané LOTUSim reçu par Unity.
 - **Agents & chaîne** : planification, synchronisation, rendu, détecteur RGB, revue et exports. Ce sont les agents logiciels déterministes du projet, pas des agents LLM externes.
+- **Trafic coopératif** : bibliothèque de plans, carte des trajectoires prévues, révisions et contrôles géométriques limités. La lecture de la carte ne lance pas de simulation.
 - **Journal d’activité** : événements structurés filtrables par source, niveau et texte. Ce n’est pas une copie de toutes les consoles Unity/Docker.
 - **Campagnes & rapports** : résultats existants accessibles sans lancer de nouvelle analyse.
 - **Paramétrage** : composition par blocs d’images, résolution et caméra, météo, houle, objets et vitesses. La préparation crée des fichiers à importer explicitement dans Unity. Voir [le guide des campagnes manuelles](guide-campagnes-manuelles-dashboard.md).
+- **Modèles 3D** : consultation des meshes, import et suivi de leur intégration dans les catalogues compatibles.
 
 Pour observer une campagne, démarrer normalement les services et la génération dans Unity ; pour une analyse, utiliser le menu RGB Observer existant. Le dashboard suit leurs signaux sans modifier leur fonctionnement.
+
+## Consulter les alertes
+
+Le bouton **Alertes**, dans l’en-tête, regroupe les points du dernier diagnostic et
+les retours d’action de l’interface. Le compteur compte les messages distincts,
+pas leurs répétitions à chaque actualisation. Ouvrir le menu pour filtrer les
+erreurs ou les avertissements, consulter leur source et rejoindre la section
+concernée. Échap ferme le menu et rend le focus au bouton.
+
+Les longues explications de capacités moteur et de limites des plans se trouvent
+dans des volets repliables avec compteur. Une nouvelle erreur d’audit ouvre son
+volet ; fermer ce volet ne change ni l’audit ni le refus de l’action. Les erreurs
+de validation restent près des commandes. Un badge « exécution native non validée »
+est une limite déclarée, pas une panne à notifier.
+
+Les résultats archivés ne déclenchent pas de nouvelles alertes d’exécution. Une
+rupture de liaison reste signalée à l’écran : les valeurs conservées ne doivent
+pas être interprétées comme un état courant. Aucun message n’est envoyé au système
+de notifications du Mac ni à un service externe.
+
+## Lire et exporter le journal
+
+Les filtres **Source**, **Niveau** et **Rechercher** sélectionnent les événements
+visibles. **Suspendre l’affichage** fige uniquement cette vue : la collecte, les
+indicateurs et la simulation continuent. Le compteur indique les nouveaux
+événements présents dans la dernière fenêtre reçue. **Reprendre l’affichage**
+revient au dernier instantané ; des événements ayant quitté la fenêtre pendant
+la suspension ne sont pas récupérés.
+
+**Exporter la sélection · JSON** télécharge les événements filtrés, avec leur
+provenance, les filtres et la date. Le journal est limité aux **80 derniers
+événements reçus** ; l’export n’est pas une archive exhaustive des terminaux.
+Il n’inclut ni images ni état complet des services. Les messages peuvent contenir
+des noms de fichiers ou des chemins locaux : relire le fichier avant de le partager.
 
 ## Ce qui est mesuré
 

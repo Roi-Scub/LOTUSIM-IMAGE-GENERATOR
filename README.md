@@ -2,7 +2,7 @@
 
 Ce dossier contient les développements locaux ajoutés autour de LOTUSim et Unity, leurs assets, leurs correctifs et les instructions pour les réinstaller. Il peut être copié dans un dépôt séparé. Ce n’est ni un nouveau simulateur autonome ni une version officielle de LOTUSim : les moteurs de base restent des dépendances identifiées.
 
-Version portable actuelle : **0.2.0**. Voir le [journal des versions](CHANGELOG.md)
+Version portable actuelle : **0.3.0**. Voir le [journal des versions](CHANGELOG.md)
 et le [guide de versionnement](docs/VERSIONNEMENT.md).
 
 ## Démarrer depuis le dépôt privé

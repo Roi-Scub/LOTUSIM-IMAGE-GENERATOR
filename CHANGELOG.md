@@ -1,5 +1,19 @@
 # Journal des versions
 
+## 0.3.0 du 28 octobre 2026
+
+- Centre d’alertes local avec regroupement par source, déduplication et filtre de
+  gravité, sans notifications système ni réactivation d’anciens échecs archivés.
+- Détails moteur et contrôles de trafic repliables ; erreurs de validation
+  conservées près des actions et nouvel échec d’audit affiché automatiquement.
+- Journal avec suspension de l’affichage indépendante de la collecte, compteur de
+  nouveaux événements, suivi corrigé et export JSON des événements filtrés.
+- Fenêtre de 80 événements et provenance de l’export explicites ; conservation de
+  la position de lecture et absence de reconstruction pour de simples changements
+  d’identifiants du producteur.
+- Exclusion des résultats de QA navigateur du suivi Git et de l’inventaire
+  portable ; les scripts de test et les assets sources restent versionnés.
+
 ## 0.2.0 du 28 octobre 2026
 
 - Cadence des scénarios continus au choix : nombre de prises ou intervalle en
