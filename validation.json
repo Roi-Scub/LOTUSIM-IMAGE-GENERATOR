@@ -1,0 +1,41 @@
+{
+  "schema": "lotusim-export-validation-1",
+  "date": "2026-10-27",
+  "passed": true,
+  "checks": [
+    "Fresh pinned local clones created with no network or LFS downloads",
+    "Installer dry-run validated seven patch groups without modifications",
+    "All seven patches applied and reverse-check cleanly on recorded bases",
+    "Every overlay source/model/meta file matches installed SHA-256 bytes",
+    "Reinstall over modified targets refused without resetting files",
+    "Installed C++ motion regression compiled and passed",
+    "Final exported launcher passed Python 3.9.6 stdlib-only CLI/HTTP/UI/catalogue/save/read checks from a different cwd, no Docker/Unity"
+  ],
+  "testSuites": {
+    "dashboardStdlibPython396": {
+      "passed": 63,
+      "failed": 0
+    },
+    "campaignSettingsStdlibPython396": {
+      "passed": 48,
+      "failed": 0
+    },
+    "rgbPipelinePython312": {
+      "passed": 155,
+      "failed": 0
+    },
+    "trafficPlannerPython312": {
+      "passed": 15,
+      "failed": 0
+    }
+  },
+  "sourceIntegrity": {
+    "originalModifiedFilesChecked": 30,
+    "originalSourcesUnchanged": true
+  },
+  "verificationLimits": [
+    "No fresh full Gazebo/ROS build executed for this export",
+    "No Unity GPU render launched for this export",
+    "No model weights or remote assets downloaded"
+  ]
+}

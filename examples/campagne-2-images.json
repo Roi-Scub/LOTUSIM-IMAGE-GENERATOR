@@ -1,0 +1,84 @@
+{
+  "blocks": [
+    {
+      "environment": {
+        "cloudCover": 0.2,
+        "rainIntensity": 0,
+        "timeOfDay": "day",
+        "waveDirectionDeg": 0,
+        "waveHeightM": 1.5,
+        "windMps": 3
+      },
+      "id": "day",
+      "images": 1,
+      "name": "Jour",
+      "objects": [
+        {
+          "altitudeM": 0,
+          "bearingDeg": 0,
+          "count": 1,
+          "distanceM": 100,
+          "distanceMode": "metres",
+          "headingDeg": 0,
+          "id": "buoy-1",
+          "model": "buoy",
+          "speedMps": 0,
+          "spreadDeg": 0
+        }
+      ]
+    },
+    {
+      "environment": {
+        "cloudCover": 0.2,
+        "rainIntensity": 0,
+        "timeOfDay": "night",
+        "waveDirectionDeg": 0,
+        "waveHeightM": 1.5,
+        "windMps": 3
+      },
+      "id": "night",
+      "images": 1,
+      "name": "Nuit",
+      "objects": [
+        {
+          "altitudeM": 0,
+          "bearingDeg": 0,
+          "count": 1,
+          "distanceM": 100,
+          "distanceMode": "metres",
+          "headingDeg": 0,
+          "id": "buoy-1",
+          "model": "buoy",
+          "speedMps": 0,
+          "spreadDeg": 0
+        }
+      ]
+    }
+  ],
+  "camera": {
+    "farClipM": 50000,
+    "height": 720,
+    "station": "bridge",
+    "verticalFovDeg": 60,
+    "viewDownPitchDeg": 0,
+    "viewHeadingDeg": 0,
+    "width": 1280
+  },
+  "engine": "unity",
+  "name": "Pilote de validation — 2 images",
+  "observer": {
+    "headingDeg": 0,
+    "pitchMaxDeg": 0,
+    "rollMaxDeg": 0,
+    "speedMps": 0
+  },
+  "scene": "maritime_manual",
+  "schema": "lotusim-campaign-settings-1",
+  "seed": 20261027,
+  "sensors": {
+    "nightVision": false,
+    "rgb": true,
+    "thermal": false
+  },
+  "totalImages": 2
+}
