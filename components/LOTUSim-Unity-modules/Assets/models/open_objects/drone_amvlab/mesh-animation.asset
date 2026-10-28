@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91eea521dd8f343129d8d8ac342f882d, type: 3}
+  m_Name: mesh-animation
+  m_EditorClassIdentifier: 
+  provenance: procedural propeller cadence; not calibrated RPM
+  durationSeconds: 0.4
+  frames:
+  - parts:
+    - {fileID: 4300000, guid: 0c77c4ea6eaf442b69d8f1f6d6e503b7, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 4dde11931c500445c9f79f27e0ab30f3, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: dd7ce71cccb064b63977e1e1a60e72e3, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: d0546f79252ff43a2ac8bdc961206953, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: d57444467a47f4678b8948689bc8a06e, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 79546b87d55f84c568ab4f649f46a88b, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 41c8efbf5e4914a07942a592bf02a197, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: e277466556fbf40ab8edf940bc8893f5, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: a922d96f03761435ca1f18a09363abfa, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 8c8f4a0df28364da5ab5e163feabd6cc, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: b1ee45e27fdf643fbab6e94c75513ae2, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: f632db5ebcb6642b2beb83c7709b2ff7, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: c035707a9e3184e76832b899dae3d5e3, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: cd981f2d86b3a4a5eb809a7a9beb8128, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: c52b60fc16bc84c05ae8d1770df95706, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: e8bfc290420fb44b6b05adaa11be6988, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: ae2a23a589eff41a1867ba3f6f155974, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: c2e9c8d73807e495799db26aedce0be6, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: b68dc02c953904092a7562b973b3cacf, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 1d1ac608bd2474650aadd713eda0bd23, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: c7cedf59df5394ba0a1ef96041f40f32, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 92b6885c17e6149b5a64c635cea8f2d7, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: af1659e8b4dd54491afca907090962ad, type: 2}
+  - parts:
+    - {fileID: 4300000, guid: 5a9d4c5d4cab94f0ea03aa923daf5e6d, type: 2}

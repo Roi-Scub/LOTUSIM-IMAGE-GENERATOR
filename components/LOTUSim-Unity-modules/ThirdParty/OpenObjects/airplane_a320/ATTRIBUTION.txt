@@ -1,0 +1,12 @@
+airplane a320 — AMV Lab
+Source: https://github.com/amvlab/aircraft-models
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Download: https://raw.githubusercontent.com/amvlab/aircraft-models/91d835e8e851b2317fe79af291c9fed6153fd525/models/A320_nologo.glb
+SHA-256: 08cc60caafe3d0937f3e12e72c28bcb96dfdb39763ac124bcd4da8adaea11ab9
+Changes:
+- Source retained with pinned mirror/hash and original creator attribution
+- Node transforms and simulation units baked; no downloaded scripts imported
+- Opaque HDRP adaptation; alpha/IOR/transmission may differ from source
+- Rigid source pose is owned by LOTUSim; Unity changes only visual child
+- Visual/collision body parameters are approximate, not validated naval/aeronautical engineering
+Creator does not endorse this integration. Trademark/publicity rights not granted. Retain credits with redistributed models/datasets.

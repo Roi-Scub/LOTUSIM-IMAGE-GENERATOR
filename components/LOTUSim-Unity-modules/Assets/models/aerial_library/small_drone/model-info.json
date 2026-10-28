@@ -1,0 +1,31 @@
+{
+    "model": "small_drone",
+    "category": "drone",
+    "address": "small_drone",
+    "prefab": "Assets/Prefabs/small_drone.prefab",
+    "source": "original procedural geometry",
+    "unityForwardAxis": "+X",
+    "unityUpAxis": "+Y",
+    "gazeboForwardAxis": "+X",
+    "gazeboUpAxis": "+Z",
+    "classId": 2,
+    "triangles": 30032,
+    "renderers": 11,
+    "minimum": {
+        "x": -0.16265438497066499,
+        "y": -0.07162287831306458,
+        "z": -0.21056975424289704
+    },
+    "maximum": {
+        "x": 0.16265441477298737,
+        "y": 0.038999997079372409,
+        "z": 0.21056975424289704
+    },
+    "sizeMetres": {
+        "x": 0.32530879974365237,
+        "y": 0.11062287539243698,
+        "z": 0.42113950848579409
+    },
+    "flightPhysics": false,
+    "animated": false
+}

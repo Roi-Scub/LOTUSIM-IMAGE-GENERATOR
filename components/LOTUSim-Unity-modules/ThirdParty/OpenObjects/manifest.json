@@ -1,0 +1,946 @@
+[
+  {
+    "key": "buoy_navigation_ozzy",
+    "category": "buoy",
+    "author": "OzzyDan",
+    "title": "Buoy",
+    "source": "https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/buoy.glb",
+    "mirrorRepository": "srcejon/sdrangel-3d-models",
+    "mirrorCommit": "59d1ee24ebc2c24343afb54b26928f965a625140",
+    "sha256": "bf25eed9c14ce3f01c436c7a9748c22ac06c78ee43a7301739cda63919fcaee9",
+    "bytes": 185144,
+    "format": "glb",
+    "asset": {
+      "extras": {
+        "author": "OzzyDan (https://sketchfab.com/ozzydan)",
+        "created": "Tue Dec 21 10:09:20 2021",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13",
+        "title": "Buoy"
+      },
+      "generator": "Gestaltor 2021.6.1 Triticale Community",
+      "version": "2.0"
+    },
+    "extensionsRequired": [],
+    "extensionsUsed": [],
+    "materials": [
+      {
+        "name": "base_material",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0,
+        "smoothness": 0.2561705870157922,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_00_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 1,
+    "nodes": 3,
+    "skins": 0,
+    "animations": 0,
+    "lengthM": 0.8841537044785062,
+    "beamM": 0.8841537044785062,
+    "draftM": 0.45,
+    "heightM": 2.5,
+    "vertices": 945,
+    "triangles": 702,
+    "materialBatches": 1,
+    "maxTextureSize": 1024,
+    "boundsMin": [
+      -0.4420768522392531,
+      -0.45,
+      -0.4420768522392531
+    ],
+    "boundsMax": [
+      0.4420768522392531,
+      2.05,
+      0.4420768522392531
+    ],
+    "normalization": {
+      "basis": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "scale": 1.6855586656962667,
+      "shift": [
+        -0.0,
+        -0.45,
+        3.0531133177191805e-16
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+    ],
+    "kind": "buoy",
+    "animationFrames": 0,
+    "animationSeconds": 0
+  },
+  {
+    "key": "drone_amvlab",
+    "category": "drone",
+    "author": "AMV Lab",
+    "title": "drone amvlab",
+    "source": "https://github.com/amvlab/aircraft-models",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/amvlab/aircraft-models/91d835e8e851b2317fe79af291c9fed6153fd525/models/drone_nologo.glb",
+    "mirrorRepository": "amvlab/aircraft-models",
+    "mirrorCommit": "91d835e8e851b2317fe79af291c9fed6153fd525",
+    "sha256": "b3b1089986443bec395c57852c68e1dbf5bf990e28472656d9b9ad6c377931d1",
+    "bytes": 200704,
+    "format": "glb",
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v1.7.33",
+      "version": "2.0"
+    },
+    "extensionsRequired": [],
+    "extensionsUsed": [],
+    "materials": [
+      {
+        "name": "07 - Default",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0,
+        "smoothness": 0.4472135901451111,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_00_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 1,
+    "nodes": 1,
+    "skins": 0,
+    "animations": 0,
+    "lengthM": 0.82,
+    "beamM": 0.6522219876314383,
+    "draftM": 0,
+    "heightM": 0.36654484947658644,
+    "vertices": 5008,
+    "triangles": 5170,
+    "materialBatches": 1,
+    "maxTextureSize": 1024,
+    "boundsMin": [
+      -0.41000000000000003,
+      -0.18327242473829322,
+      -0.3261109938157192
+    ],
+    "boundsMax": [
+      0.41000000000000003,
+      0.18327242473829322,
+      0.3261109938157192
+    ],
+    "normalization": {
+      "basis": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "scale": 0.995730380442366,
+      "shift": [
+        4.9949099661938945e-08,
+        -9.012828344756585e-09,
+        2.737788226681026e-08
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering",
+      "Procedural opposite propeller rotation; visual cadence, not calibrated RPM"
+    ],
+    "kind": "aircraft",
+    "animationFrames": 24,
+    "animationSeconds": 0.4
+  },
+  {
+    "key": "helicopter_utility_gb",
+    "category": "helicopter",
+    "author": "Gigantic Burger",
+    "title": "Helicopter",
+    "source": "https://sketchfab.com/3d-models/helicopter-ef70283b1dea4ae8b18eec9231ce390e",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/helicopter.glb",
+    "mirrorRepository": "srcejon/sdrangel-3d-models",
+    "mirrorCommit": "59d1ee24ebc2c24343afb54b26928f965a625140",
+    "sha256": "cf93bc4c874e6ead912456bbe64c108570aa300d37967a452388fbf217962e3f",
+    "bytes": 2214424,
+    "format": "glb",
+    "asset": {
+      "extras": {
+        "author": "Gigantic Burger (https://sketchfab.com/gigantic.burger)",
+        "created": "Fri Dec 10 10:24:03 2021",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/helicopter-ef70283b1dea4ae8b18eec9231ce390e",
+        "title": "Helicopter"
+      },
+      "generator": "Gestaltor 2021.6.1 Triticale Community",
+      "version": "2.0"
+    },
+    "extensionsRequired": [],
+    "extensionsUsed": [],
+    "materials": [
+      {
+        "name": "AW101-AW101_sha",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0,
+        "smoothness": 0.04229485053762261,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_00_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      },
+      {
+        "name": "AW101-AW101_windows_sha",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0,
+        "smoothness": 0.04229485053762261,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_01_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 1,
+    "nodes": 12,
+    "skins": 0,
+    "animations": 1,
+    "lengthM": 20,
+    "beamM": 16.587940072816686,
+    "draftM": 0,
+    "heightM": 6.364510511791961,
+    "vertices": 5089,
+    "triangles": 4738,
+    "materialBatches": 2,
+    "maxTextureSize": 2048,
+    "boundsMin": [
+      -10.0,
+      -3.1822552558959805,
+      -8.293970036408343
+    ],
+    "boundsMax": [
+      10.0,
+      3.1822552558959805,
+      8.293970036408343
+    ],
+    "normalization": {
+      "basis": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "scale": 1.0045725448930827,
+      "shift": [
+        -1.5960497654851027,
+        0.9220997565860813,
+        -0.03235977159023751
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering",
+      "Original rotor animation sampled into opaque mesh frames (same geometry for RGB and annotations)"
+    ],
+    "kind": "aircraft",
+    "animationFrames": 30,
+    "animationSeconds": 1.0
+  },
+  {
+    "key": "airplane_a320",
+    "category": "airplane",
+    "author": "AMV Lab",
+    "title": "airplane a320",
+    "source": "https://github.com/amvlab/aircraft-models",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/amvlab/aircraft-models/91d835e8e851b2317fe79af291c9fed6153fd525/models/A320_nologo.glb",
+    "mirrorRepository": "amvlab/aircraft-models",
+    "mirrorCommit": "91d835e8e851b2317fe79af291c9fed6153fd525",
+    "sha256": "08cc60caafe3d0937f3e12e72c28bcb96dfdb39763ac124bcd4da8adaea11ab9",
+    "bytes": 250472,
+    "format": "glb",
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v1.7.33",
+      "version": "2.0"
+    },
+    "extensionsRequired": [],
+    "extensionsUsed": [],
+    "materials": [
+      {
+        "name": "01 - Default",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0.3272727131843567,
+        "smoothness": 0.8050577342510223,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_00_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 1,
+    "nodes": 1,
+    "skins": 0,
+    "animations": 0,
+    "lengthM": 37.57,
+    "beamM": 35.37382666632276,
+    "draftM": 0,
+    "heightM": 11.28863412583319,
+    "vertices": 4628,
+    "triangles": 5229,
+    "materialBatches": 1,
+    "maxTextureSize": 1024,
+    "boundsMin": [
+      -18.784999999999997,
+      -5.6443170629165955,
+      -17.68691333316138
+    ],
+    "boundsMax": [
+      18.784999999999997,
+      5.644317062916595,
+      17.68691333316138
+    ],
+    "normalization": {
+      "basis": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "scale": 0.9970437783505955,
+      "shift": [
+        3.046695261031262,
+        -2.8315873781784626,
+        -0.037309273506739515
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+    ],
+    "kind": "aircraft",
+    "animationFrames": 0,
+    "animationSeconds": 0
+  },
+  {
+    "key": "airplane_c172",
+    "category": "airplane",
+    "author": "Nobilis the Palaeovespa",
+    "title": "Cessna 172",
+    "source": "https://sketchfab.com/3d-models/cessna-172-64cddaee5aff470682659a8c08525046",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/bilawalsidhu/gods-eye-view/e2274bbf0ceaeb2e14f8a59d63e77000553c6816/public/models/c172.glb",
+    "mirrorRepository": "bilawalsidhu/gods-eye-view",
+    "mirrorCommit": "e2274bbf0ceaeb2e14f8a59d63e77000553c6816",
+    "sha256": "aba52b6b784534db63c1712b0189ce1b74a94edea586b41db9b795f9be3601d8",
+    "bytes": 526088,
+    "format": "glb",
+    "asset": {
+      "generator": "glTF-Transform v4.4.2",
+      "version": "2.0",
+      "extras": {
+        "author": "e737 (https://sketchfab.com/e0057537)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/cessna-172-64cddaee5aff470682659a8c08525046",
+        "title": "Cessna 172"
+      }
+    },
+    "extensionsRequired": [
+      "EXT_texture_webp"
+    ],
+    "extensionsUsed": [
+      "EXT_texture_webp",
+      "KHR_materials_ior",
+      "KHR_materials_specular"
+    ],
+    "materials": [
+      {
+        "name": "material",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0,
+        "smoothness": 0,
+        "doubleSided": true,
+        "sourceAlpha": "MASK",
+        "baseMap": "material_00_baseMap.png",
+        "normalMap": "",
+        "maskMap": "material_00_mask.png",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      },
+      {
+        "name": "material_1",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0,
+        "smoothness": 0,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_01_baseMap.png",
+        "normalMap": "",
+        "maskMap": "material_01_mask.png",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 6,
+    "nodes": 2,
+    "skins": 0,
+    "animations": 0,
+    "lengthM": 8.28,
+    "beamM": 11.051839131815886,
+    "draftM": 0,
+    "heightM": 2.728086037295673,
+    "vertices": 12792,
+    "triangles": 14240,
+    "materialBatches": 2,
+    "maxTextureSize": 256,
+    "boundsMin": [
+      -4.14,
+      -1.3640430186478365,
+      -5.525919565907943
+    ],
+    "boundsMax": [
+      4.14,
+      1.3640430186478365,
+      5.525919565907943
+    ],
+    "normalization": {
+      "basis": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 1.0047126483468987,
+      "shift": [
+        -0.0,
+        -0.0,
+        -0.0
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+    ],
+    "kind": "aircraft",
+    "animationFrames": 0,
+    "animationSeconds": 0
+  },
+  {
+    "key": "seagull_dayvable",
+    "category": "bird",
+    "author": "Dayvable",
+    "title": "Seagull",
+    "source": "https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/viniciusbarros/msc_game_obstacle_course/8c2c2b250ff4e2f5fc97da208dbcdd957345e1cf/ExternalMedia/Magpie/source/magpie2.fbx",
+    "mirrorRepository": "viniciusbarros/msc_game_obstacle_course",
+    "mirrorCommit": "8c2c2b250ff4e2f5fc97da208dbcdd957345e1cf",
+    "sha256": "37b47e2fee393ad0ebbac769c81f0b2aa00ae73c18a9146590f8d845229df20f",
+    "bytes": 1014988,
+    "format": "fbx",
+    "kind": "bird",
+    "lengthM": 0.823181152,
+    "beamM": 1.45,
+    "draftM": 0,
+    "heightM": 1.17536771,
+    "vertices": 3024,
+    "triangles": 4412,
+    "maxTextureSize": 1024,
+    "animationFrames": 24,
+    "animationSeconds": 3.625,
+    "materials": [],
+    "changes": [
+      "Derived FBX by viniciusbarros from Dayvable Seagull, retained with original white feather texture",
+      "Unity source wing-flap clip baked to opaque MeshRenderer frames; source retained",
+      "Approximate scale and collider/weight; source trajectory owned by LOTUSim",
+      "No lights added to bird; no validated bird aerodynamics"
+    ]
+  },
+  {
+    "key": "speedboat_smolbot",
+    "category": "speedboat",
+    "author": "Nicosama",
+    "title": "Boat",
+    "source": "https://sketchfab.com/3d-models/boat-dc676eac5985450a9271f9b31eb47778",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/smolbot.glb",
+    "mirrorRepository": "bob6664569/open-water",
+    "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+    "sha256": "669a1a5bb2e7133e65db5ec6fb9d675480bc124c1cfd03571008d172a0dde2f9",
+    "bytes": 389808,
+    "format": "glb",
+    "asset": {
+      "extras": {
+        "author": "Firdaus Sahak (https://sketchfab.com/firdaussahak)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/boat-dc676eac5985450a9271f9b31eb47778",
+        "title": "Boat"
+      },
+      "generator": "Sketchfab-12.56.0",
+      "version": "2.0"
+    },
+    "extensionsRequired": [],
+    "extensionsUsed": [],
+    "materials": [
+      {
+        "name": "white",
+        "color": [
+          0.397221,
+          0.397221,
+          0.397221,
+          1.0
+        ],
+        "metallic": 0.0,
+        "smoothness": 0.6,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      },
+      {
+        "name": "black",
+        "color": [
+          2.26282e-05,
+          0.0,
+          0.0120378,
+          1.0
+        ],
+        "metallic": 0.0,
+        "smoothness": 0.5,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      },
+      {
+        "name": "silver",
+        "color": [
+          0.718987,
+          0.718987,
+          0.718987,
+          1.0
+        ],
+        "metallic": 0.6,
+        "smoothness": 0.8,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 0,
+    "nodes": 19,
+    "skins": 0,
+    "animations": 0,
+    "lengthM": 6,
+    "beamM": 2.047237384864545,
+    "draftM": 0.55,
+    "heightM": 2.2921422117265053,
+    "vertices": 7758,
+    "triangles": 11028,
+    "materialBatches": 3,
+    "maxTextureSize": 0,
+    "boundsMin": [
+      -3.0,
+      -0.55,
+      -1.0236186924322725
+    ],
+    "boundsMax": [
+      3.0,
+      1.742142211726505,
+      1.0236186924322725
+    ],
+    "normalization": {
+      "basis": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "scale": 0.3223142925378651,
+      "shift": [
+        0.27579918419107896,
+        0.1039718340960355,
+        -0.0
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+    ],
+    "kind": "marine",
+    "animationFrames": 0,
+    "animationSeconds": 0
+  },
+  {
+    "key": "speedboat_racing",
+    "category": "speedboat",
+    "author": "milamila",
+    "title": "Boat",
+    "source": "https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/boat.glb",
+    "mirrorRepository": "bob6664569/open-water",
+    "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+    "sha256": "18f7af567af1bb0c65a87f154cad47b528bdeb217f5ca8144747b0cac122bda5",
+    "bytes": 5138688,
+    "format": "glb",
+    "asset": {
+      "extras": {
+        "author": "milamila (https://sketchfab.com/milamila)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d",
+        "title": "Boat"
+      },
+      "generator": "Sketchfab-12.67.0",
+      "version": "2.0"
+    },
+    "extensionsRequired": [],
+    "extensionsUsed": [],
+    "materials": [
+      {
+        "name": "CABIN",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0.8017045454545455,
+        "smoothness": 0.5895833333333333,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_00_baseMap.png",
+        "normalMap": "material_00_normalMap.png",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      },
+      {
+        "name": "GLASS",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0.0,
+        "smoothness": 1.0,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_01_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      },
+      {
+        "name": "BoatBody",
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0.0,
+        "smoothness": 0.9013257575757576,
+        "doubleSided": true,
+        "sourceAlpha": "OPAQUE",
+        "baseMap": "material_02_baseMap.png",
+        "normalMap": "",
+        "maskMap": "",
+        "emissionMap": "",
+        "normalScale": 1,
+        "emission": [
+          0,
+          0,
+          0
+        ],
+        "coat": 0
+      }
+    ],
+    "images": 4,
+    "nodes": 33,
+    "skins": 0,
+    "animations": 0,
+    "lengthM": 12.8,
+    "beamM": 2.995130095921094,
+    "draftM": 0.5,
+    "heightM": 1.99813199969694,
+    "vertices": 38648,
+    "triangles": 71282,
+    "materialBatches": 3,
+    "maxTextureSize": 2048,
+    "boundsMin": [
+      -6.4,
+      -0.5,
+      -1.497565047960547
+    ],
+    "boundsMax": [
+      6.4,
+      1.49813199969694,
+      1.497565047960547
+    ],
+    "normalization": {
+      "basis": [
+        [
+          -1.2246467991473532e-16,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          1.2246467991473532e-16
+        ]
+      ],
+      "scale": 0.0697274621047531,
+      "shift": [
+        -0.06364349207026043,
+        -0.43346584580749625,
+        6.649728900853802e-08
+      ]
+    },
+    "changes": [
+      "Source retained with pinned mirror/hash and original creator attribution",
+      "Node transforms and simulation units baked; no downloaded scripts imported",
+      "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+      "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+      "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+    ],
+    "kind": "marine",
+    "animationFrames": 0,
+    "animationSeconds": 0
+  }
+]

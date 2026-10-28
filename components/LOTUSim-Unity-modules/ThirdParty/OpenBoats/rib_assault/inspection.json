@@ -1,0 +1,49 @@
+{
+  "key": "rib_assault",
+  "category": "speedboat",
+  "lengthM": 9.5,
+  "title": "Assault Boat",
+  "author": "tnnv",
+  "source": "https://sketchfab.com/3d-models/assault-boat-0d4fca4f2e014cd7b6aefd4653b1508c",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/assault-boat_9.5.glb",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "dac61e06cfbabb634c8264751255a3b2588107615fe0e34d4ca3c6aaa2107827",
+  "bytes": 28719240,
+  "declaredTriangles": 40036,
+  "asset": {
+    "extras": {
+      "author": "tnnv (https://sketchfab.com/tnnv)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/assault-boat-0d4fca4f2e014cd7b6aefd4653b1508c",
+      "title": "Assault Boat"
+    },
+    "generator": "Sketchfab-13.74.0",
+    "version": "2.0"
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "primitives": 8,
+  "images": 3,
+  "skins": 0,
+  "materials": [
+    {
+      "name": "M_ShortSword",
+      "normalTexture": {
+        "index": 2
+      },
+      "occlusionTexture": {
+        "index": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ]
+}

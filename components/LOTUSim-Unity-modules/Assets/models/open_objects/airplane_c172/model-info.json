@@ -1,0 +1,140 @@
+{
+  "key": "airplane_c172",
+  "category": "airplane",
+  "author": "Nobilis the Palaeovespa",
+  "title": "Cessna 172",
+  "source": "https://sketchfab.com/3d-models/cessna-172-64cddaee5aff470682659a8c08525046",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bilawalsidhu/gods-eye-view/e2274bbf0ceaeb2e14f8a59d63e77000553c6816/public/models/c172.glb",
+  "mirrorRepository": "bilawalsidhu/gods-eye-view",
+  "mirrorCommit": "e2274bbf0ceaeb2e14f8a59d63e77000553c6816",
+  "sha256": "aba52b6b784534db63c1712b0189ce1b74a94edea586b41db9b795f9be3601d8",
+  "bytes": 526088,
+  "format": "glb",
+  "asset": {
+    "generator": "glTF-Transform v4.4.2",
+    "version": "2.0",
+    "extras": {
+      "author": "e737 (https://sketchfab.com/e0057537)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/cessna-172-64cddaee5aff470682659a8c08525046",
+      "title": "Cessna 172"
+    }
+  },
+  "extensionsRequired": [
+    "EXT_texture_webp"
+  ],
+  "extensionsUsed": [
+    "EXT_texture_webp",
+    "KHR_materials_ior",
+    "KHR_materials_specular"
+  ],
+  "materials": [
+    {
+      "name": "material",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0,
+      "doubleSided": true,
+      "sourceAlpha": "MASK",
+      "baseMap": "material_00_baseMap.png",
+      "normalMap": "",
+      "maskMap": "material_00_mask.png",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    },
+    {
+      "name": "material_1",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_01_baseMap.png",
+      "normalMap": "",
+      "maskMap": "material_01_mask.png",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    }
+  ],
+  "images": 6,
+  "nodes": 2,
+  "skins": 0,
+  "animations": 0,
+  "lengthM": 8.28,
+  "beamM": 11.051839131815886,
+  "draftM": 0,
+  "heightM": 2.728086037295673,
+  "vertices": 12792,
+  "triangles": 14240,
+  "materialBatches": 2,
+  "maxTextureSize": 256,
+  "boundsMin": [
+    -4.14,
+    -1.3640430186478365,
+    -5.525919565907943
+  ],
+  "boundsMax": [
+    4.14,
+    1.3640430186478365,
+    5.525919565907943
+  ],
+  "normalization": {
+    "basis": [
+      [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "scale": 1.0047126483468987,
+    "shift": [
+      -0.0,
+      -0.0,
+      -0.0
+    ]
+  },
+  "changes": [
+    "Source retained with pinned mirror/hash and original creator attribution",
+    "Node transforms and simulation units baked; no downloaded scripts imported",
+    "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+    "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+    "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+  ],
+  "kind": "aircraft",
+  "animationFrames": 0,
+  "animationSeconds": 0
+}

@@ -1,0 +1,38 @@
+{
+    "model": "fishing_trawler",
+    "displayName": "chalutier",
+    "prefab": "Assets/Prefabs/fishing_trawler.prefab",
+    "source": "original procedural marine geometry",
+    "forwardAxis": "Unity +X / Gazebo +X",
+    "classId": 6,
+    "triangles": 64542,
+    "vertices": 77814,
+    "geometryOperations": 3840,
+    "materialSlots": 17,
+    "boundsMin": {
+        "x": -12.0,
+        "y": -2.0999996662139894,
+        "z": -3.5961971282958986
+    },
+    "boundsMax": {
+        "x": 12.0,
+        "y": 9.800000190734864,
+        "z": 3.5961971282958986
+    },
+    "flotation": {
+        "lengthM": 24.0,
+        "beamM": 7.199999809265137,
+        "draftM": 2.0999999046325685,
+        "blockCoefficient": 0.5,
+        "waterDensityKgM3": 1025.0,
+        "dampingRatio": 0.8500000238418579,
+        "maxRollDeg": 18.0,
+        "maxPitchDeg": 10.0,
+        "waterlineOffsetM": 0.0,
+        "heaveFrequencyScale": 1.0,
+        "angularFrequencyScale": 0.6000000238418579
+    },
+    "defaultRootKinematic": true,
+    "freeRigidbodyAvailable": true,
+    "validatedHydrodynamics": false
+}

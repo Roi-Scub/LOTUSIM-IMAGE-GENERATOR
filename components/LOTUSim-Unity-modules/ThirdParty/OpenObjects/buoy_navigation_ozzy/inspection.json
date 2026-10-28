@@ -1,0 +1,33 @@
+{
+  "key": "buoy_navigation_ozzy",
+  "category": "buoy",
+  "author": "OzzyDan",
+  "title": "Buoy",
+  "source": "https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/buoy.glb",
+  "mirrorRepository": "srcejon/sdrangel-3d-models",
+  "mirrorCommit": "59d1ee24ebc2c24343afb54b26928f965a625140",
+  "sha256": "bf25eed9c14ce3f01c436c7a9748c22ac06c78ee43a7301739cda63919fcaee9",
+  "bytes": 185144,
+  "format": "glb",
+  "asset": {
+    "extras": {
+      "author": "OzzyDan (https://sketchfab.com/ozzydan)",
+      "created": "Tue Dec 21 10:09:20 2021",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13",
+      "title": "Buoy"
+    },
+    "generator": "Gestaltor 2021.6.1 Triticale Community",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "materials": 1,
+  "images": 1,
+  "nodes": 3,
+  "skins": 0,
+  "animations": 0
+}

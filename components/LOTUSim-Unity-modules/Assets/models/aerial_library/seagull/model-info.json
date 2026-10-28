@@ -1,0 +1,31 @@
+{
+    "model": "seagull",
+    "category": "bird",
+    "address": "seagull",
+    "prefab": "Assets/Prefabs/seagull.prefab",
+    "source": "original procedural geometry",
+    "unityForwardAxis": "+X",
+    "unityUpAxis": "+Y",
+    "gazeboForwardAxis": "+X",
+    "gazeboUpAxis": "+Z",
+    "classId": 5,
+    "triangles": 36760,
+    "renderers": 6,
+    "minimum": {
+        "x": -0.45002806186676028,
+        "y": -0.08299999684095383,
+        "z": -0.6553104519844055
+    },
+    "maximum": {
+        "x": 0.4030001163482666,
+        "y": 0.1290000081062317,
+        "z": 0.6553105711936951
+    },
+    "sizeMetres": {
+        "x": 0.8530281782150269,
+        "y": 0.2120000123977661,
+        "z": 1.3106210231781006
+    },
+    "flightPhysics": false,
+    "animated": false
+}

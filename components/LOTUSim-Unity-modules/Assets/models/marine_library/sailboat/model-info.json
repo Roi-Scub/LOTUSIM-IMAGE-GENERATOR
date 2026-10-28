@@ -1,0 +1,38 @@
+{
+    "model": "sailboat",
+    "displayName": "voilier",
+    "prefab": "Assets/Prefabs/sailboat.prefab",
+    "source": "original procedural marine geometry",
+    "forwardAxis": "Unity +X / Gazebo +X",
+    "classId": 12,
+    "triangles": 36620,
+    "vertices": 40104,
+    "geometryOperations": 2207,
+    "materialSlots": 14,
+    "boundsMin": {
+        "x": -5.900001049041748,
+        "y": -2.060000419616699,
+        "z": -2.0999999046325685
+    },
+    "boundsMax": {
+        "x": 5.900000095367432,
+        "y": 15.605000495910645,
+        "z": 2.0999999046325685
+    },
+    "flotation": {
+        "lengthM": 11.800000190734864,
+        "beamM": 3.799999952316284,
+        "draftM": 0.6499999761581421,
+        "blockCoefficient": 0.4000000059604645,
+        "waterDensityKgM3": 1025.0,
+        "dampingRatio": 0.8500000238418579,
+        "maxRollDeg": 24.0,
+        "maxPitchDeg": 15.0,
+        "waterlineOffsetM": 0.0,
+        "heaveFrequencyScale": 1.0,
+        "angularFrequencyScale": 0.6000000238418579
+    },
+    "defaultRootKinematic": true,
+    "freeRigidbodyAvailable": true,
+    "validatedHydrodynamics": false
+}

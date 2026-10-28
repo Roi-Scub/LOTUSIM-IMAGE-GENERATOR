@@ -1,0 +1,158 @@
+{
+  "key": "speedboat_racing",
+  "category": "speedboat",
+  "author": "milamila",
+  "title": "Boat",
+  "source": "https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/boat.glb",
+  "mirrorRepository": "bob6664569/open-water",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "18f7af567af1bb0c65a87f154cad47b528bdeb217f5ca8144747b0cac122bda5",
+  "bytes": 5138688,
+  "format": "glb",
+  "asset": {
+    "extras": {
+      "author": "milamila (https://sketchfab.com/milamila)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d",
+      "title": "Boat"
+    },
+    "generator": "Sketchfab-12.67.0",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "materials": [
+    {
+      "name": "CABIN",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.8017045454545455,
+      "smoothness": 0.5895833333333333,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_00_baseMap.png",
+      "normalMap": "material_00_normalMap.png",
+      "maskMap": "",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    },
+    {
+      "name": "GLASS",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.0,
+      "smoothness": 1.0,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_01_baseMap.png",
+      "normalMap": "",
+      "maskMap": "",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    },
+    {
+      "name": "BoatBody",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.0,
+      "smoothness": 0.9013257575757576,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_02_baseMap.png",
+      "normalMap": "",
+      "maskMap": "",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    }
+  ],
+  "images": 4,
+  "nodes": 33,
+  "skins": 0,
+  "animations": 0,
+  "lengthM": 12.8,
+  "beamM": 2.995130095921094,
+  "draftM": 0.5,
+  "heightM": 1.99813199969694,
+  "vertices": 38648,
+  "triangles": 71282,
+  "materialBatches": 3,
+  "maxTextureSize": 2048,
+  "boundsMin": [
+    -6.4,
+    -0.5,
+    -1.497565047960547
+  ],
+  "boundsMax": [
+    6.4,
+    1.49813199969694,
+    1.497565047960547
+  ],
+  "normalization": {
+    "basis": [
+      [
+        -1.2246467991473532e-16,
+        0.0,
+        -1.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0,
+        1.2246467991473532e-16
+      ]
+    ],
+    "scale": 0.0697274621047531,
+    "shift": [
+      -0.06364349207026043,
+      -0.43346584580749625,
+      6.649728900853802e-08
+    ]
+  },
+  "changes": [
+    "Source retained with pinned mirror/hash and original creator attribution",
+    "Node transforms and simulation units baked; no downloaded scripts imported",
+    "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+    "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+    "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+  ],
+  "kind": "marine",
+  "animationFrames": 0,
+  "animationSeconds": 0
+}

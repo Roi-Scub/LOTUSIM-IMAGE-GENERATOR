@@ -1,0 +1,84 @@
+{
+  "key": "rib_assault",
+  "category": "speedboat",
+  "lengthM": 9.5,
+  "title": "Assault Boat",
+  "author": "tnnv",
+  "source": "https://sketchfab.com/3d-models/assault-boat-0d4fca4f2e014cd7b6aefd4653b1508c",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/assault-boat_9.5.glb",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "dac61e06cfbabb634c8264751255a3b2588107615fe0e34d4ca3c6aaa2107827",
+  "bytes": 28719240,
+  "declaredTriangles": 40036,
+  "asset": {
+    "extras": {
+      "author": "tnnv (https://sketchfab.com/tnnv)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/assault-boat-0d4fca4f2e014cd7b6aefd4653b1508c",
+      "title": "Assault Boat"
+    },
+    "generator": "Sketchfab-13.74.0",
+    "version": "2.0"
+  },
+  "extensionsUsed": [],
+  "extensionsRequired": [],
+  "primitives": 8,
+  "images": 3,
+  "skins": 0,
+  "materials": [
+    {
+      "name": "M_ShortSword",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 1,
+      "smoothness": 0,
+      "doubleSided": false,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_00_baseMap.png",
+      "normalMap": "material_00_normalMap.png",
+      "maskMap": "material_00_mask.png",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    }
+  ],
+  "beamM": 4.257104113773973,
+  "draftM": 0.4,
+  "heightM": 2.028544996790041,
+  "vertices": 24298,
+  "triangles": 40036,
+  "materialBatches": 1,
+  "maxTextureSize": 4096,
+  "boundsMin": [
+    -4.75,
+    -0.4,
+    -2.1285520568869867
+  ],
+  "boundsMax": [
+    4.75,
+    1.6285449967900405,
+    2.1285520568869867
+  ],
+  "changes": [
+    "Mirror GLB conversion retained",
+    "Baked source node transforms/rest skin pose",
+    "Simulation scale and artistic waterline; not certified dimensions",
+    "Unity +X bow +Y up +Z port",
+    "Grouped meshes by source material; helper line edges omitted, no surface simplification",
+    "HDRP metallic/roughness/AO/normal map conversion",
+    "Opaque glass/tints to match existing annotation policy; alpha registration decal omitted",
+    "IOR/specular/transmission extensions approximated, not physically equivalent",
+    "Existing approximate nine-point wave response added; no propulsion/hydrodynamic calibration"
+  ]
+}

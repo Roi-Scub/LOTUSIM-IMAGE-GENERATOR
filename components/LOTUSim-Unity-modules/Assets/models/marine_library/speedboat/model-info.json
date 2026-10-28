@@ -1,0 +1,38 @@
+{
+    "model": "speedboat",
+    "displayName": "hors-bord",
+    "prefab": "Assets/Prefabs/speedboat.prefab",
+    "source": "original procedural marine geometry",
+    "forwardAxis": "Unity +X / Gazebo +X",
+    "classId": 9,
+    "triangles": 13242,
+    "vertices": 16736,
+    "geometryOperations": 1743,
+    "materialSlots": 12,
+    "boundsMin": {
+        "x": -3.75,
+        "y": -0.5900000333786011,
+        "z": -1.1987324953079224
+    },
+    "boundsMax": {
+        "x": 3.1999998092651369,
+        "y": 1.8725000619888306,
+        "z": 1.1987324953079224
+    },
+    "flotation": {
+        "lengthM": 6.400000095367432,
+        "beamM": 2.4000000953674318,
+        "draftM": 0.3799999952316284,
+        "blockCoefficient": 0.41999998688697817,
+        "waterDensityKgM3": 1025.0,
+        "dampingRatio": 0.8500000238418579,
+        "maxRollDeg": 25.0,
+        "maxPitchDeg": 18.0,
+        "waterlineOffsetM": 0.0,
+        "heaveFrequencyScale": 1.0,
+        "angularFrequencyScale": 0.6000000238418579
+    },
+    "defaultRootKinematic": true,
+    "freeRigidbodyAvailable": true,
+    "validatedHydrodynamics": false
+}

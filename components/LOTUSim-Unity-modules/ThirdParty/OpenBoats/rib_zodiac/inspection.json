@@ -1,0 +1,353 @@
+{
+  "key": "rib_zodiac",
+  "category": "speedboat",
+  "lengthM": 6,
+  "title": "Zodiac boat",
+  "author": "RedC130",
+  "source": "https://sketchfab.com/3d-models/zodiac-boat-a10b7997f1514bd7829ece74f68c681c",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/zodiac_boat.glb",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "135f8ec00491749f7a88a74b4e50e8c67c71d21fac5b4d753b959d66734ba9ee",
+  "bytes": 3717960,
+  "declaredTriangles": 121772,
+  "asset": {
+    "extras": {
+      "author": "RedC130 (https://sketchfab.com/RedC130)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/zodiac-boat-a10b7997f1514bd7829ece74f68c681c",
+      "title": "Zodiac boat"
+    },
+    "generator": "Sketchfab-15.30.0",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_materials_specular",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_clearcoat",
+    "KHR_materials_transmission"
+  ],
+  "extensionsRequired": [],
+  "primitives": 18,
+  "images": 0,
+  "skins": 0,
+  "materials": [
+    {
+      "name": "edge_color000255",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 1.0
+        }
+      },
+      "name": "Zodiac_noir_mat",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0862745,
+          0.0862745,
+          0.0862745,
+          1.0
+        ],
+        "roughnessFactor": 0.10209554924357864
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "name": "Zodiac_NEUTRE",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 0.0
+        }
+      },
+      "name": "Zodiac_gris_fonc",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.055927007777547506,
+          0.053644314344577046,
+          0.053644314344577046,
+          1.0
+        ],
+        "roughnessFactor": 0.5104777462178932
+      }
+    },
+    {
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 1.0
+        }
+      },
+      "name": "Zodiac_Gris",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.114753436074669,
+          0.114753436074669,
+          0.114753436074669,
+          1.0
+        ],
+        "metallicFactor": 0.8091453231095561,
+        "roughnessFactor": 0.26666747936755614
+      }
+    },
+    {
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "extensions": {
+        "KHR_materials_emissive_strength": {
+          "emissiveStrength": 10.0
+        }
+      },
+      "name": "Zodiac_Blanc",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8215692146871304,
+          0.8215692146871304,
+          0.8107588274554741,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "name": "Zodiac_Noir",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "emissiveFactor": [
+        0.36926983470546315,
+        0.0,
+        0.0
+      ],
+      "extensions": {
+        "KHR_materials_emissive_strength": {
+          "emissiveStrength": 10.0
+        },
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 0.0
+        }
+      },
+      "name": "Zodiac_Rouge_Fonc",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.403922,
+          0.0,
+          0.03921569999999992,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    },
+    {
+      "emissiveFactor": [
+        1.0,
+        0.021807634948988824,
+        0.0
+      ],
+      "extensions": {
+        "KHR_materials_emissive_strength": {
+          "emissiveStrength": 10.0
+        },
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 0.0
+        }
+      },
+      "name": "Zodiac_Rouge_Clair",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8980389999999998,
+          0.0,
+          0.08627449999999992,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "name": "Zodiac_couleur_boudin.",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.364191586107691,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.5
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 1.0,
+          "clearcoatRoughnessFactor": 0.04
+        },
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 0.0
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.6419036705635675
+        }
+      },
+      "name": "Zodiac_Verre_translucide_gris_clair",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.686275,
+          0.686275,
+          0.686275,
+          0.35809632943643255
+        ],
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "name": "Zodiac_Verre_translucide_vert",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.270588,
+          0.486274,
+          0.356863,
+          0.788235
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "name": "Zodiac_Orange",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.898039,
+          0.505882,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "name": "Zodiac_Ecran",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.156863,
+          0.16862799999999994,
+          0.21568599999999993,
+          1.0
+        ],
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "name": "edge_color494747255",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "name": "edge_color255255255255",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "name": "Zodiac_Gris_clair",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.760784,
+          0.772549,
+          0.768628,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 0.0
+        }
+      },
+      "name": "Zodiac_Beige_sombre",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.38123703598375874,
+          0.2949357414882439,
+          0.1362062387182323,
+          1.0
+        ],
+        "roughnessFactor": 0.09600029257232022
+      }
+    }
+  ]
+}

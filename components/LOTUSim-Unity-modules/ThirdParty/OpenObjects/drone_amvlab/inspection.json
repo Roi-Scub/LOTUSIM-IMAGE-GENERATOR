@@ -1,0 +1,26 @@
+{
+  "key": "drone_amvlab",
+  "category": "drone",
+  "author": "AMV Lab",
+  "title": "drone amvlab",
+  "source": "https://github.com/amvlab/aircraft-models",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/amvlab/aircraft-models/91d835e8e851b2317fe79af291c9fed6153fd525/models/drone_nologo.glb",
+  "mirrorRepository": "amvlab/aircraft-models",
+  "mirrorCommit": "91d835e8e851b2317fe79af291c9fed6153fd525",
+  "sha256": "b3b1089986443bec395c57852c68e1dbf5bf990e28472656d9b9ad6c377931d1",
+  "bytes": 200704,
+  "format": "glb",
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.7.33",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "materials": 1,
+  "images": 1,
+  "nodes": 1,
+  "skins": 0,
+  "animations": 0
+}

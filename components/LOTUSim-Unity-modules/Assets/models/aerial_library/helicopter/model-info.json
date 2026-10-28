@@ -1,0 +1,31 @@
+{
+    "model": "helicopter",
+    "category": "helicopter",
+    "address": "helicopter",
+    "prefab": "Assets/Prefabs/helicopter.prefab",
+    "source": "original procedural geometry",
+    "unityForwardAxis": "+X",
+    "unityUpAxis": "+Y",
+    "gazeboForwardAxis": "+X",
+    "gazeboUpAxis": "+Z",
+    "classId": 3,
+    "triangles": 18600,
+    "renderers": 11,
+    "minimum": {
+        "x": -5.332844257354736,
+        "y": -1.224000096321106,
+        "z": -4.301814556121826
+    },
+    "maximum": {
+        "x": 4.181814670562744,
+        "y": 1.6900004148483277,
+        "z": 4.301815509796143
+    },
+    "sizeMetres": {
+        "x": 9.51465892791748,
+        "y": 2.9140005111694338,
+        "z": 8.603630065917969
+    },
+    "flightPhysics": false,
+    "animated": false
+}

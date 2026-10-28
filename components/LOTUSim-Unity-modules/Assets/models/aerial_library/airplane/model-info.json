@@ -1,0 +1,31 @@
+{
+    "model": "airplane",
+    "category": "airplane",
+    "address": "airplane",
+    "prefab": "Assets/Prefabs/airplane.prefab",
+    "source": "original procedural geometry",
+    "unityForwardAxis": "+X",
+    "unityUpAxis": "+Y",
+    "gazeboForwardAxis": "+X",
+    "gazeboUpAxis": "+Z",
+    "classId": 4,
+    "triangles": 47512,
+    "renderers": 12,
+    "minimum": {
+        "x": -3.785001039505005,
+        "y": -1.1779999732971192,
+        "z": -5.431001663208008
+    },
+    "maximum": {
+        "x": 3.660001516342163,
+        "y": 1.559999942779541,
+        "z": 5.431001663208008
+    },
+    "sizeMetres": {
+        "x": 7.445002555847168,
+        "y": 2.73799991607666,
+        "z": 10.862003326416016
+    },
+    "flightPhysics": false,
+    "animated": false
+}

@@ -1,0 +1,12 @@
+Cessna 172 — Nobilis the Palaeovespa
+Source: https://sketchfab.com/3d-models/cessna-172-64cddaee5aff470682659a8c08525046
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Download: https://raw.githubusercontent.com/bilawalsidhu/gods-eye-view/e2274bbf0ceaeb2e14f8a59d63e77000553c6816/public/models/c172.glb
+SHA-256: aba52b6b784534db63c1712b0189ce1b74a94edea586b41db9b795f9be3601d8
+Changes:
+- Source retained with pinned mirror/hash and original creator attribution
+- Node transforms and simulation units baked; no downloaded scripts imported
+- Opaque HDRP adaptation; alpha/IOR/transmission may differ from source
+- Rigid source pose is owned by LOTUSim; Unity changes only visual child
+- Visual/collision body parameters are approximate, not validated naval/aeronautical engineering
+Creator does not endorse this integration. Trademark/publicity rights not granted. Retain credits with redistributed models/datasets.

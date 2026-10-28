@@ -1,0 +1,12 @@
+Buoy — OzzyDan
+Source: https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Download: https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/buoy.glb
+SHA-256: bf25eed9c14ce3f01c436c7a9748c22ac06c78ee43a7301739cda63919fcaee9
+Changes:
+- Source retained with pinned mirror/hash and original creator attribution
+- Node transforms and simulation units baked; no downloaded scripts imported
+- Opaque HDRP adaptation; alpha/IOR/transmission may differ from source
+- Rigid source pose is owned by LOTUSim; Unity changes only visual child
+- Visual/collision body parameters are approximate, not validated naval/aeronautical engineering
+Creator does not endorse this integration. Trademark/publicity rights not granted. Retain credits with redistributed models/datasets.

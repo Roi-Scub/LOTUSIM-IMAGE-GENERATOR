@@ -1,0 +1,13 @@
+Helicopter — Gigantic Burger
+Source: https://sketchfab.com/3d-models/helicopter-ef70283b1dea4ae8b18eec9231ce390e
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Download: https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/helicopter.glb
+SHA-256: cf93bc4c874e6ead912456bbe64c108570aa300d37967a452388fbf217962e3f
+Changes:
+- Source retained with pinned mirror/hash and original creator attribution
+- Node transforms and simulation units baked; no downloaded scripts imported
+- Opaque HDRP adaptation; alpha/IOR/transmission may differ from source
+- Rigid source pose is owned by LOTUSim; Unity changes only visual child
+- Visual/collision body parameters are approximate, not validated naval/aeronautical engineering
+- Original rotor animation sampled into opaque mesh frames (same geometry for RGB and annotations)
+Creator does not endorse this integration. Trademark/publicity rights not granted. Retain credits with redistributed models/datasets.

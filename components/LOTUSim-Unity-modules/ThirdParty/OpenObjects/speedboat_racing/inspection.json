@@ -1,0 +1,32 @@
+{
+  "key": "speedboat_racing",
+  "category": "speedboat",
+  "author": "milamila",
+  "title": "Boat",
+  "source": "https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/bob6664569/open-water/285b6ce32057c70191a7fe16c31d979fa383ac64/site/assets/boats/boat.glb",
+  "mirrorRepository": "bob6664569/open-water",
+  "mirrorCommit": "285b6ce32057c70191a7fe16c31d979fa383ac64",
+  "sha256": "18f7af567af1bb0c65a87f154cad47b528bdeb217f5ca8144747b0cac122bda5",
+  "bytes": 5138688,
+  "format": "glb",
+  "asset": {
+    "extras": {
+      "author": "milamila (https://sketchfab.com/milamila)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d",
+      "title": "Boat"
+    },
+    "generator": "Sketchfab-12.67.0",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "materials": 3,
+  "images": 4,
+  "nodes": 33,
+  "skins": 0,
+  "animations": 0
+}

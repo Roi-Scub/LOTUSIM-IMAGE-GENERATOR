@@ -1,0 +1,104 @@
+{
+  "key": "airplane_a320",
+  "category": "airplane",
+  "author": "AMV Lab",
+  "title": "airplane a320",
+  "source": "https://github.com/amvlab/aircraft-models",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/amvlab/aircraft-models/91d835e8e851b2317fe79af291c9fed6153fd525/models/A320_nologo.glb",
+  "mirrorRepository": "amvlab/aircraft-models",
+  "mirrorCommit": "91d835e8e851b2317fe79af291c9fed6153fd525",
+  "sha256": "08cc60caafe3d0937f3e12e72c28bcb96dfdb39763ac124bcd4da8adaea11ab9",
+  "bytes": 250472,
+  "format": "glb",
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.7.33",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "materials": [
+    {
+      "name": "01 - Default",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.3272727131843567,
+      "smoothness": 0.8050577342510223,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_00_baseMap.png",
+      "normalMap": "",
+      "maskMap": "",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    }
+  ],
+  "images": 1,
+  "nodes": 1,
+  "skins": 0,
+  "animations": 0,
+  "lengthM": 37.57,
+  "beamM": 35.37382666632276,
+  "draftM": 0,
+  "heightM": 11.28863412583319,
+  "vertices": 4628,
+  "triangles": 5229,
+  "materialBatches": 1,
+  "maxTextureSize": 1024,
+  "boundsMin": [
+    -18.784999999999997,
+    -5.6443170629165955,
+    -17.68691333316138
+  ],
+  "boundsMax": [
+    18.784999999999997,
+    5.644317062916595,
+    17.68691333316138
+  ],
+  "normalization": {
+    "basis": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    ],
+    "scale": 0.9970437783505955,
+    "shift": [
+      3.046695261031262,
+      -2.8315873781784626,
+      -0.037309273506739515
+    ]
+  },
+  "changes": [
+    "Source retained with pinned mirror/hash and original creator attribution",
+    "Node transforms and simulation units baked; no downloaded scripts imported",
+    "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+    "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+    "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering"
+  ],
+  "kind": "aircraft",
+  "animationFrames": 0,
+  "animationSeconds": 0
+}

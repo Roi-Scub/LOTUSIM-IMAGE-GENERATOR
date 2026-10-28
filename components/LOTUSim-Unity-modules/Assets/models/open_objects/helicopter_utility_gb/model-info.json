@@ -1,0 +1,136 @@
+{
+  "key": "helicopter_utility_gb",
+  "category": "helicopter",
+  "author": "Gigantic Burger",
+  "title": "Helicopter",
+  "source": "https://sketchfab.com/3d-models/helicopter-ef70283b1dea4ae8b18eec9231ce390e",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "download": "https://raw.githubusercontent.com/srcejon/sdrangel-3d-models/59d1ee24ebc2c24343afb54b26928f965a625140/helicopter.glb",
+  "mirrorRepository": "srcejon/sdrangel-3d-models",
+  "mirrorCommit": "59d1ee24ebc2c24343afb54b26928f965a625140",
+  "sha256": "cf93bc4c874e6ead912456bbe64c108570aa300d37967a452388fbf217962e3f",
+  "bytes": 2214424,
+  "format": "glb",
+  "asset": {
+    "extras": {
+      "author": "Gigantic Burger (https://sketchfab.com/gigantic.burger)",
+      "created": "Fri Dec 10 10:24:03 2021",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/helicopter-ef70283b1dea4ae8b18eec9231ce390e",
+      "title": "Helicopter"
+    },
+    "generator": "Gestaltor 2021.6.1 Triticale Community",
+    "version": "2.0"
+  },
+  "extensionsRequired": [],
+  "extensionsUsed": [],
+  "materials": [
+    {
+      "name": "AW101-AW101_sha",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.04229485053762261,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_00_baseMap.png",
+      "normalMap": "",
+      "maskMap": "",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    },
+    {
+      "name": "AW101-AW101_windows_sha",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.04229485053762261,
+      "doubleSided": true,
+      "sourceAlpha": "OPAQUE",
+      "baseMap": "material_01_baseMap.png",
+      "normalMap": "",
+      "maskMap": "",
+      "emissionMap": "",
+      "normalScale": 1,
+      "emission": [
+        0,
+        0,
+        0
+      ],
+      "coat": 0
+    }
+  ],
+  "images": 1,
+  "nodes": 12,
+  "skins": 0,
+  "animations": 1,
+  "lengthM": 20,
+  "beamM": 16.587940072816686,
+  "draftM": 0,
+  "heightM": 6.364510511791961,
+  "vertices": 5089,
+  "triangles": 4738,
+  "materialBatches": 2,
+  "maxTextureSize": 2048,
+  "boundsMin": [
+    -10.0,
+    -3.1822552558959805,
+    -8.293970036408343
+  ],
+  "boundsMax": [
+    10.0,
+    3.1822552558959805,
+    8.293970036408343
+  ],
+  "normalization": {
+    "basis": [
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "scale": 1.0045725448930827,
+    "shift": [
+      -1.5960497654851027,
+      0.9220997565860813,
+      -0.03235977159023751
+    ]
+  },
+  "changes": [
+    "Source retained with pinned mirror/hash and original creator attribution",
+    "Node transforms and simulation units baked; no downloaded scripts imported",
+    "Opaque HDRP adaptation; alpha/IOR/transmission may differ from source",
+    "Rigid source pose is owned by LOTUSim; Unity changes only visual child",
+    "Visual/collision body parameters are approximate, not validated naval/aeronautical engineering",
+    "Original rotor animation sampled into opaque mesh frames (same geometry for RGB and annotations)"
+  ],
+  "kind": "aircraft",
+  "animationFrames": 30,
+  "animationSeconds": 1.0
+}
