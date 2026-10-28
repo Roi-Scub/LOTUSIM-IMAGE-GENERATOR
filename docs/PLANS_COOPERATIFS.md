@@ -36,6 +36,30 @@ de l'objet ; elle varie ensuite avec sa trajectoire. La météo et la mer du blo
 décrivent les demandes de rendu et les hypothèses du planificateur. Cet export ne
 change pas automatiquement l'océan ou les éclairages d'un moteur graphique.
 
+## Régler la cadence des photos
+
+Dans le panneau de scénario continu, choisir **Nombre d'images** ou **Une photo
+toutes les X secondes**. Le premier mode répartit le nombre demandé sur la durée ;
+le second calcule automatiquement le nombre de prises. La composition du bloc et
+son budget d'images indépendantes ne sont pas modifiés.
+
+Le temps est celui de la simulation, pas le temps réel passé à calculer le rendu.
+La première prise est prévue à **0 seconde**, et l'instant exact de fin n'est pas
+capturé. Ainsi, 60 secondes avec un intervalle de 2 secondes donnent 30 photos,
+aux instants 0, 2, 4, …, 58 secondes.
+
+Les instants sont compilés sur une grille de 30 frames par seconde. Chaque instant
+demandé est arrondi indépendamment à la frame la plus proche, sans accumulation
+de dérive. Un intervalle non multiple de 1/30 seconde peut donc produire des écarts
+alternés entre les prises ; l'écart de quantification est indiqué dans l'aperçu.
+Les calendriers dépassant 2 000 captures ou confondant plusieurs prises sur une
+même frame sont refusés. Le réglage est conservé dans le plan et son contexte ;
+une altération des frames sans calendrier cohérent bloque le contrôle.
+
+Les anciens plans gardent leur calendrier. Dans Trafic coopératif, **Calendrier
+hérité** conserve aussi les éventuelles rafales du planificateur. Une cadence
+explicite remplace ces rafales ; le nombre annoncé correspond à ce calendrier seul.
+
 ## Lire et choisir un plan
 
 Le sélecteur de la bibliothèque présente les plans et leurs révisions. L'entrée
@@ -99,3 +123,34 @@ modèles 3D eux-mêmes et les moteurs ne sont pas embarqués.
 Le téléchargement ne démarre rien. L'exécution dans LOTUSim et le branchement du
 rendu nécessitent toujours les services, modèles et adaptateurs compatibles. Le
 paquet n'est pas un importeur universel pour Unity, Unreal ou un autre moteur.
+
+## Capturer ce calendrier dans Unity
+
+1. Télécharger le ZIP d'un plan **contrôlé**, puis l'extraire dans un dossier local.
+2. Avec Play arrêté, dans le projet Unity actif, choisir **LOTUSim > Dataset >
+   Cooperative traffic > Import library bundle manifest (no Play)** et sélectionner
+   le `manifest.json` extrait. L'import vérifie les empreintes et les références ;
+   il ne démarre aucun scénario ni nouvelle connexion ROS.
+3. Ouvrir seule la nouvelle scène `Assets/Scenes/Dataset/Library_<identifiant>.unity`.
+   Les services LOTUSim et ROS TCP habituels doivent être prêts, sans autre scénario
+   en cours. Passer en Play, puis utiliser **Start randomized sequence** dans le menu
+   du composant `DatasetSequenceRunner`. Le démarrage automatique reste désactivé
+   pour éviter un lancement involontaire.
+4. Les sorties se trouvent dans le projet Unity sous
+   `artifacts/dataset-library-captures/<identifiant>/`. Le calendrier compilé et le
+   reçu d'import permettent de comparer les prises prévues aux fichiers réellement
+   produits. Un plan enregistré ne prouve pas qu'un rendu a été effectué.
+
+L'import crée une nouvelle configuration, une scène et un YAML ; il refuse
+d'écraser un import existant et préserve les JSON sources. Il nécessite la scène
+connectée et la configuration `MaritimeTrafficAgents` déjà installées, ainsi que
+les prefabs natifs correspondants. Les modèles importés dynamiquement depuis le
+dashboard nécessitent encore leur propre raccord d'import avec version figée ;
+ils ne sont pas acceptés silencieusement par cet importeur de bibliothèque.
+
+La houle et l'éclairage utilisent les réglages visuels existants, non calibrés.
+Les demandes de nuages et de pluie sont archivées, mais cet importeur ne les
+applique pas encore aux shaders. Les durées produisant une différence de nombre
+de frames entre Python et la précision native Unity sont refusées : utiliser alors
+une durée entière et régénérer le plan. La compilation des scripts ne remplace pas
+une validation des images sur le moteur et le GPU de la machine.

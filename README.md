@@ -2,7 +2,7 @@
 
 Ce dossier contient les développements locaux ajoutés autour de LOTUSim et Unity, leurs assets, leurs correctifs et les instructions pour les réinstaller. Il peut être copié dans un dépôt séparé. Ce n’est ni un nouveau simulateur autonome ni une version officielle de LOTUSim : les moteurs de base restent des dépendances identifiées.
 
-Version portable initiale : **0.1.0**. Voir le [journal des versions](CHANGELOG.md)
+Version portable actuelle : **0.2.0**. Voir le [journal des versions](CHANGELOG.md)
 et le [guide de versionnement](docs/VERSIONNEMENT.md).
 
 ## Démarrer depuis le dépôt privé
@@ -59,6 +59,10 @@ scénarios et de choisir leurs plans dans une bibliothèque SQLite locale, puis 
 modifier position, vitesse ou cap dans de nouvelles révisions. Les contrôles de
 séparation et de rencontre COLREG sont partiels et non certifiants. Aucun plan n'est
 appliqué à une simulation active. [Guide des plans](docs/PLANS_COOPERATIFS.md).
+
+Les scénarios continus peuvent demander un nombre de photos ou une prise toutes
+les X secondes simulées, avec aperçu du calendrier et import explicite du bundle
+dans Unity. Le mode d'images indépendantes reste disponible.
 
 ## Lancer seulement le dashboard
 

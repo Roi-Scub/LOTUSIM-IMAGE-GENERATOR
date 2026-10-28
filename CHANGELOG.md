@@ -1,5 +1,19 @@
 # Journal des versions
 
+## 0.2.0 du 28 octobre 2026
+
+- Cadence des scénarios continus au choix : nombre de prises ou intervalle en
+  secondes simulées, avec première prise à zéro et fin de scène exclue.
+- Calendrier compilé sur les frames moteur, temps demandés et effectifs,
+  quantification documentée et limite de 2 000 captures.
+- Réglages dans Paramétrage et Trafic coopératif, aperçu du nombre de prises,
+  conservation en bibliothèque SQLite et validation des empreintes du calendrier.
+- Importeur Unity explicite des bundles contrôlés : nouvelle scène et nouveaux
+  assets, calendrier `captureFrames` appliqué, originaux et rapport de dérivation
+  conservés, sans lancement automatique du moteur ou de Play.
+- Compatibilité conservée pour les plans antérieurs et les campagnes d'images
+  indépendantes ; une cadence explicite remplace les rafales héritées.
+
 ## 0.1.0 du 28 octobre 2026
 
 Première version portable de LOTUSIM Image Generator. Le code existant est importé
