@@ -21,16 +21,20 @@ class MeshApiTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(dir='/private/tmp')
         self.root = Path(self.temp.name).resolve()
         self.core, self.unity = self.root / 'core', self.root / 'unity'
-        self.core.mkdir(); self.unity.mkdir()
+        self.core.mkdir()
+        self.unity.mkdir()
         self.hub = StateHub(Collector(), 30)
-        self.server = DashboardServer(('127.0.0.1', 0), self.hub, self.root,
-                                      assets=MeshLibrary(self.core, self.unity))
+        self.server = DashboardServer(
+            ('127.0.0.1', 0), self.hub, self.root, assets=MeshLibrary(self.core, self.unity)
+        )
         self.port = self.server.server_address[1]
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
 
     def tearDown(self):
-        self.server.shutdown(); self.server.server_close(); self.thread.join(2)
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join(2)
         self.temp.cleanup()
 
     def request(self, path, method='GET', body=None, headers=None):
@@ -42,8 +46,10 @@ class MeshApiTests(unittest.TestCase):
         return result
 
     def upload(self, headers=None, body=b'broken'):
-        request_headers = {'X-LOTUSim-Asset-Import': '1',
-                           'Content-Type': 'multipart/form-data; boundary=qa-boundary'}
+        request_headers = {
+            'X-LOTUSim-Asset-Import': '1',
+            'Content-Type': 'multipart/form-data; boundary=qa-boundary',
+        }
         request_headers.update(headers or {})
         return self.request('/api/assets/import', 'POST', body, request_headers)
 
@@ -65,8 +71,9 @@ class MeshApiTests(unittest.TestCase):
         self.assertEqual(self.upload({'Sec-Fetch-Site': 'cross-site'})[0], 403)
 
     def test_missing_intent_header_denied(self):
-        status, _, _ = self.request('/api/assets/import', 'POST', b'x',
-                                   {'Content-Type': 'multipart/form-data; boundary=x'})
+        status, _, _ = self.request(
+            '/api/assets/import', 'POST', b'x', {'Content-Type': 'multipart/form-data; boundary=x'}
+        )
         self.assertEqual(status, 403)
 
     def test_wrong_host_denied(self):
@@ -96,10 +103,12 @@ class MeshApiTests(unittest.TestCase):
             self.server.import_slot.release()
 
     def test_file_traversal_and_unlisted_id_denied(self):
-        for path in ('/api/assets/files/unknown/model.obj',
-                     '/api/assets/files/model/%2e%2e/secret.obj',
-                     '/api/assets/files/model/.hidden.obj',
-                     '/api/assets/files/model/a%5cb.obj'):
+        for path in (
+            '/api/assets/files/unknown/model.obj',
+            '/api/assets/files/model/%2e%2e/secret.obj',
+            '/api/assets/files/model/.hidden.obj',
+            '/api/assets/files/model/a%5cb.obj',
+        ):
             self.assertEqual(self.request(path)[0], 404)
 
     def test_no_mutating_simulation_endpoint_added(self):

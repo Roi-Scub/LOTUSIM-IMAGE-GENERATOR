@@ -22,15 +22,14 @@ def rgb_message_to_png(message):
 
     def chunk(kind, data):
         return (
-            struct.pack(">I", len(data)) + kind + data
+            struct.pack(">I", len(data))
+            + kind
+            + data
             + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
         )
 
     # Filter 0 keeps each RGB row unchanged; remove only transport row padding.
-    rows = b"".join(
-        b"\x00" + pixels[y * step:y * step + width * 3]
-        for y in range(height)
-    )
+    rows = b"".join(b"\x00" + pixels[y * step : y * step + width * 3] for y in range(height))
     return (
         b"\x89PNG\r\n\x1a\n"
         + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))

@@ -6,16 +6,28 @@ Shader "Hidden/LOTUSim/DatasetInstanceMask"
     #pragma multi_compile_instancing
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-    struct Attributes { float3 positionOS : POSITION; UNITY_VERTEX_INPUT_INSTANCE_ID };
-    struct Varyings { float4 positionCS : SV_POSITION; UNITY_VERTEX_OUTPUT_STEREO };
+    struct Attributes
+    {
+        float3 positionOS : POSITION;
+        UNITY_VERTEX_INPUT_INSTANCE_ID
+    };
+    struct Varyings
+    {
+        float4 positionCS : SV_POSITION;
+        UNITY_VERTEX_OUTPUT_STEREO
+    };
     Varyings Vert(Attributes input)
     {
         UNITY_SETUP_INSTANCE_ID(input);
-        Varyings output; UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-        output.positionCS=TransformWorldToHClip(TransformObjectToWorld(input.positionOS));
+        Varyings output;
+        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+        output.positionCS = TransformWorldToHClip(TransformObjectToWorld(input.positionOS));
         return output;
     }
-    float4 Frag(Varyings input) : SV_Target { return float4(1,1,1,1); }
+    float4 Frag(Varyings input) : SV_Target
+    {
+        return float4(1, 1, 1, 1);
+    }
     ENDHLSL
     SubShader
     {
@@ -23,7 +35,10 @@ Shader "Hidden/LOTUSim/DatasetInstanceMask"
         Pass
         {
             Name "VisibleMask"
-            Blend Off ZWrite Off ZTest LEqual Cull Back
+            Blend Off
+            ZWrite Off
+            ZTest LEqual
+            Cull Back
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
@@ -32,7 +47,10 @@ Shader "Hidden/LOTUSim/DatasetInstanceMask"
         Pass
         {
             Name "AmodalMaskInFrame"
-            Blend Off ZWrite Off ZTest Always Cull Back
+            Blend Off
+            ZWrite Off
+            ZTest Always
+            Cull Back
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag

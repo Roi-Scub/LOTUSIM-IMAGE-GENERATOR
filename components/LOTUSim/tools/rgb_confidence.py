@@ -22,12 +22,9 @@ from collections.abc import Iterable, Mapping
 from itertools import combinations
 from typing import Any
 
-
 SCHEMA = "lotusim-rgb-empirical-confidence-1"
 BIN_EDGES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
-CALIBRATION_TARGET = (
-    "class-and-IoU>=0.5 against Unity geometry (not human recognition)"
-)
+CALIBRATION_TARGET = "class-and-IoU>=0.5 against Unity geometry (not human recognition)"
 REFERENCE = "held-out detector predictions; empirical precision, not exact probability"
 Z_95 = 1.959963984540054
 
@@ -58,7 +55,10 @@ def _fingerprint(signature: Any, *, optional: bool = False) -> str | None:
         raise ValueError("signature must be a non-empty string or JSON object")
     try:
         canonical = json.dumps(
-            signature, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+            signature,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
             allow_nan=False,
         )
     except (ValueError, TypeError) as error:
@@ -74,9 +74,13 @@ def _bin_index(score: float) -> int:
 def wilson_interval(correct: int, support: int) -> tuple[float, float] | None:
     """Return the two-sided 95% Wilson interval as proportions."""
     if (
-        isinstance(correct, bool) or isinstance(support, bool)
-        or not isinstance(correct, int) or not isinstance(support, int)
-        or support < 0 or correct < 0 or correct > support
+        isinstance(correct, bool)
+        or isinstance(support, bool)
+        or not isinstance(correct, int)
+        or not isinstance(support, int)
+        or support < 0
+        or correct < 0
+        or correct > support
     ):
         raise ValueError("correct/support must be integer counts with 0 <= correct <= support")
     if support == 0:
@@ -85,16 +89,23 @@ def wilson_interval(correct: int, support: int) -> tuple[float, float] | None:
     z2 = Z_95 * Z_95
     denominator = 1.0 + z2 / support
     center = (proportion + z2 / (2.0 * support)) / denominator
-    half_width = Z_95 * math.sqrt(
-        proportion * (1.0 - proportion) / support + z2 / (4.0 * support * support)
-    ) / denominator
+    half_width = (
+        Z_95
+        * math.sqrt(proportion * (1.0 - proportion) / support + z2 / (4.0 * support * support))
+        / denominator
+    )
     return max(0.0, center - half_width), min(1.0, center + half_width)
 
 
 def _empty_bins() -> list[dict[str, Any]]:
     return [
-        {"lower": BIN_EDGES[i], "upper": BIN_EDGES[i + 1],
-         "upperInclusive": i == 4, "support": 0, "correct": 0}
+        {
+            "lower": BIN_EDGES[i],
+            "upper": BIN_EDGES[i + 1],
+            "upperInclusive": i == 4,
+            "support": 0,
+            "correct": 0,
+        }
         for i in range(5)
     ]
 
@@ -143,10 +154,13 @@ def fit_calibration(
             raise ValueError(f"record {index} missing required field: {error.args[0]}") from error
         if not isinstance(correct, bool):
             raise ValueError(f"record {index}: correct must be bool, not a score or label")
-        declared_source = " ".join(str(record.get(k, "")) for k in
-                                   ("source", "inferenceMode", "localizationSource")).lower()
-        if any(token in declared_source for token in
-               ("ground_truth_crop", "ground-truth crop", "oracle", "gt_crop")):
+        declared_source = " ".join(
+            str(record.get(k, "")) for k in ("source", "inferenceMode", "localizationSource")
+        ).lower()
+        if any(
+            token in declared_source
+            for token in ("ground_truth_crop", "ground-truth crop", "oracle", "gt_crop")
+        ):
             raise ValueError("calibration must use independent predictions, not ground-truth crops")
         bucket_index = _bin_index(score)
         category_bins = categories.setdefault(category, _empty_bins())
@@ -224,8 +238,9 @@ def estimate_confidence(
     except ValueError:
         result["status"] = "signature_mismatch"
         return result
-    if (current_detector != calibration.get("detectorFingerprint")
-            or current_knowledge != calibration.get("knowledgeFingerprint")):
+    if current_detector != calibration.get(
+        "detectorFingerprint"
+    ) or current_knowledge != calibration.get("knowledgeFingerprint"):
         result["status"] = "signature_mismatch"
         return result
     try:
@@ -248,11 +263,18 @@ def estimate_confidence(
         # Recompute from counts rather than trusting serialized percentages.
         result["calibratedConfidencePercent"] = 100.0 * correct / support
         result["confidenceIntervalPercent"] = [100.0 * value for value in interval]
-        result["status"] = "empirical_precision" if scope == "category" else "pooled_empirical_precision"
+        result["status"] = (
+            "empirical_precision" if scope == "category" else "pooled_empirical_precision"
+        )
     except (KeyError, IndexError, TypeError, ValueError):
-        result.update(calibratedConfidencePercent=None, confidenceIntervalPercent=None,
-                      status="invalid_calibration", support=0, correctCount=0,
-                      calibrationScope=None)
+        result.update(
+            calibratedConfidencePercent=None,
+            confidenceIntervalPercent=None,
+            status="invalid_calibration",
+            support=0,
+            correctCount=0,
+            calibrationScope=None,
+        )
     return result
 
 
@@ -279,7 +301,9 @@ def validate_split_isolation(
                 groups.add(_text(record["sceneGroup"], "sceneGroup"))
                 hashes.add(_text(record["imageHash"], "imageHash"))
             except (KeyError, TypeError) as error:
-                raise ValueError(f"split {name}: records require sceneGroup and imageHash") from error
+                raise ValueError(
+                    f"split {name}: records require sceneGroup and imageHash"
+                ) from error
             count += 1
         summary[name] = {"records": count, "groups": groups, "hashes": hashes}
     for first, second in combinations(summary, 2):
@@ -293,10 +317,14 @@ def validate_split_isolation(
     return {
         "passed": True,
         "check": "disjoint declared scene groups and normalized pixel hashes",
-        "splits": {name: {"records": data["records"],
-                           "sceneGroups": len(data["groups"]),
-                           "imageHashes": len(data["hashes"])}
-                   for name, data in summary.items()},
+        "splits": {
+            name: {
+                "records": data["records"],
+                "sceneGroups": len(data["groups"]),
+                "imageHashes": len(data["hashes"]),
+            }
+            for name, data in summary.items()
+        },
         "limitation": "Requires correct lineage grouping; hashes alone do not detect near duplicates.",
     }
 

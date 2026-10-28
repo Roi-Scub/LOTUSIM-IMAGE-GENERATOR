@@ -1,4 +1,5 @@
 """Pure contract/safety checks. These tests do NOT validate a native UE render."""
+
 import copy
 import hashlib
 import importlib.util
@@ -17,20 +18,81 @@ import unreal_scene_template as template
 
 IDENTITY = '6d408dbf-79c7-480c-a5be-b897547b9600'
 CAMPAIGN = {
-    'schema': 'lotusim-campaign-settings-1', 'engine': 'unreal', 'scene': 'maritime_manual', 'name': 'Test',
-    'seed': 42, 'totalImages': 2, 'camera': {'station': 'bridge', 'width': 1280, 'height': 720, 'verticalFovDeg': 60,
-    'farClipM': 50000, 'viewHeadingDeg': 0, 'viewDownPitchDeg': 0},
+    'schema': 'lotusim-campaign-settings-1',
+    'engine': 'unreal',
+    'scene': 'maritime_manual',
+    'name': 'Test',
+    'seed': 42,
+    'totalImages': 2,
+    'camera': {
+        'station': 'bridge',
+        'width': 1280,
+        'height': 720,
+        'verticalFovDeg': 60,
+        'farClipM': 50000,
+        'viewHeadingDeg': 0,
+        'viewDownPitchDeg': 0,
+    },
     'observer': {'headingDeg': 0, 'speedMps': 0, 'rollMaxDeg': 0, 'pitchMaxDeg': 0},
     'sensors': {'rgb': True, 'thermal': False, 'nightVision': False},
-    'blocks': [{'id': 'day', 'name': 'Day', 'images': 1, 'environment': {'timeOfDay': 'day', 'cloudCover': .2,
-               'rainIntensity': 0, 'waveHeightM': 2, 'waveDirectionDeg': 0, 'windMps': 3},
-                'objects': [{'id': 'b', 'model': 'buoy', 'count': 1, 'distanceM': 100, 'bearingDeg': 0, 'spreadDeg': 0,
-                             'altitudeM': 0, 'speedMps': 0, 'headingDeg': 0, 'distanceMode': 'metres'}]},
-               {'id': 'night', 'name': 'Night', 'images': 1, 'environment': {'timeOfDay': 'night', 'cloudCover': .2,
-                'rainIntensity': 0, 'waveHeightM': 2, 'waveDirectionDeg': 0, 'windMps': 3}, 'objects': []}]}
+    'blocks': [
+        {
+            'id': 'day',
+            'name': 'Day',
+            'images': 1,
+            'environment': {
+                'timeOfDay': 'day',
+                'cloudCover': 0.2,
+                'rainIntensity': 0,
+                'waveHeightM': 2,
+                'waveDirectionDeg': 0,
+                'windMps': 3,
+            },
+            'objects': [
+                {
+                    'id': 'b',
+                    'model': 'buoy',
+                    'count': 1,
+                    'distanceM': 100,
+                    'bearingDeg': 0,
+                    'spreadDeg': 0,
+                    'altitudeM': 0,
+                    'speedMps': 0,
+                    'headingDeg': 0,
+                    'distanceMode': 'metres',
+                }
+            ],
+        },
+        {
+            'id': 'night',
+            'name': 'Night',
+            'images': 1,
+            'environment': {
+                'timeOfDay': 'night',
+                'cloudCover': 0.2,
+                'rainIntensity': 0,
+                'waveHeightM': 2,
+                'waveDirectionDeg': 0,
+                'windMps': 3,
+            },
+            'objects': [],
+        },
+    ],
+}
 BUOY = '<sdf version="1.10"><model name="buoy"><link name="body"><visual name="v"><pose>0 0 .5 0 0 0</pose><geometry><cylinder><radius>.4</radius><length>1</length></cylinder></geometry><material><diffuse>1 .2 .1 1</diffuse></material></visual></link></model></sdf>'
-CATALOGUE = {'assets': [{'model': 'buoy', 'category': 'buoy', 'domain': 'moored', 'lengthM': 1.3,
-                        'beamM': 1.3, 'heightM': 3, 'maxSpeedMps': 0}]}
+CATALOGUE = {
+    'assets': [
+        {
+            'model': 'buoy',
+            'category': 'buoy',
+            'domain': 'moored',
+            'lengthM': 1.3,
+            'beamM': 1.3,
+            'heightM': 3,
+            'maxSpeedMps': 0,
+        }
+    ]
+}
 
 
 class UnrealAdapterTests(unittest.TestCase):
@@ -52,7 +114,9 @@ class UnrealAdapterTests(unittest.TestCase):
         self.directory.cleanup()
 
     def prepared(self):
-        return adapter.prepare_unreal(self.campaign, IDENTITY, 'a' * 64, self.root, '/unused/Unity', self.catalogue)
+        return adapter.prepare_unreal(
+            self.campaign, IDENTITY, 'a' * 64, self.root, '/unused/Unity', self.catalogue
+        )
 
     def plan(self):
         return json.loads(self.prepared()['files']['scene-plan.json'])
@@ -61,23 +125,56 @@ class UnrealAdapterTests(unittest.TestCase):
         model = self.models / 'sample'
         (model / 'meshes').mkdir(parents=True)
         (model / 'materials').mkdir()
-        (model / 'model.sdf').write_text('<sdf><model name="sample"><link name="body"><visual name="v"><geometry><mesh><uri>model://sample/meshes/sample.obj</uri></mesh></geometry></visual></link></model></sdf>')
+        (model / 'model.sdf').write_text(
+            '<sdf><model name="sample"><link name="body"><visual name="v"><geometry><mesh><uri>model://sample/meshes/sample.obj</uri></mesh></geometry></visual></link></model></sdf>'
+        )
         obj = 'mtllib ../materials/sample.mtl\n' if material else ''
         obj += 'v 0 0 0\nv 2 0 0\nv 0 3 4\nvn 0 1 0\nf 1//1 2//1 3//1\n'
         (model / 'meshes/sample.obj').write_text(obj)
         (model / 'materials/sample.mtl').write_text('newmtl solid\nKd 1 .2 .1\nmap_Kd image.png\n')
         (model / 'materials/image.png').write_bytes(b'fixture-raster-content')
-        self.catalogue['assets'].append({'model': 'sample', 'category': 'other', 'domain': 'moored',
-                                         'lengthM': 2, 'beamM': 3, 'heightM': 4, 'maxSpeedMps': 0})
+        self.catalogue['assets'].append(
+            {
+                'model': 'sample',
+                'category': 'other',
+                'domain': 'moored',
+                'lengthM': 2,
+                'beamM': 3,
+                'heightM': 4,
+                'maxSpeedMps': 0,
+            }
+        )
         self.campaign['blocks'][0]['objects'][0]['model'] = 'sample'
         return model
 
     def test_four_flat_outputs_and_plugins(self):
         result = self.prepared()
-        self.assertEqual(set(result['files']), {'LOTUSimPrepared.uproject', 'scene_unreal.py', 'scene-plan.json', 'unreal-instructions.txt'})
-        self.assertTrue(all(isinstance(value, bytes) and len(value) < 1048576 for value in result['files'].values()))
+        self.assertEqual(
+            set(result['files']),
+            {
+                'LOTUSimPrepared.uproject',
+                'scene_unreal.py',
+                'scene-plan.json',
+                'unreal-instructions.txt',
+            },
+        )
+        self.assertTrue(
+            all(
+                isinstance(value, bytes) and len(value) < 1048576
+                for value in result['files'].values()
+            )
+        )
         project = json.loads(result['files']['LOTUSimPrepared.uproject'])
-        self.assertEqual({p['Name'] for p in project['Plugins']}, {'PythonScriptPlugin', 'EditorScriptingUtilities', 'SequencerScripting', 'MovieRenderPipeline', 'Water'})
+        self.assertEqual(
+            {p['Name'] for p in project['Plugins']},
+            {
+                'PythonScriptPlugin',
+                'EditorScriptingUtilities',
+                'SequencerScripting',
+                'MovieRenderPipeline',
+                'Water',
+            },
+        )
         self.assertFalse(result['manifest']['nativeValidated'])
         self.assertFalse(result['manifest']['annotationSupported'])
 
@@ -87,13 +184,20 @@ class UnrealAdapterTests(unittest.TestCase):
         self.assertEqual(original, self.prepared()['files']['scene_unreal.py'])
 
     def test_unique_uuid_destination(self):
-        self.assertEqual(self.plan()['scenePath'], '/Game/LOTUSim/Campaigns/6d408dbf79c7480ca5beb897547b9600/Scene')
+        self.assertEqual(
+            self.plan()['scenePath'],
+            '/Game/LOTUSim/Campaigns/6d408dbf79c7480ca5beb897547b9600/Scene',
+        )
         with self.assertRaises(ValueError):
-            adapter.prepare_unreal(self.campaign, '../../escape', 'a' * 64, self.root, '', self.catalogue)
+            adapter.prepare_unreal(
+                self.campaign, '../../escape', 'a' * 64, self.root, '', self.catalogue
+            )
 
     def test_invalid_hash_and_engine_refused(self):
         with self.assertRaises(ValueError):
-            adapter.prepare_unreal(self.campaign, IDENTITY, 'not-sha', self.root, '', self.catalogue)
+            adapter.prepare_unreal(
+                self.campaign, IDENTITY, 'not-sha', self.root, '', self.catalogue
+            )
         self.campaign['engine'] = 'unity'
         with self.assertRaises(ValueError):
             self.prepared()
@@ -101,7 +205,7 @@ class UnrealAdapterTests(unittest.TestCase):
     def test_buoy_primitive_provenance_and_source_hash(self):
         binding = self.plan()['bindings'][0]
         self.assertEqual(binding['kind'], 'sdf-primitives')
-        self.assertEqual(binding['primitives'][0]['dimensionsM'], [.8, .8, 1.0])
+        self.assertEqual(binding['primitives'][0]['dimensionsM'], [0.8, 0.8, 1.0])
         self.assertIn('not the more detailed Unity', binding['provenance'])
         self.assertEqual(len(template._verify_sources(self.plan())), 1)
 
@@ -172,19 +276,27 @@ class UnrealAdapterTests(unittest.TestCase):
     def test_unbaked_parent_transform_refused(self):
         model = self.fixture_mesh()
         sdf = model / 'model.sdf'
-        sdf.write_text(sdf.read_text().replace('<link name="body">', '<link name="body"><pose>1 0 0 0 0 0</pose>'))
+        sdf.write_text(
+            sdf.read_text().replace(
+                '<link name="body">', '<link name="body"><pose>1 0 0 0 0 0</pose>'
+            )
+        )
         with self.assertRaisesRegex(ValueError, 'baked model/link'):
             self.prepared()
 
     def test_unsupported_submesh_refused(self):
         model = self.fixture_mesh()
         sdf = model / 'model.sdf'
-        sdf.write_text(sdf.read_text().replace('</mesh>', '<submesh><name>Hull</name></submesh></mesh>'))
+        sdf.write_text(
+            sdf.read_text().replace('</mesh>', '<submesh><name>Hull</name></submesh></mesh>')
+        )
         with self.assertRaisesRegex(ValueError, 'submesh'):
             self.prepared()
 
     def test_sdf_entity_refused(self):
-        (self.models / 'buoy/model.sdf').write_text('<!DOCTYPE sdf [<!ENTITY x SYSTEM "file:///etc/passwd">]>' + BUOY)
+        (self.models / 'buoy/model.sdf').write_text(
+            '<!DOCTYPE sdf [<!ENTITY x SYSTEM "file:///etc/passwd">]>' + BUOY
+        )
         with self.assertRaisesRegex(ValueError, 'entities'):
             self.prepared()
 
@@ -213,11 +325,17 @@ class UnrealAdapterTests(unittest.TestCase):
 
     def test_map_change_during_capture_unregisters_callback(self):
         calls = []
-        ue = types.SimpleNamespace(unregister_slate_post_tick_callback=lambda h: calls.append(h), log_error=lambda text: calls.append(text))
+        ue = types.SimpleNamespace(
+            unregister_slate_post_tick_callback=lambda h: calls.append(h),
+            log_error=lambda text: calls.append(text),
+        )
         template._STATE = {'ue': ue}
         template._CAPTURE = {'handle': 7, 'task': None}
-        with patch.object(template, '_require_state', side_effect=RuntimeError('wrong level')), patch.object(template, '_write_status') as status:
-            template._capture_tick(.01)
+        with (
+            patch.object(template, '_require_state', side_effect=RuntimeError('wrong level')),
+            patch.object(template, '_write_status') as status,
+        ):
+            template._capture_tick(0.01)
         self.assertIsNone(template._CAPTURE)
         self.assertEqual(calls[0], 7)
         status.assert_called_once_with('rgb-preview-failed: wrong level')

@@ -7,7 +7,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-
 // --------------------------------------------------------------------------------------------------------------------
 //  LotusimConnector.cs
 //
@@ -15,7 +14,6 @@
 //  Main Unity interface for Lotusim. Wraps LotusimBaseInterface implementations (ROS2, TCPIP)
 //  Handles creation, destruction, and updating of vessels, transforms, and animations.
 // --------------------------------------------------------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,21 +33,18 @@ namespace Lotusim
     public class LotusimInterface : MonoBehaviour
     {
         [Header("Interface Settings")]
-        [SerializeField] private string m_namespace = "Silent_Storm";
-        [SerializeField] private string selectedInterfaceType = "ROS2";
-
+        [SerializeField]
+        private string m_namespace = "Silent_Storm";
+        [SerializeField]
+        private string selectedInterfaceType = "ROS2";
         private LotusimBaseInterface m_interface;
-
         // Mapping of GameObject name to transformation.
         private Dictionary<string, Transform> m_transformMap = new Dictionary<string, Transform>();
-
         // Mapping of GameObject name to GameObject.
         private Dictionary<string, GameObject> m_objectMap = new Dictionary<string, GameObject>();
-
         // Mapping of Animation name to Animation.
         private Dictionary<string, Animator> m_animatorMap = new Dictionary<string, Animator>();
         private HashSet<string> m_pendingAssetLoads = new HashSet<string>();
-
         public void OnNamespaceChanged()
         {
             Debug.Log("Handling namespace change: " + m_namespace);
@@ -57,6 +52,7 @@ namespace Lotusim
             {
                 m_interface.Destroy();
             }
+
             m_interface.Start(m_namespace);
         }
 
@@ -67,6 +63,7 @@ namespace Lotusim
             {
                 m_interface.Destroy();
             }
+
             Start();
         }
 
@@ -99,7 +96,6 @@ namespace Lotusim
                 string vesselName = kvp.Key;
                 string assetAddress = kvp.Value.Item1;
                 Pose pose = kvp.Value.Item2;
-
                 if (m_objectMap.ContainsKey(vesselName))
                 {
                     Debug.Log($"[LotusimInterface] Ignoring duplicate CREATE for '{vesselName}': object already exists.");
@@ -113,21 +109,15 @@ namespace Lotusim
                 }
 
                 Debug.Log($"[LotusimInterface] Loading vessel prefab '{assetAddress}' for '{vesselName}'.");
-                Addressables.LoadAssetAsync<GameObject>(assetAddress).Completed += handle =>
-                    OnFindAssetLocation(handle, vesselName, assetAddress, pose);
+                Addressables.LoadAssetAsync<GameObject>(assetAddress).Completed += handle => OnFindAssetLocation(handle, vesselName, assetAddress, pose);
             }
+
             m_interface.m_vesselToCreate.Clear();
         }
 
-        void OnFindAssetLocation(
-            AsyncOperationHandle<GameObject> handle,
-            string vesselName,
-            string assetAddress,
-            Pose pose
-        )
+        void OnFindAssetLocation(AsyncOperationHandle<GameObject> handle, string vesselName, string assetAddress, Pose pose)
         {
             m_pendingAssetLoads.Remove(vesselName);
-
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 if (m_objectMap.ContainsKey(vesselName))
@@ -137,20 +127,14 @@ namespace Lotusim
                 }
 
                 // Instantiate the prefab at the origin with no rotation
-                GameObject instantiatedObject = Instantiate(
-                    handle.Result,
-                    pose.position,
-                    pose.rotation
-                );
+                GameObject instantiatedObject = Instantiate(handle.Result, pose.position, pose.rotation);
                 instantiatedObject.name = vesselName;
                 // A ROS-owned root must never also be integrated by Unity's
                 // free Rigidbody buoyancy. Only its visual child follows waves.
                 instantiatedObject.GetComponent<Lotusim.Dataset.MarineVesselWaveMotion>()?.MarkExternallyDriven();
-
                 m_objectMap.Add(vesselName, instantiatedObject);
                 m_transformMap.Add(vesselName, instantiatedObject.transform);
                 Debug.Log($"[LotusimInterface] Instantiated vessel '{vesselName}' from '{assetAddress}'.");
-
                 Animator[] _animator = instantiatedObject.GetComponentsInChildren<Animator>();
                 foreach (Animator _a in _animator)
                 {
@@ -161,10 +145,7 @@ namespace Lotusim
             }
             else
             {
-                Debug.LogError(
-                    $"[LotusimInterface] Failed to load prefab '{assetAddress}' for '{vesselName}': " +
-                    $"{handle.OperationException?.Message ?? "unknown Addressables error"}"
-                );
+                Debug.LogError($"[LotusimInterface] Failed to load prefab '{assetAddress}' for '{vesselName}': " + $"{handle.OperationException?.Message ?? "unknown Addressables error"}");
             }
         }
 
@@ -174,6 +155,7 @@ namespace Lotusim
             {
                 DestroyObject(vessel_name);
             }
+
             m_interface.m_vesselsToDestroy.Clear();
         }
 
@@ -188,6 +170,7 @@ namespace Lotusim
                     m_animatorMap.Remove(thruster_namespace);
                     Debug.Log("Thruster removed: " + thruster_namespace);
                 }
+
                 Destroy(m_objectMap[vessel_name]);
                 m_objectMap.Remove(vessel_name);
                 m_transformMap.Remove(vessel_name);
@@ -203,26 +186,21 @@ namespace Lotusim
                 {
                     Vector3 position = m_objectMap[vessel_name].transform.position;
                     Quaternion rotation = m_objectMap[vessel_name].transform.rotation;
-
                     Addressables.LoadAssetAsync<GameObject>("explosion_area").Completed += handle =>
                     {
                         if (handle.Status == AsyncOperationStatus.Succeeded)
                         {
-                            GameObject instantiatedObject = Instantiate(
-                                handle.Result,
-                                position,
-                                rotation
-                            );
+                            GameObject instantiatedObject = Instantiate(handle.Result, position, rotation);
                         }
                         else
                         {
                             Debug.LogWarning("Failed to create explosion.");
                         }
                     };
-
                     DestroyObject(vessel_name);
                 }
             }
+
             m_interface.m_vesselsToExplode.Clear();
         }
 
@@ -235,6 +213,7 @@ namespace Lotusim
                     m_animatorMap[animator_name].speed = spin_ratio;
                 }
             }
+
             m_interface.m_propellerSpinRatios.Clear();
         }
 
@@ -247,12 +226,8 @@ namespace Lotusim
         {
             m_transformMap.Clear();
             m_objectMap.Clear();
-
             var allGameObjects = FindObjectsOfType<GameObject>(true);
-            var rootObjects = allGameObjects
-                .Where(go => go != null && go.transform.parent == null)
-                .ToArray();
-
+            var rootObjects = allGameObjects.Where(go => go != null && go.transform.parent == null).ToArray();
             foreach (var gameObject in rootObjects)
             {
                 m_transformMap[gameObject.name] = gameObject.transform;
@@ -279,6 +254,7 @@ namespace Lotusim
                         UpdateVesselsList();
                         continue;
                     }
+
                     Pose poseUnityFrame = CoordinateSystemUtils.GzPoseToUnityPose(pose);
                     InterpolateVesselPosition(transform, poseUnityFrame, interpolationRatio);
                 }
@@ -287,27 +263,14 @@ namespace Lotusim
             {
                 Time.timeScale = 0;
             }
+
             m_interface.m_vesselPoses.Clear();
         }
 
-        private void InterpolateVesselPosition(
-            Transform transform,
-            Pose poseUnityFrame,
-            float interpolationRatio
-        )
+        private void InterpolateVesselPosition(Transform transform, Pose poseUnityFrame, float interpolationRatio)
         {
-            Vector3 interpolatedPosition = Vector3.Lerp(
-                transform.position,
-                poseUnityFrame.position,
-                interpolationRatio
-            );
-
-            Quaternion interpolatedRotation = Quaternion.Lerp(
-                transform.rotation,
-                poseUnityFrame.rotation,
-                interpolationRatio
-            );
-
+            Vector3 interpolatedPosition = Vector3.Lerp(transform.position, poseUnityFrame.position, interpolationRatio);
+            Quaternion interpolatedRotation = Quaternion.Lerp(transform.rotation, poseUnityFrame.rotation, interpolationRatio);
             transform.SetPositionAndRotation(interpolatedPosition, interpolatedRotation);
         }
     }

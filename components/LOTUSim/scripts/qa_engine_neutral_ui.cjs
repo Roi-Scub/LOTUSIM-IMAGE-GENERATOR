@@ -1,78 +1,493 @@
 /* Browser-only registry/profile fixtures. Every mutating request is intercepted. */
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
-const origin='http://127.0.0.1:8766',stage=path.resolve(__dirname,'..'),output=path.join(stage,'qa','engine-neutral-ui');fs.mkdirSync(output,{recursive:true});
-const uiRoot=fs.existsSync(path.join(stage,'ui','index.html'))?path.join(stage,'ui'):path.join(stage,'tools','ops_dashboard_ui');
-const profile=fs.mkdtempSync('/private/tmp/lotusim-neutral-engine-ui-'),pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-let browser,connection,sequence=0,checks=0,baseState,baseCatalog;
-const pending=new Map(),events=[],interceptedWrites=[],interceptionErrors=[],screenshots=[];
-const generic=(id,label)=>({id,label,mode:'neutral_contract_only',available:true,preparationAvailable:true,runtimeDetected:false,nativeValidated:false,detail:'Contrat neutre de scène uniquement. Aucun SDK, adaptateur de capture ou moteur natif installé par ce profil.',capabilities:{scenePreparation:false,neutralExport:true,rgbCapture:false,annotations:false,livePoses:false,waves:false}});
-const engines=[{id:'unity',label:'Unity',mode:'existing_manual_adapter',available:true,preparationAvailable:true,runtimeDetected:true,nativeValidated:false,detail:'Adaptateur de campagne existant ; la préparation ne lance pas de moteur.',capabilities:{scenePreparation:true,neutralExport:true,rgbCapture:true,annotations:true,livePoses:true,waves:true}},
-  {id:'unreal',label:'Unreal Engine',mode:'experimental_static_preview',available:true,preparationAvailable:true,runtimeDetected:false,nativeValidated:false,detail:'Aperçu RGB statique expérimental sur mer plane ; sans ROS2, annotations ni houle.',capabilities:{scenePreparation:true,neutralExport:true,rgbCapture:true,annotations:false,livePoses:false,waves:false}},generic('godot','Godot'),generic('blender','Blender'),generic('o3de','O3DE')];
-const registry={schema:'lotusim-engine-catalog-1',selectedEngine:engines[0],engines};
-const check=(value,message)=>{assert.ok(value,message);checks++;};
-async function send(method,params={}){const id=++sequence;return new Promise((resolve,reject)=>{pending.set(id,{resolve,reject});connection.send(JSON.stringify({id,method,params}));setTimeout(()=>{if(pending.has(id)){pending.delete(id);reject(Error('CDP timeout: '+method));}},15000).unref();});}
-async function evaluate(expression){const result=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);return result.result?.value;}
-async function waitFor(expression,ms=20000){const stop=Date.now()+ms;while(Date.now()<stop){if(await evaluate(expression))return;await pause(100);}throw Error('Timed out: '+expression);}
-async function set(id,value,event='input'){await evaluate(`(()=>{const node=document.getElementById(${JSON.stringify(id)});node.value=${JSON.stringify(String(value))};node.dispatchEvent(new Event(${JSON.stringify(event)},{bubbles:true}));})()`);}
-async function click(id){await evaluate(`document.getElementById(${JSON.stringify(id)}).click()`);}
-async function shot(name){const data=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});const file=path.join(output,name);fs.writeFileSync(file,Buffer.from(data.data,'base64'));screenshots.push(file);}
-function state(){const now=new Date().toISOString();return {...baseState,generatedAt:now,engineProfile:registry.selectedEngine,renderer:{engineId:'unity',label:'Unity',source:'legacy_unity_adapter',type:'unity_legacy',state:'idle',fresh:true,isPlaying:false,isPaused:false,isCompiling:false,sceneName:'ExistingUnityScene'},preview:{url:'/qa-fixture/unity-frame.svg',kind:'historical',live:false,updatedAt:'2026-10-27T14:00:00Z',label:'Fixture RGB — provenance Unity',engineId:'unity',engineLabel:'Unity',sourceEngine:{id:'unity',label:'Unity'}},capture:{...baseState.capture,engineId:'unity',engineLabel:'Unity',sourceEngine:{id:'unity',label:'Unity'}}};}
-function catalog(){return {...baseCatalog,selectedEngine:registry.selectedEngine,engines:registry.engines,defaults:{...baseCatalog.defaults,engine:registry.selectedEngine.id},scenes:registry.engines.map(engine=>({id:'maritime_manual',engine:engine.id,label:'Scène maritime · '+engine.label}))};}
-async function paused(item){
-  const request=item.params.request,requestId=item.params.requestId,url=new URL(request.url);
-  const fulfill=(body,type='application/json',status=200)=>send('Fetch.fulfillRequest',{requestId,responseCode:status,responseHeaders:[{name:'Content-Type',value:type}],body:Buffer.from(typeof body==='string'?body:JSON.stringify(body)).toString('base64')});
-  if(!['GET','HEAD'].includes(request.method)){
-    let body=request.postData||'';if(!body&&item.params.networkId)body=(await send('Network.getRequestPostData',{requestId:item.params.networkId})).postData;
-    interceptedWrites.push({method:request.method,path:url.pathname,body,headers:request.headers});
-    if(request.method==='POST'&&url.pathname==='/api/engines/select'){
-      const selected=JSON.parse(body);if(selected.engine==='custom'){const descriptor=generic('custom-aabbccddeeff0011',selected.name);registry.engines.push(descriptor);registry.selectedEngine=descriptor;}else registry.selectedEngine=registry.engines.find(engine=>engine.id===selected.engine);
+const fs = require('node:fs'),
+  path = require('node:path'),
+  cp = require('node:child_process'),
+  assert = require('node:assert/strict');
+const origin = 'http://127.0.0.1:8766',
+  stage = path.resolve(__dirname, '..'),
+  output = path.join(stage, 'qa', 'engine-neutral-ui');
+fs.mkdirSync(output, { recursive: true });
+const uiRoot = fs.existsSync(path.join(stage, 'ui', 'index.html'))
+  ? path.join(stage, 'ui')
+  : path.join(stage, 'tools', 'ops_dashboard_ui');
+const profile = fs.mkdtempSync('/private/tmp/lotusim-neutral-engine-ui-'),
+  pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+let browser,
+  connection,
+  sequence = 0,
+  checks = 0,
+  baseState,
+  baseCatalog;
+const pending = new Map(),
+  events = [],
+  interceptedWrites = [],
+  interceptionErrors = [],
+  screenshots = [];
+const generic = (id, label) => ({
+  id,
+  label,
+  mode: 'neutral_contract_only',
+  available: true,
+  preparationAvailable: true,
+  runtimeDetected: false,
+  nativeValidated: false,
+  detail:
+    'Contrat neutre de scène uniquement. Aucun SDK, adaptateur de capture ou moteur natif installé par ce profil.',
+  capabilities: {
+    scenePreparation: false,
+    neutralExport: true,
+    rgbCapture: false,
+    annotations: false,
+    livePoses: false,
+    waves: false,
+  },
+});
+const engines = [
+  {
+    id: 'unity',
+    label: 'Unity',
+    mode: 'existing_manual_adapter',
+    available: true,
+    preparationAvailable: true,
+    runtimeDetected: true,
+    nativeValidated: false,
+    detail: 'Adaptateur de campagne existant ; la préparation ne lance pas de moteur.',
+    capabilities: {
+      scenePreparation: true,
+      neutralExport: true,
+      rgbCapture: true,
+      annotations: true,
+      livePoses: true,
+      waves: true,
+    },
+  },
+  {
+    id: 'unreal',
+    label: 'Unreal Engine',
+    mode: 'experimental_static_preview',
+    available: true,
+    preparationAvailable: true,
+    runtimeDetected: false,
+    nativeValidated: false,
+    detail: 'Aperçu RGB statique expérimental sur mer plane ; sans ROS2, annotations ni houle.',
+    capabilities: {
+      scenePreparation: true,
+      neutralExport: true,
+      rgbCapture: true,
+      annotations: false,
+      livePoses: false,
+      waves: false,
+    },
+  },
+  generic('godot', 'Godot'),
+  generic('blender', 'Blender'),
+  generic('o3de', 'O3DE'),
+];
+const registry = { schema: 'lotusim-engine-catalog-1', selectedEngine: engines[0], engines };
+const check = (value, message) => {
+  assert.ok(value, message);
+  checks++;
+};
+async function send(method, params = {}) {
+  const id = ++sequence;
+  return new Promise((resolve, reject) => {
+    pending.set(id, { resolve, reject });
+    connection.send(JSON.stringify({ id, method, params }));
+    setTimeout(() => {
+      if (pending.has(id)) {
+        pending.delete(id);
+        reject(Error('CDP timeout: ' + method));
+      }
+    }, 15000).unref();
+  });
+}
+async function evaluate(expression) {
+  const result = await send('Runtime.evaluate', {
+    expression,
+    returnByValue: true,
+    awaitPromise: true,
+  });
+  if (result.exceptionDetails)
+    throw Error(result.exceptionDetails.exception?.description || result.exceptionDetails.text);
+  return result.result?.value;
+}
+async function waitFor(expression, ms = 20000) {
+  const stop = Date.now() + ms;
+  while (Date.now() < stop) {
+    if (await evaluate(expression)) return;
+    await pause(100);
+  }
+  throw Error('Timed out: ' + expression);
+}
+async function set(id, value, event = 'input') {
+  await evaluate(
+    `(()=>{const node=document.getElementById(${JSON.stringify(id)});node.value=${JSON.stringify(String(value))};node.dispatchEvent(new Event(${JSON.stringify(event)},{bubbles:true}));})()`,
+  );
+}
+async function click(id) {
+  await evaluate(`document.getElementById(${JSON.stringify(id)}).click()`);
+}
+async function shot(name) {
+  const data = await send('Page.captureScreenshot', {
+    format: 'png',
+    captureBeyondViewport: false,
+  });
+  const file = path.join(output, name);
+  fs.writeFileSync(file, Buffer.from(data.data, 'base64'));
+  screenshots.push(file);
+}
+function state() {
+  const now = new Date().toISOString();
+  return {
+    ...baseState,
+    generatedAt: now,
+    engineProfile: registry.selectedEngine,
+    renderer: {
+      engineId: 'unity',
+      label: 'Unity',
+      source: 'legacy_unity_adapter',
+      type: 'unity_legacy',
+      state: 'idle',
+      fresh: true,
+      isPlaying: false,
+      isPaused: false,
+      isCompiling: false,
+      sceneName: 'ExistingUnityScene',
+    },
+    preview: {
+      url: '/qa-fixture/unity-frame.svg',
+      kind: 'historical',
+      live: false,
+      updatedAt: '2026-10-27T14:00:00Z',
+      label: 'Fixture RGB — provenance Unity',
+      engineId: 'unity',
+      engineLabel: 'Unity',
+      sourceEngine: { id: 'unity', label: 'Unity' },
+    },
+    capture: {
+      ...baseState.capture,
+      engineId: 'unity',
+      engineLabel: 'Unity',
+      sourceEngine: { id: 'unity', label: 'Unity' },
+    },
+  };
+}
+function catalog() {
+  return {
+    ...baseCatalog,
+    selectedEngine: registry.selectedEngine,
+    engines: registry.engines,
+    defaults: { ...baseCatalog.defaults, engine: registry.selectedEngine.id },
+    scenes: registry.engines.map((engine) => ({
+      id: 'maritime_manual',
+      engine: engine.id,
+      label: 'Scène maritime · ' + engine.label,
+    })),
+  };
+}
+async function paused(item) {
+  const request = item.params.request,
+    requestId = item.params.requestId,
+    url = new URL(request.url);
+  const fulfill = (body, type = 'application/json', status = 200) =>
+    send('Fetch.fulfillRequest', {
+      requestId,
+      responseCode: status,
+      responseHeaders: [{ name: 'Content-Type', value: type }],
+      body: Buffer.from(typeof body === 'string' ? body : JSON.stringify(body)).toString('base64'),
+    });
+  if (!['GET', 'HEAD'].includes(request.method)) {
+    let body = request.postData || '';
+    if (!body && item.params.networkId)
+      body = (await send('Network.getRequestPostData', { requestId: item.params.networkId }))
+        .postData;
+    interceptedWrites.push({
+      method: request.method,
+      path: url.pathname,
+      body,
+      headers: request.headers,
+    });
+    if (request.method === 'POST' && url.pathname === '/api/engines/select') {
+      const selected = JSON.parse(body);
+      if (selected.engine === 'custom') {
+        const descriptor = generic('custom-aabbccddeeff0011', selected.name);
+        registry.engines.push(descriptor);
+        registry.selectedEngine = descriptor;
+      } else
+        registry.selectedEngine = registry.engines.find((engine) => engine.id === selected.engine);
       return fulfill(registry);
     }
-    if(request.method==='POST'&&url.pathname==='/api/settings/prepare'){
-      const campaign=JSON.parse(body),id='qa-neutral-contract';return fulfill({valid:true,campaign,errors:[],warnings:[],id,downloadUrl:'/api/settings/prepared/'+id+'/campaign.json',manifestUrl:'/api/settings/prepared/'+id+'/manifest.json',bundleUrl:'/api/settings/prepared/'+id+'/bundle.zip',engineActions:{engine:campaign.engine,runtimeDetected:false,nativeValidated:false,instructions:['Contrat neutre uniquement. Lire adapter-requirements.json puis développer et valider l’adaptateur du moteur choisi.','Aucune image ni annotation produite ; aucune connexion temps réel effectuée.'],files:[{name:'scene-contract.json',label:'Contrat de scène neutre'},{name:'adapter-requirements.json',label:'Exigences de l’adaptateur'},{name:'engine-instructions.txt',label:'Instructions du moteur'}]},engineAgent:{kind:'deterministic_role_pipeline',traces:[{role:'planner',state:'completed'},{role:'scene_script_builder',state:'completed'},{role:'validator',state:'completed'}],limitations:['Aucun SDK ou adaptateur natif fourni pour ce profil.','Tous les paramètres restent déclaratifs jusqu’à implémentation et validation d’un adaptateur.']}});
+    if (request.method === 'POST' && url.pathname === '/api/settings/prepare') {
+      const campaign = JSON.parse(body),
+        id = 'qa-neutral-contract';
+      return fulfill({
+        valid: true,
+        campaign,
+        errors: [],
+        warnings: [],
+        id,
+        downloadUrl: '/api/settings/prepared/' + id + '/campaign.json',
+        manifestUrl: '/api/settings/prepared/' + id + '/manifest.json',
+        bundleUrl: '/api/settings/prepared/' + id + '/bundle.zip',
+        engineActions: {
+          engine: campaign.engine,
+          runtimeDetected: false,
+          nativeValidated: false,
+          instructions: [
+            'Contrat neutre uniquement. Lire adapter-requirements.json puis développer et valider l’adaptateur du moteur choisi.',
+            'Aucune image ni annotation produite ; aucune connexion temps réel effectuée.',
+          ],
+          files: [
+            { name: 'scene-contract.json', label: 'Contrat de scène neutre' },
+            { name: 'adapter-requirements.json', label: 'Exigences de l’adaptateur' },
+            { name: 'engine-instructions.txt', label: 'Instructions du moteur' },
+          ],
+        },
+        engineAgent: {
+          kind: 'deterministic_role_pipeline',
+          traces: [
+            { role: 'planner', state: 'completed' },
+            { role: 'scene_script_builder', state: 'completed' },
+            { role: 'validator', state: 'completed' },
+          ],
+          limitations: [
+            'Aucun SDK ou adaptateur natif fourni pour ce profil.',
+            'Tous les paramètres restent déclaratifs jusqu’à implémentation et validation d’un adaptateur.',
+          ],
+        },
+      });
     }
-    return fulfill({error:'All other UI QA writes are blocked.'},'application/json',403);
+    return fulfill({ error: 'All other UI QA writes are blocked.' }, 'application/json', 403);
   }
-  if(url.origin!==origin)return send('Fetch.failRequest',{requestId,errorReason:'BlockedByClient'});
-  if(url.pathname==='/')return fulfill(fs.readFileSync(path.join(uiRoot,'index.html'),'utf8'),'text/html');
-  if(['/app.js','/settings.js','/assets.js','/styles.css','/settings.css'].includes(url.pathname))return fulfill(fs.readFileSync(path.join(uiRoot,url.pathname.slice(1)),'utf8'),url.pathname.endsWith('.js')?'text/javascript':'text/css');
-  if(url.pathname==='/api/engines')return fulfill(registry);
-  if(url.pathname==='/api/settings/catalog')return fulfill(catalog());
-  if(url.pathname==='/api/state')return fulfill(state());
-  if(url.pathname==='/api/events')return fulfill('event: state\ndata: '+JSON.stringify(state())+'\n\n','text/event-stream');
-  if(url.pathname==='/qa-fixture/unity-frame.svg')return fulfill('<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720"><rect width="1280" height="720" fill="#0d2537"/><path d="M0 420H1280" stroke="#427a91"/><text x="640" y="330" fill="#c1e6ef" font-family="sans-serif" text-anchor="middle" font-size="34">FIXTURE UI — source Unity</text><text x="640" y="382" fill="#82a7ba" font-family="sans-serif" text-anchor="middle" font-size="20">Le profil Godot ne change pas la provenance de cette image.</text></svg>','image/svg+xml');
-  return send('Fetch.continueRequest',{requestId});
+  if (url.origin !== origin)
+    return send('Fetch.failRequest', { requestId, errorReason: 'BlockedByClient' });
+  if (url.pathname === '/')
+    return fulfill(fs.readFileSync(path.join(uiRoot, 'index.html'), 'utf8'), 'text/html');
+  if (
+    ['/app.js', '/settings.js', '/assets.js', '/styles.css', '/settings.css'].includes(url.pathname)
+  )
+    return fulfill(
+      fs.readFileSync(path.join(uiRoot, url.pathname.slice(1)), 'utf8'),
+      url.pathname.endsWith('.js') ? 'text/javascript' : 'text/css',
+    );
+  if (url.pathname === '/api/engines') return fulfill(registry);
+  if (url.pathname === '/api/settings/catalog') return fulfill(catalog());
+  if (url.pathname === '/api/state') return fulfill(state());
+  if (url.pathname === '/api/events')
+    return fulfill('event: state\ndata: ' + JSON.stringify(state()) + '\n\n', 'text/event-stream');
+  if (url.pathname === '/qa-fixture/unity-frame.svg')
+    return fulfill(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720"><rect width="1280" height="720" fill="#0d2537"/><path d="M0 420H1280" stroke="#427a91"/><text x="640" y="330" fill="#c1e6ef" font-family="sans-serif" text-anchor="middle" font-size="34">FIXTURE UI — source Unity</text><text x="640" y="382" fill="#82a7ba" font-family="sans-serif" text-anchor="middle" font-size="20">Le profil Godot ne change pas la provenance de cette image.</text></svg>',
+      'image/svg+xml',
+    );
+  return send('Fetch.continueRequest', { requestId });
 }
-(async()=>{
-  baseState=await(await fetch(origin+'/api/state')).json();baseCatalog=await(await fetch(origin+'/api/settings/catalog')).json();check(Array.isArray(baseCatalog.assets),'live local GET provides base fixture structure');
-  browser=cp.spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',['--headless=new','--no-first-run','--no-default-browser-check','--disable-background-networking','--disable-sync','--disable-extensions','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore'});
-  const active=path.join(profile,'DevToolsActivePort');for(let i=0;i<100&&!fs.existsSync(active);i++)await pause(100);check(fs.existsSync(active),'owned isolated Chrome starts');
-  const port=Number(fs.readFileSync(active,'utf8').split('\n')[0]),targets=await(await fetch('http://127.0.0.1:'+port+'/json/list')).json();connection=new WebSocket(targets.find(value=>value.type==='page').webSocketDebuggerUrl);
-  await new Promise((resolve,reject)=>{connection.addEventListener('open',resolve,{once:true});connection.addEventListener('error',reject,{once:true});});
-  connection.addEventListener('message',message=>{const item=JSON.parse(message.data);if(item.id&&pending.has(item.id)){const request=pending.get(item.id);pending.delete(item.id);item.error?request.reject(Error(JSON.stringify(item.error))):request.resolve(item.result);}else{events.push(item);if(item.method==='Fetch.requestPaused')paused(item).catch(error=>interceptionErrors.push(error.stack));}});
-  await send('Page.enable');await send('Runtime.enable');await send('Network.enable');await send('Fetch.enable',{patterns:[{urlPattern:'*',requestStage:'Request'}]});await send('Emulation.setDeviceMetricsOverride',{width:1660,height:1350,deviceScaleFactor:1,mobile:false});await send('Page.navigate',{url:origin+'/#settings'});
-  await waitFor("!document.getElementById('settingsEditor').hidden&&document.getElementById('engineProfileCurrent').textContent==='Unity'");
-  check(await evaluate("['unity','unreal','godot','blender','o3de','custom'].every(value=>[...document.getElementById('engineProfileChoice').options].some(option=>option.value===value))"),'registry offers five built-ins and named profile entry');
-  await set('settings-field-name','Brouillon conservé · 28 octobre');await set('settings-field-block-0-waveHeightM',3.6);await evaluate("window.__qaDraftName=document.getElementById('settings-field-name');window.__qaWave=document.getElementById('settings-field-block-0-waveHeightM')");
-  await set('engineProfileChoice','godot','change');check(interceptedWrites.length===0,'profile choice alone performs no write');await click('engineProfileApply');
+(async () => {
+  baseState = await (await fetch(origin + '/api/state')).json();
+  baseCatalog = await (await fetch(origin + '/api/settings/catalog')).json();
+  check(Array.isArray(baseCatalog.assets), 'live local GET provides base fixture structure');
+  browser = cp.spawn(
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    [
+      '--headless=new',
+      '--no-first-run',
+      '--no-default-browser-check',
+      '--disable-background-networking',
+      '--disable-sync',
+      '--disable-extensions',
+      '--remote-debugging-port=0',
+      '--user-data-dir=' + profile,
+      'about:blank',
+    ],
+    { stdio: 'ignore' },
+  );
+  const active = path.join(profile, 'DevToolsActivePort');
+  for (let i = 0; i < 100 && !fs.existsSync(active); i++) await pause(100);
+  check(fs.existsSync(active), 'owned isolated Chrome starts');
+  const port = Number(fs.readFileSync(active, 'utf8').split('\n')[0]),
+    targets = await (await fetch('http://127.0.0.1:' + port + '/json/list')).json();
+  connection = new WebSocket(targets.find((value) => value.type === 'page').webSocketDebuggerUrl);
+  await new Promise((resolve, reject) => {
+    connection.addEventListener('open', resolve, { once: true });
+    connection.addEventListener('error', reject, { once: true });
+  });
+  connection.addEventListener('message', (message) => {
+    const item = JSON.parse(message.data);
+    if (item.id && pending.has(item.id)) {
+      const request = pending.get(item.id);
+      pending.delete(item.id);
+      item.error ? request.reject(Error(JSON.stringify(item.error))) : request.resolve(item.result);
+    } else {
+      events.push(item);
+      if (item.method === 'Fetch.requestPaused')
+        paused(item).catch((error) => interceptionErrors.push(error.stack));
+    }
+  });
+  await send('Page.enable');
+  await send('Runtime.enable');
+  await send('Network.enable');
+  await send('Fetch.enable', { patterns: [{ urlPattern: '*', requestStage: 'Request' }] });
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1660,
+    height: 1350,
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
+  await send('Page.navigate', { url: origin + '/#settings' });
+  await waitFor(
+    "!document.getElementById('settingsEditor').hidden&&document.getElementById('engineProfileCurrent').textContent==='Unity'",
+  );
+  check(
+    await evaluate(
+      "['unity','unreal','godot','blender','o3de','custom'].every(value=>[...document.getElementById('engineProfileChoice').options].some(option=>option.value===value))",
+    ),
+    'registry offers five built-ins and named profile entry',
+  );
+  await set('settings-field-name', 'Brouillon conservé · 28 octobre');
+  await set('settings-field-block-0-waveHeightM', 3.6);
+  await evaluate(
+    "window.__qaDraftName=document.getElementById('settings-field-name');window.__qaWave=document.getElementById('settings-field-block-0-waveHeightM')",
+  );
+  await set('engineProfileChoice', 'godot', 'change');
+  check(interceptedWrites.length === 0, 'profile choice alone performs no write');
+  await click('engineProfileApply');
   await waitFor("document.getElementById('engineProfileCurrent').textContent==='Godot'");
-  check(await evaluate("document.getElementById('settings-field-engine').value==='unity'&&document.getElementById('settings-field-name')===window.__qaDraftName&&window.__qaDraftName.value==='Brouillon conservé · 28 octobre'&&document.getElementById('settings-field-block-0-waveHeightM')===window.__qaWave&&window.__qaWave.value==='3.6'"),'explicit project profile apply preserves campaign engine, draft inputs and current DOM nodes');
-  check(await evaluate("document.getElementById('engineProfileMode').textContent==='Contrat neutre uniquement'"),'Godot profile never claims native integration');await evaluate('window.scrollTo(0,0)');await shot('godot-profile-preserved-unity-draft.png');
-  await evaluate("document.querySelector('[data-route=overview]').click()");await waitFor("!document.getElementById('page-overview').hidden&&document.getElementById('engineProfileSummary').textContent.includes('Godot')");
-  check(await evaluate("document.getElementById('previewTitle').textContent==='Point de vue · Unity'&&document.getElementById('previewSourceEngine').textContent==='Source des images : Unity'"),'actual image source remains Unity under a configured Godot profile');await evaluate('window.scrollTo(0,0)');await shot('godot-profile-unity-source.png');
-  await evaluate("document.querySelector('[data-route=settings]').click()");await waitFor("!document.getElementById('page-settings').hidden");await set('settings-field-engine','godot','change');
-  check(await evaluate("document.getElementById('settingsPrepare').textContent==='Exporter le contrat · Godot'&&document.getElementById('settingsEngineNote').textContent.includes('pas appliqués dans un moteur')"),'campaign can target generic engine honestly as contract-only');await click('settingsPrepare');await waitFor("!document.getElementById('settingsPrepared').hidden");
-  check(await evaluate("document.getElementById('settingsPrepared').textContent.includes('Contrat de scène uniquement')&&document.getElementById('settingsPrepared').textContent.includes('Exigences de l’adaptateur')&&!document.getElementById('settingsPrepared').textContent.includes('Unreal Editor')"),'generic prepared package shows neutral adapter requirements, not a wrong engine import menu');await evaluate("document.getElementById('settingsPrepared').scrollIntoView({block:'center'})");await shot('godot-neutral-contract.png');
-  await evaluate('window.scrollTo(0,0)');await set('engineProfileChoice','custom','change');await set('engineProfileCustomName','<img src=x onerror=alert(1)>');const before=interceptedWrites.length;await click('engineProfileApply');
-  check(interceptedWrites.length===before&&await evaluate("document.getElementById('engineProfileNotice').textContent.includes('Aucun HTML ni chemin')"),'HTML custom names fail locally before any registry write');
-  await set('engineProfileCustomName','Mon moteur 3D');await click('engineProfileApply');await waitFor("document.getElementById('engineProfileCurrent').textContent==='Mon moteur 3D'");
-  check(await evaluate("document.getElementById('settings-field-engine').value==='godot'"),'custom project profile also preserves the existing campaign engine');
-  await send('Page.reload',{ignoreCache:true});await waitFor("document.getElementById('engineProfileCurrent').textContent==='Mon moteur 3D'&&!document.getElementById('settingsEditor').hidden");
-  check(await evaluate("document.getElementById('settings-field-engine').value==='custom-aabbccddeeff0011'"),'new page gets persisted named profile as the new campaign default');
-  await send('Emulation.setDeviceMetricsOverride',{width:430,height:1050,deviceScaleFactor:1,mobile:true});await evaluate('window.scrollTo(0,0)');check(await evaluate('document.documentElement.scrollWidth<=innerWidth'),'mobile profile panel has no horizontal overflow');await shot('named-profile-mobile.png');
-  check(interceptedWrites.length===3&&interceptedWrites.every(item=>['/api/engines/select','/api/settings/prepare'].includes(item.path)),'two explicit profile writes and one contract prepare intercepted only in browser memory');
-  check(interceptedWrites.filter(item=>item.path==='/api/engines/select').every(item=>Object.entries(item.headers).some(([name,value])=>name.toLowerCase()==='x-lotusim-engines'&&value==='1')),'profile writes carry the exact intent header');
-  const errors=events.filter(item=>item.method==='Runtime.exceptionThrown').map(item=>item.params.exceptionDetails?.exception?.description||item.params.exceptionDetails?.text);check(errors.length===0&&interceptionErrors.length===0,'no JavaScript or fixture errors');
-  const result={passed:true,checks,evidence:'Browser-only registry and source fixtures; no real profile changes, campaigns or engines executed.',realServerMutations:0,interceptedWrites:interceptedWrites.map(item=>({method:item.method,path:item.path})),errors,screenshots};fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
-})().catch(error=>{const result={passed:false,checks,error:error.stack,interceptionErrors,screenshots};fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(result,null,2));console.error(JSON.stringify(result,null,2));process.exitCode=1;}).finally(async()=>{if(connection){try{await send('Browser.close');}catch(_){}connection.close();}if(browser&&!browser.killed)browser.kill('SIGTERM');});
+  check(
+    await evaluate(
+      "document.getElementById('settings-field-engine').value==='unity'&&document.getElementById('settings-field-name')===window.__qaDraftName&&window.__qaDraftName.value==='Brouillon conservé · 28 octobre'&&document.getElementById('settings-field-block-0-waveHeightM')===window.__qaWave&&window.__qaWave.value==='3.6'",
+    ),
+    'explicit project profile apply preserves campaign engine, draft inputs and current DOM nodes',
+  );
+  check(
+    await evaluate(
+      "document.getElementById('engineProfileMode').textContent==='Contrat neutre uniquement'",
+    ),
+    'Godot profile never claims native integration',
+  );
+  await evaluate('window.scrollTo(0,0)');
+  await shot('godot-profile-preserved-unity-draft.png');
+  await evaluate("document.querySelector('[data-route=overview]').click()");
+  await waitFor(
+    "!document.getElementById('page-overview').hidden&&document.getElementById('engineProfileSummary').textContent.includes('Godot')",
+  );
+  check(
+    await evaluate(
+      "document.getElementById('previewTitle').textContent==='Point de vue · Unity'&&document.getElementById('previewSourceEngine').textContent==='Source des images : Unity'",
+    ),
+    'actual image source remains Unity under a configured Godot profile',
+  );
+  await evaluate('window.scrollTo(0,0)');
+  await shot('godot-profile-unity-source.png');
+  await evaluate("document.querySelector('[data-route=settings]').click()");
+  await waitFor("!document.getElementById('page-settings').hidden");
+  await set('settings-field-engine', 'godot', 'change');
+  check(
+    await evaluate(
+      "document.getElementById('settingsPrepare').textContent==='Exporter le contrat · Godot'&&document.getElementById('settingsEngineNote').textContent.includes('pas appliqués dans un moteur')",
+    ),
+    'campaign can target generic engine honestly as contract-only',
+  );
+  await click('settingsPrepare');
+  await waitFor("!document.getElementById('settingsPrepared').hidden");
+  check(
+    await evaluate(
+      "document.getElementById('settingsPrepared').textContent.includes('Contrat de scène uniquement')&&document.getElementById('settingsPrepared').textContent.includes('Exigences de l’adaptateur')&&!document.getElementById('settingsPrepared').textContent.includes('Unreal Editor')",
+    ),
+    'generic prepared package shows neutral adapter requirements, not a wrong engine import menu',
+  );
+  await evaluate("document.getElementById('settingsPrepared').scrollIntoView({block:'center'})");
+  await shot('godot-neutral-contract.png');
+  await evaluate('window.scrollTo(0,0)');
+  await set('engineProfileChoice', 'custom', 'change');
+  await set('engineProfileCustomName', '<img src=x onerror=alert(1)>');
+  const before = interceptedWrites.length;
+  await click('engineProfileApply');
+  check(
+    interceptedWrites.length === before &&
+      (await evaluate(
+        "document.getElementById('engineProfileNotice').textContent.includes('Aucun HTML ni chemin')",
+      )),
+    'HTML custom names fail locally before any registry write',
+  );
+  await set('engineProfileCustomName', 'Mon moteur 3D');
+  await click('engineProfileApply');
+  await waitFor("document.getElementById('engineProfileCurrent').textContent==='Mon moteur 3D'");
+  check(
+    await evaluate("document.getElementById('settings-field-engine').value==='godot'"),
+    'custom project profile also preserves the existing campaign engine',
+  );
+  await send('Page.reload', { ignoreCache: true });
+  await waitFor(
+    "document.getElementById('engineProfileCurrent').textContent==='Mon moteur 3D'&&!document.getElementById('settingsEditor').hidden",
+  );
+  check(
+    await evaluate(
+      "document.getElementById('settings-field-engine').value==='custom-aabbccddeeff0011'",
+    ),
+    'new page gets persisted named profile as the new campaign default',
+  );
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 430,
+    height: 1050,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await evaluate('window.scrollTo(0,0)');
+  check(
+    await evaluate('document.documentElement.scrollWidth<=innerWidth'),
+    'mobile profile panel has no horizontal overflow',
+  );
+  await shot('named-profile-mobile.png');
+  check(
+    interceptedWrites.length === 3 &&
+      interceptedWrites.every((item) =>
+        ['/api/engines/select', '/api/settings/prepare'].includes(item.path),
+      ),
+    'two explicit profile writes and one contract prepare intercepted only in browser memory',
+  );
+  check(
+    interceptedWrites
+      .filter((item) => item.path === '/api/engines/select')
+      .every((item) =>
+        Object.entries(item.headers).some(
+          ([name, value]) => name.toLowerCase() === 'x-lotusim-engines' && value === '1',
+        ),
+      ),
+    'profile writes carry the exact intent header',
+  );
+  const errors = events
+    .filter((item) => item.method === 'Runtime.exceptionThrown')
+    .map(
+      (item) =>
+        item.params.exceptionDetails?.exception?.description || item.params.exceptionDetails?.text,
+    );
+  check(errors.length === 0 && interceptionErrors.length === 0, 'no JavaScript or fixture errors');
+  const result = {
+    passed: true,
+    checks,
+    evidence:
+      'Browser-only registry and source fixtures; no real profile changes, campaigns or engines executed.',
+    realServerMutations: 0,
+    interceptedWrites: interceptedWrites.map((item) => ({ method: item.method, path: item.path })),
+    errors,
+    screenshots,
+  };
+  fs.writeFileSync(path.join(output, 'result.json'), JSON.stringify(result, null, 2));
+  console.log(JSON.stringify(result, null, 2));
+})()
+  .catch((error) => {
+    const result = { passed: false, checks, error: error.stack, interceptionErrors, screenshots };
+    fs.writeFileSync(path.join(output, 'result.json'), JSON.stringify(result, null, 2));
+    console.error(JSON.stringify(result, null, 2));
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    if (connection) {
+      try {
+        await send('Browser.close');
+      } catch (_) {}
+      connection.close();
+    }
+    if (browser && !browser.killed) browser.kill('SIGTERM');
+  });

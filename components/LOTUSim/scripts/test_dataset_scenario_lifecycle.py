@@ -4,6 +4,7 @@
 Run inside the sourced LOTUSim devShell. Never connects to the user's ROS
 domain and only terminates the test process it creates.
 """
+
 import argparse
 import json
 import os
@@ -13,7 +14,6 @@ import subprocess
 import tempfile
 import time
 import uuid
-
 
 WORLD = """<?xml version="1.0"?><sdf version="1.10"><world name="dataset_cycle_check">
   <physics type="ode"><max_step_size>0.02</max_step_size><real_time_factor>1</real_time_factor></physics>
@@ -40,7 +40,9 @@ def main():
     # Set these before importing rclpy. No CLI daemon or live-domain services.
     os.environ["ROS_DOMAIN_ID"] = "96"
     os.environ["GZ_PARTITION"] = "dataset-test-" + uuid.uuid4().hex
-    os.environ["GZ_SIM_SYSTEM_PLUGIN_PATH"] = str(plugin_dir) + ":" + os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", "")
+    os.environ["GZ_SIM_SYSTEM_PLUGIN_PATH"] = (
+        str(plugin_dir) + ":" + os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", "")
+    )
     os.environ["LD_LIBRARY_PATH"] = str(plugin_dir) + ":" + os.environ.get("LD_LIBRARY_PATH", "")
     import rclpy
     from rclpy.qos import QoSProfile, DurabilityPolicy
@@ -57,15 +59,23 @@ def main():
     console = None
     try:
         console = (output / "gazebo-console.log").open("w")
-        process = subprocess.Popen(["gz", "sim", "-s", "-r", "-v", "1", str(world)],
-                                   stdout=console, stderr=subprocess.STDOUT, start_new_session=True)
+        process = subprocess.Popen(
+            ["gz", "sim", "-s", "-r", "-v", "1", str(world)],
+            stdout=console,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
         rclpy.init()
         node = rclpy.create_node("dataset_lifecycle_test")
         commands = []
         poses = []
         qos = QoSProfile(depth=100, durability=DurabilityPolicy.TRANSIENT_LOCAL)
-        node.create_subscription(RendererCmd, "/dataset_cycle_check/renderer_cmd", commands.append, qos)
-        node.create_subscription(VesselPositionArray, "/dataset_cycle_check/renderer_poses", poses.append, qos)
+        node.create_subscription(
+            RendererCmd, "/dataset_cycle_check/renderer_cmd", commands.append, qos
+        )
+        node.create_subscription(
+            VesselPositionArray, "/dataset_cycle_check/renderer_poses", poses.append, qos
+        )
         launch = node.create_client(String, "/dataset_cycle_check/launch_scenario")
         stop = node.create_client(Trigger, "/dataset_cycle_check/stop_scenario")
 
@@ -76,9 +86,13 @@ def main():
                     raise RuntimeError("test Gazebo exited: " + str(process.returncode))
                 if time.monotonic() > deadline:
                     raise TimeoutError(label)
-                rclpy.spin_once(node, timeout_sec=.05)
+                rclpy.spin_once(node, timeout_sec=0.05)
 
-        wait(lambda: launch.service_is_ready() and stop.service_is_ready(), "scenario services unavailable", 30)
+        wait(
+            lambda: launch.service_is_ready() and stop.service_is_ready(),
+            "scenario services unavailable",
+            30,
+        )
         for cycle in range(args.cycles):
             commands.clear()
             poses.clear()
@@ -89,8 +103,19 @@ def main():
             response = future.result()
             if not response.success:
                 raise RuntimeError("launch rejected: " + response.message)
-            wait(lambda: any(c.cmd_type == 0 and c.vessel_name == "Buoy_001" and c.renderer_obj_name == "buoy" for c in commands), "missing CREATE Buoy_001")
-            wait(lambda: any(any(v.vessel_name == "Buoy_001" for v in p.vessels) for p in poses), "missing pose Buoy_001")
+            wait(
+                lambda: any(
+                    c.cmd_type == 0
+                    and c.vessel_name == "Buoy_001"
+                    and c.renderer_obj_name == "buoy"
+                    for c in commands
+                ),
+                "missing CREATE Buoy_001",
+            )
+            wait(
+                lambda: any(any(v.vessel_name == "Buoy_001" for v in p.vessels) for p in poses),
+                "missing pose Buoy_001",
+            )
             duplicate = launch.call_async(request)
             wait(duplicate.done, "duplicate launch response timeout")
             if duplicate.result().success:
@@ -99,11 +124,26 @@ def main():
             wait(future.done, "stop response timeout")
             if not future.result().success:
                 raise RuntimeError("stop rejected: " + future.result().message)
-            wait(lambda: any(c.cmd_type == 1 and c.vessel_name == "Buoy_001" for c in commands), "missing DELETE Buoy_001")
+            wait(
+                lambda: any(c.cmd_type == 1 and c.vessel_name == "Buoy_001" for c in commands),
+                "missing DELETE Buoy_001",
+            )
             poses.clear()
-            wait(lambda: poses and len(poses[-1].vessels) == 0, "pose list did not clear after stop")
-            result["cycles"].append({"cycle": cycle + 1, "create": True, "pose": True, "duplicate_rejected": True, "delete": True})
-            print("PASS cycle", cycle + 1, "CREATE / pose / duplicate rejection / DELETE", flush=True)
+            wait(
+                lambda: poses and len(poses[-1].vessels) == 0, "pose list did not clear after stop"
+            )
+            result["cycles"].append(
+                {
+                    "cycle": cycle + 1,
+                    "create": True,
+                    "pose": True,
+                    "duplicate_rejected": True,
+                    "delete": True,
+                }
+            )
+            print(
+                "PASS cycle", cycle + 1, "CREATE / pose / duplicate rejection / DELETE", flush=True
+            )
         result["passed"] = True
     except Exception as error:
         result["error"] = str(error)

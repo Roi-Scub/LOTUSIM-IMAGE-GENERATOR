@@ -13,18 +13,13 @@
 
 namespace lotusim::scenario {
 
-ScenarioManager::ScenarioManager(
-    rclcpp::Node::SharedPtr node,
-    std::shared_ptr<lotusim::mas::EntitySpawner> spawner,
-    std::shared_ptr<spdlog::logger> logger,
-    gz::sim::EntityComponentManager* ecm)
-    : m_logger{std::move(logger)}
-    , m_ros_node{std::move(node)}
-    , m_spawner{spawner}
-    , m_ecm{ecm}
-{
-    m_callback_group.push_back(m_ros_node->create_callback_group(
-        rclcpp::CallbackGroupType::MutuallyExclusive));
+ScenarioManager::ScenarioManager(rclcpp::Node::SharedPtr node,
+                                 std::shared_ptr<lotusim::mas::EntitySpawner> spawner,
+                                 std::shared_ptr<spdlog::logger> logger,
+                                 gz::sim::EntityComponentManager *ecm)
+    : m_logger{std::move(logger)}, m_ros_node{std::move(node)}, m_spawner{spawner}, m_ecm{ecm} {
+    m_callback_group.push_back(
+        m_ros_node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive));
     m_launch_srv = m_ros_node->create_service<lotusim_msgs::srv::String>(
         "launch_scenario",
         [this](rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr service,
@@ -35,7 +30,7 @@ ScenarioManager::ScenarioManager(
                 auto response = std::make_shared<lotusim_msgs::srv::String::Response>();
                 try {
                     handleLaunch(request, response);
-                } catch (const std::exception& error) {
+                } catch (const std::exception &error) {
                     response->success = false;
                     response->message = std::string("Scenario launch failed: ") + error.what();
                     m_logger->error("{}", response->message);
@@ -43,11 +38,10 @@ ScenarioManager::ScenarioManager(
                 service->send_response(*header, *response);
             });
         },
-        rmw_qos_profile_services_default,
-        m_callback_group.back());
+        rmw_qos_profile_services_default, m_callback_group.back());
 
-    m_callback_group.push_back(m_ros_node->create_callback_group(
-        rclcpp::CallbackGroupType::MutuallyExclusive));
+    m_callback_group.push_back(
+        m_ros_node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive));
     m_stop_srv = m_ros_node->create_service<std_srvs::srv::Trigger>(
         "stop_scenario",
         [this](rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr service,
@@ -57,7 +51,7 @@ ScenarioManager::ScenarioManager(
                 auto response = std::make_shared<std_srvs::srv::Trigger::Response>();
                 try {
                     handleStop(request, response);
-                } catch (const std::exception& error) {
+                } catch (const std::exception &error) {
                     response->success = false;
                     response->message = std::string("Scenario stop failed: ") + error.what();
                     m_logger->error("{}", response->message);
@@ -65,10 +59,10 @@ ScenarioManager::ScenarioManager(
                 service->send_response(*header, *response);
             });
         },
-        rmw_qos_profile_services_default,
-        m_callback_group.back());
+        rmw_qos_profile_services_default, m_callback_group.back());
 
-    m_callback_group.push_back(m_ros_node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive));
+    m_callback_group.push_back(
+        m_ros_node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive));
     m_dataset_srv = m_ros_node->create_service<lotusim_msgs::srv::String>(
         "dataset_control",
         [this](rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr service,
@@ -76,22 +70,25 @@ ScenarioManager::ScenarioManager(
                std::shared_ptr<lotusim_msgs::srv::String::Request> request) {
             enqueueRequest([this, service, header, request]() {
                 auto response = std::make_shared<lotusim_msgs::srv::String::Response>();
-                try { handleDataset(request, response); }
-                catch (const std::exception& e) { response->success = false; response->message = e.what(); }
+                try {
+                    handleDataset(request, response);
+                } catch (const std::exception &e) {
+                    response->success = false;
+                    response->message = e.what();
+                }
                 service->send_response(*header, *response);
             });
-        }, rmw_qos_profile_services_default, m_callback_group.back());
+        },
+        rmw_qos_profile_services_default, m_callback_group.back());
     m_logger->info("ScenarioManager: Services registered.");
 }
 
-void ScenarioManager::enqueueRequest(std::function<void()> operation)
-{
+void ScenarioManager::enqueueRequest(std::function<void()> operation) {
     std::lock_guard<std::mutex> lock(m_requests_mutex);
     m_pending_requests.push_back(std::move(operation));
 }
 
-void ScenarioManager::processPendingRequests(double world_seconds)
-{
+void ScenarioManager::processPendingRequests(double world_seconds) {
     m_world_seconds = world_seconds;
     std::vector<std::function<void()>> requests;
     {
@@ -99,10 +96,10 @@ void ScenarioManager::processPendingRequests(double world_seconds)
         requests.swap(m_pending_requests);
     }
     // Release the queue lock before executing. Arrival order is preserved.
-    for (auto& request : requests) {
+    for (auto &request : requests) {
         try {
             request();
-        } catch (const std::exception& error) {
+        } catch (const std::exception &error) {
             m_logger->error("ScenarioManager: Deferred request failed: {}", error.what());
         }
     }
@@ -110,9 +107,8 @@ void ScenarioManager::processPendingRequests(double world_seconds)
 
 void ScenarioManager::handleLaunch(
     const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
-    std::shared_ptr<lotusim_msgs::srv::String::Response> response)
-{
-    const char* scenario_env = std::getenv("LOTUSIM_SCENARIOS_PATH");
+    std::shared_ptr<lotusim_msgs::srv::String::Response> response) {
+    const char *scenario_env = std::getenv("LOTUSIM_SCENARIOS_PATH");
     if (!scenario_env) {
         m_logger->warn(
             "ScenarioManager::handleLaunch: Environment variable LOTUSIM_SCENARIOS_PATH not set.");
@@ -121,13 +117,11 @@ void ScenarioManager::handleLaunch(
     const std::string path = std::string(scenario_env) + "/" + request->data;
 
     if (m_current_scenario) {
-        m_logger->warn(
-            "ScenarioManager::handleLaunch: Scenario '{}' already running. "
-            "Stop it first.",
-            m_current_scenario->name);
+        m_logger->warn("ScenarioManager::handleLaunch: Scenario '{}' already running. "
+                       "Stop it first.",
+                       m_current_scenario->name);
         response->success = false;
-        response->message =
-            "A scenario is already running: " + m_current_scenario->name;
+        response->message = "A scenario is already running: " + m_current_scenario->name;
         return;
     }
 
@@ -135,9 +129,7 @@ void ScenarioManager::handleLaunch(
 
     auto cfg = ScenarioParser::fromFile(path);
     if (!cfg) {
-        m_logger->error(
-            "ScenarioManager::handleLaunch: Failed to parse '{}'",
-            path);
+        m_logger->error("ScenarioManager::handleLaunch: Failed to parse '{}'", path);
         response->success = false;
         response->message = "Failed to parse scenario file: " + path;
         return;
@@ -156,26 +148,27 @@ void ScenarioManager::handleLaunch(
             m_dataset->advance(0, m_world_seconds);
             spawned = static_cast<int>(m_dataset->size());
         } catch (...) {
-            if (m_dataset) m_dataset->clear();
-            m_dataset.reset(); m_current_scenario.reset();
+            if (m_dataset)
+                m_dataset->clear();
+            m_dataset.reset();
+            m_current_scenario.reset();
             throw;
         }
-    } else { spawned = spawnAgents(*m_current_scenario); }
+    } else {
+        spawned = spawnAgents(*m_current_scenario);
+    }
 
-    m_logger->info(
-        "ScenarioManager::handleLaunch: Scenario '{}' started. {}/{} agents spawned.",
-        m_current_scenario->name,
-        spawned,
-        static_cast<int>(m_current_scenario->agents.size()));
+    m_logger->info("ScenarioManager::handleLaunch: Scenario '{}' started. {}/{} agents spawned.",
+                   m_current_scenario->name, spawned,
+                   static_cast<int>(m_current_scenario->agents.size()));
 
     response->success = true;
-    response->message = m_dataset ? m_dataset->describe().dump() : "Scenario launched: " + m_current_scenario->name;
+    response->message =
+        m_dataset ? m_dataset->describe().dump() : "Scenario launched: " + m_current_scenario->name;
 }
 
-void ScenarioManager::handleStop(
-    const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-    std::shared_ptr<std_srvs::srv::Trigger::Response> response)
-{
+void ScenarioManager::handleStop(const std::shared_ptr<std_srvs::srv::Trigger::Request>,
+                                 std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
     if (!m_current_scenario) {
         m_logger->warn("ScenarioManager::handleStop: No scenario is running.");
         response->success = false;
@@ -183,9 +176,7 @@ void ScenarioManager::handleStop(
         return;
     }
 
-    m_logger->info(
-        "ScenarioManager::handleStop: Stopping scenario '{}'",
-        m_current_scenario->name);
+    m_logger->info("ScenarioManager::handleStop: Stopping scenario '{}'", m_current_scenario->name);
 
     despawnAgents();
     m_current_scenario.reset();
@@ -194,38 +185,34 @@ void ScenarioManager::handleStop(
     response->message = "Scenario stopped.";
 }
 
-int ScenarioManager::spawnAgents(const ScenarioConfig& cfg)
-{
+int ScenarioManager::spawnAgents(const ScenarioConfig &cfg) {
     int count = 0;
-    for (const auto& agent : cfg.agents) {
+    for (const auto &agent : cfg.agents) {
         auto cmd = agentToMASCmd(agent);
         auto result = m_spawner->addEntity(cmd);
         if (result) {
             auto [entity, name] = *result;
-            m_logger->info(
-                "ScenarioManager::spawnAgents: Spawned '{}' (entity {})",
-                name,
-                entity);
+            m_logger->info("ScenarioManager::spawnAgents: Spawned '{}' (entity {})", name, entity);
             ++count;
         } else {
-            m_logger->error(
-                "ScenarioManager::spawnAgents: Failed to spawn agent '{}'",
-                agent.name);
+            m_logger->error("ScenarioManager::spawnAgents: Failed to spawn agent '{}'", agent.name);
         }
     }
     return count;
 }
 
-void ScenarioManager::despawnAgents()
-{
-    if (m_dataset) { m_dataset->clear(); m_dataset.reset(); }
-    else { m_spawner->deleteAllEntities(); }
+void ScenarioManager::despawnAgents() {
+    if (m_dataset) {
+        m_dataset->clear();
+        m_dataset.reset();
+    } else {
+        m_spawner->deleteAllEntities();
+    }
 }
 
 void ScenarioManager::handleDataset(
     const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
-    std::shared_ptr<lotusim_msgs::srv::String::Response> response)
-{
+    std::shared_ptr<lotusim_msgs::srv::String::Response> response) {
     const auto command = nlohmann::json::parse(request->data);
     const auto operation = command.at("operation").get<std::string>();
     // Read-only preflight is available before launch, including while an
@@ -233,31 +220,40 @@ void ScenarioManager::handleDataset(
     // speculatively just to discover its response format.
     if (operation == "capabilities") {
         response->success = true;
-        response->message = nlohmann::json({
-            {"schema", "lotusim-dataset-capabilities-1"},
-            {"snapshotSchema", "lotusim-dataset-step-1"},
-            {"ownedStop", true}, {"steppedTimeline", true}, {"constantTurnTrajectories", true},
-            {"maxDatasetSpeedMps", 350}, {"boundedTurnTrajectories",true}}).dump();
+        response->message = nlohmann::json({{"schema", "lotusim-dataset-capabilities-1"},
+                                            {"snapshotSchema", "lotusim-dataset-step-1"},
+                                            {"ownedStop", true},
+                                            {"steppedTimeline", true},
+                                            {"constantTurnTrajectories", true},
+                                            {"maxDatasetSpeedMps", 350},
+                                            {"boundedTurnTrajectories", true}})
+                                .dump();
         return;
     }
-    if (!m_dataset) throw std::runtime_error("No stepped LOTUSim dataset is running");
-    if (operation == "inspect") { response->message = m_dataset->describe().dump(); }
-    else {
+    if (!m_dataset)
+        throw std::runtime_error("No stepped LOTUSim dataset is running");
+    if (operation == "inspect") {
+        response->message = m_dataset->describe().dump();
+    } else {
         if (command.at("runId").get<std::string>() != m_dataset->token())
             throw std::runtime_error("Dataset ownership token mismatch; no scenario was modified");
         if (operation == "step") {
-            if (!command.at("frame").is_number_integer()) throw std::invalid_argument("frame must be an integer");
-            response->message = m_dataset->advance(command.at("frame").get<int>(), m_world_seconds).dump();
+            if (!command.at("frame").is_number_integer())
+                throw std::invalid_argument("frame must be an integer");
+            response->message =
+                m_dataset->advance(command.at("frame").get<int>(), m_world_seconds).dump();
         } else if (operation == "stop") {
-            despawnAgents(); m_current_scenario.reset(); response->message = "Owned dataset stopped";
-        } else { throw std::invalid_argument("Unknown dataset operation"); }
+            despawnAgents();
+            m_current_scenario.reset();
+            response->message = "Owned dataset stopped";
+        } else {
+            throw std::invalid_argument("Unknown dataset operation");
+        }
     }
     response->success = true;
 }
 
-lotusim_msgs::msg::MASCmd ScenarioManager::agentToMASCmd(
-    const lotusim::Agent& agent) const
-{
+lotusim_msgs::msg::MASCmd ScenarioManager::agentToMASCmd(const lotusim::Agent &agent) const {
     lotusim_msgs::msg::MASCmd cmd;
     cmd.cmd_type = lotusim_msgs::msg::MASCmd::CREATE_CMD;
     cmd.model_name = agent.model;
@@ -282,38 +278,30 @@ lotusim_msgs::msg::MASCmd ScenarioManager::agentToMASCmd(
     return cmd;
 }
 
-void ScenarioManager::applyReferencePosition(const GeoPoint& ref)
-{
+void ScenarioManager::applyReferencePosition(const GeoPoint &ref) {
     gz::sim::Entity worldEntity = gz::sim::kNullEntity;
     m_ecm->Each<gz::sim::components::Name, gz::sim::components::World>(
-        [&](const gz::sim::Entity& _entity,
-            const gz::sim::components::Name*,
-            const gz::sim::components::World*) -> bool {
+        [&](const gz::sim::Entity &_entity, const gz::sim::components::Name *,
+            const gz::sim::components::World *) -> bool {
             worldEntity = _entity;
             return true;
         });
 
-    auto* sphComp = m_ecm->Component<gz::sim::components::SphericalCoordinates>(
-        worldEntity);
+    auto *sphComp = m_ecm->Component<gz::sim::components::SphericalCoordinates>(worldEntity);
     if (sphComp == nullptr) {
-        m_logger->warn(
-            "ScenarioManager::applyReferencePosition: SphericalCoordinates "
-            "component not found on world entity.");
+        m_logger->warn("ScenarioManager::applyReferencePosition: SphericalCoordinates "
+                       "component not found on world entity.");
         return;
     }
 
-    sphComp->Data().SetLatitudeReference(
-        gz::math::Angle(lotusim::common::degToRad(ref.latitude)));
+    sphComp->Data().SetLatitudeReference(gz::math::Angle(lotusim::common::degToRad(ref.latitude)));
     sphComp->Data().SetLongitudeReference(
         gz::math::Angle(lotusim::common::degToRad(ref.longitude)));
     sphComp->Data().SetElevationReference(ref.altitude);
 
-    m_logger->info(
-        "ScenarioManager::applyReferencePosition: World reference set to "
-        "lat={:.6f} lon={:.6f} alt={:.2f}",
-        ref.latitude,
-        ref.longitude,
-        ref.altitude);
+    m_logger->info("ScenarioManager::applyReferencePosition: World reference set to "
+                   "lat={:.6f} lon={:.6f} alt={:.2f}",
+                   ref.latitude, ref.longitude, ref.altitude);
 }
 
-}  // namespace lotusim::scenario
+} // namespace lotusim::scenario

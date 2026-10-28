@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fixture-only preparation lifecycle, historical evidence and collector checks."""
+
 import hashlib
 import json
 import os
@@ -11,10 +12,20 @@ from unittest.mock import patch
 import uuid
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from campaign_settings import ADAPTER_PATH, CampaignSecurityError, CampaignStore, CampaignValidationError
+from campaign_settings import (
+    ADAPTER_PATH,
+    CampaignSecurityError,
+    CampaignStore,
+    CampaignValidationError,
+)
 from ops_collector import Collector
-from scene_preparation_status import (ACTIVE_SECONDS, MAX_STATUS, PreparationStatus,
-                                      ScenePreparationStorageError, observe_preparation)
+from scene_preparation_status import (
+    ACTIVE_SECONDS,
+    MAX_STATUS,
+    PreparationStatus,
+    ScenePreparationStorageError,
+    observe_preparation,
+)
 
 
 class PreparationTests(unittest.TestCase):
@@ -25,9 +36,23 @@ class PreparationTests(unittest.TestCase):
         self.core, self.unity = self.root / 'core', self.root / 'unity'
         catalog = self.core / 'assets/scenarios/catalogs/traffic_assets.json'
         catalog.parent.mkdir(parents=True)
-        catalog.write_text(json.dumps({'schema': 'lotusim-traffic-catalogue-1', 'assets': [
-            {'model': 'buoy', 'category': 'buoy', 'domain': 'moored', 'heightM': 3,
-             'maxSpeedMps': 0, 'altitudeM': [0, 0]}]}))
+        catalog.write_text(
+            json.dumps(
+                {
+                    'schema': 'lotusim-traffic-catalogue-1',
+                    'assets': [
+                        {
+                            'model': 'buoy',
+                            'category': 'buoy',
+                            'domain': 'moored',
+                            'heightM': 3,
+                            'maxSpeedMps': 0,
+                            'altitudeM': [0, 0],
+                        }
+                    ],
+                }
+            )
+        )
         adapter = self.unity / ADAPTER_PATH
         adapter.parent.mkdir(parents=True)
         adapter.write_text('// fixture')
@@ -40,7 +65,9 @@ class PreparationTests(unittest.TestCase):
         return self.core / 'artifacts/operations/scene-preparation.json'
 
     def observe(self, **kwargs):
-        return observe_preparation(self.core, now=self.now[0], process_alive=lambda pid: True, **kwargs)
+        return observe_preparation(
+            self.core, now=self.now[0], process_alive=lambda pid: True, **kwargs
+        )
 
     def writer(self):
         return PreparationStatus(self.core, str(uuid.uuid4()), self.plan, clock=lambda: self.now[0])
@@ -48,10 +75,20 @@ class PreparationTests(unittest.TestCase):
     def prepared(self, name=None):
         if name:
             self.plan['name'] = name
-        with patch('campaign_settings.engine_catalog', return_value=[
-            {'id': 'unity', 'preparationAvailable': True, 'runtimeDetected': False}]), \
-                patch('campaign_settings.PreparationStatus', side_effect=lambda core, identifier, plan:
-                      PreparationStatus(core, identifier, plan, clock=lambda: self.now[0])):
+        with (
+            patch(
+                'campaign_settings.engine_catalog',
+                return_value=[
+                    {'id': 'unity', 'preparationAvailable': True, 'runtimeDetected': False}
+                ],
+            ),
+            patch(
+                'campaign_settings.PreparationStatus',
+                side_effect=lambda core, identifier, plan: PreparationStatus(
+                    core, identifier, plan, clock=lambda: self.now[0]
+                ),
+            ),
+        ):
             return self.store.prepare(self.plan)
 
     def bundle(self, result):
@@ -82,18 +119,27 @@ class PreparationTests(unittest.TestCase):
             self.assertEqual(agent['links'], {})
             status.step('scene_script_builder')
             agent, _ = self.observe()
-            self.assertEqual([step['state'] for step in agent['steps']], ['complete', 'running', 'idle'])
+            self.assertEqual(
+                [step['state'] for step in agent['steps']], ['complete', 'running', 'idle']
+            )
 
     def test_collector_snapshot_with_actual_running_writer_never_calls_runtime_dict_probe(self):
         with self.writer() as status:
             status.step('planner')
-            collector = Collector(self.core, self.unity, clock=lambda: self.now[0], docker_enabled=False,
-                                  process_probe=lambda runtime: runtime.get('pid') == 42)
+            collector = Collector(
+                self.core,
+                self.unity,
+                clock=lambda: self.now[0],
+                docker_enabled=False,
+                process_probe=lambda runtime: runtime.get('pid') == 42,
+            )
             result = collector.snapshot()
             self.assertEqual(result['agents'][0]['id'], 'scene_preparation')
             self.assertEqual(result['agents'][0]['state'], 'running')
             self.assertTrue(result['preparation']['live'])
-            self.assertTrue(any(event['source'] == 'scene_preparation' for event in result['events']))
+            self.assertTrue(
+                any(event['source'] == 'scene_preparation' for event in result['events'])
+            )
             self.assertEqual(len(result['agents']), 8)
 
     def test_reused_pid_token_is_never_live(self):
@@ -114,7 +160,9 @@ class PreparationTests(unittest.TestCase):
     def test_dead_pid_or_old_active_timestamp_is_stale(self):
         with self.writer() as status:
             status.step('planner')
-            agent, _ = observe_preparation(self.core, now=self.now[0], process_alive=lambda pid: False)
+            agent, _ = observe_preparation(
+                self.core, now=self.now[0], process_alive=lambda pid: False
+            )
             self.assertEqual(agent['state'], 'stale')
             self.now[0] += ACTIVE_SECONDS + 1
             self.assertEqual(self.observe()[0]['state'], 'stale')
@@ -145,9 +193,11 @@ class PreparationTests(unittest.TestCase):
     def test_success_exists_only_after_all_artifacts_written_and_verified(self):
         original = self.store._write_file
         snapshots = []
+
         def write(descriptor, name, data):
             snapshots.append((name, self.observe()[0]['state']))
             return original(descriptor, name, data)
+
         with patch.object(self.store, '_write_file', side_effect=write):
             result = self.prepared()
         self.assertTrue(all(state == 'running' for _, state in snapshots))
@@ -157,7 +207,9 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(agent['campaignId'], result['id'])
         self.assertFalse(agent['live'])
         self.assertTrue(all(step['state'] == 'complete' for step in agent['steps']))
-        self.assertEqual(agent['links']['bundleUrl'], '/api/settings/prepared/' + result['id'] + '/bundle.zip')
+        self.assertEqual(
+            agent['links']['bundleUrl'], '/api/settings/prepared/' + result['id'] + '/bundle.zip'
+        )
         self.assertTrue(any('moteur non exécuté' in event['message'] for event in events))
 
     def test_save_and_validate_never_emit_preparation(self):

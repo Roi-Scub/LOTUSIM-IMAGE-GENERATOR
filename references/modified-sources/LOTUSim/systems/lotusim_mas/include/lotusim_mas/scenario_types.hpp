@@ -24,10 +24,10 @@ struct GeoPoint {
 };
 
 struct Agent {
-    std::string name;   ///< key from YAML map (e.g. "lrauv1")
-    std::string model;  ///< model asset name
+    std::string name;  ///< key from YAML map (e.g. "lrauv1")
+    std::string model; ///< model asset name
     GeoPoint position;
-    double heading{0.0};  /// heading → yaw (Z-up, East=0, right-hand rule)
+    double heading{0.0}; /// heading → yaw (Z-up, East=0, right-hand rule)
 
     /// Fully-formed <lotus_param>…</lotus_param> XML string,
     /// built by ScenarioParser from physics_interface + render_interface.
@@ -47,14 +47,14 @@ struct Agent {
 struct ScenarioConfig {
     std::string name;
 
-    std::string time_of_day;  ///< "HH:MM"
-    std::string date;         ///< "YYYY-MM-DD"
+    std::string time_of_day; ///< "HH:MM"
+    std::string date;        ///< "YYYY-MM-DD"
     GeoPoint reference_position;
 
     // TODO: Fill this up along with the environment system
     // Environment environment;
 
-    std::vector<Agent> agents;  ///< ordered list, name stored inside Agent
+    std::vector<Agent> agents; ///< ordered list, name stored inside Agent
     struct DatasetSequence {
         std::string plan_id, observer;
         int fps{30}, frames{1800};
@@ -62,5 +62,5 @@ struct ScenarioConfig {
     std::optional<DatasetSequence> dataset_sequence;
 };
 
-}  // namespace lotusim
-#endif  // LOTUSIM_SCENARIO_TYPES_HH_
+} // namespace lotusim
+#endif // LOTUSIM_SCENARIO_TYPES_HH_

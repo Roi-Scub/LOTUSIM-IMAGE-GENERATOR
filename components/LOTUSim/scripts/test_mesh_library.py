@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Local fixture tests: no production imports, server, converter or network."""
+
 import base64
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
@@ -12,11 +13,12 @@ import types
 import unittest
 from unittest import mock
 
-
 SOURCE = Path(__file__).resolve().parents[1] / 'tools/mesh_library.py'
 OBJ = b'v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n'
-STL = (b'solid triangle\nfacet normal 0 0 1\nouter loop\nvertex 0 0 0\n'
-       b'vertex 1 0 0\nvertex 0 1 0\nendloop\nendfacet\nendsolid triangle\n')
+STL = (
+    b'solid triangle\nfacet normal 0 0 1\nouter loop\nvertex 0 0 0\n'
+    b'vertex 1 0 0\nvertex 0 1 0\nendloop\nendfacet\nendsolid triangle\n'
+)
 
 
 def load_module():
@@ -39,7 +41,9 @@ def glb(document=None, binary=None):
 class MeshTests(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.temporary = tempfile.TemporaryDirectory(prefix='lotusim-mesh-test-', dir='/private/tmp')
+        self.temporary = tempfile.TemporaryDirectory(
+            prefix='lotusim-mesh-test-', dir='/private/tmp'
+        )
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name).resolve()
         self.core = self.root / 'LOTUSim'
@@ -64,23 +68,35 @@ class MeshTests(unittest.TestCase):
         return root
 
     def catalogue(self, assets):
-        return self.write(self.core / 'assets/scenarios/catalogs/traffic_assets.json', {'assets': assets})
+        return self.write(
+            self.core / 'assets/scenarios/catalogs/traffic_assets.json', {'assets': assets}
+        )
 
     def multipart(self, files=None, metadata=None, extra=(), include_metadata=True):
-        metadata = {'name': 'Modèle local', 'license': 'CC0-1.0', 'category': 'boat'} if metadata is None else metadata
+        metadata = (
+            {'name': 'Modèle local', 'license': 'CC0-1.0', 'category': 'boat'}
+            if metadata is None
+            else metadata
+        )
         files = [('boat.obj', OBJ)] if files is None else files
         if isinstance(files, dict):
             files = list(files.items())
         boundary = 'lotusim-fixture-boundary'
         parts = []
         if include_metadata:
-            value = metadata if isinstance(metadata, bytes) else json.dumps(metadata).encode('utf-8')
+            value = (
+                metadata if isinstance(metadata, bytes) else json.dumps(metadata).encode('utf-8')
+            )
             parts.append(('metadata', None, value))
         parts.extend(('files', name, value) for name, value in files)
         parts.extend(extra)
         body = bytearray()
         for field, filename, data in parts:
-            body.extend(('--' + boundary + '\r\nContent-Disposition: form-data; name="' + field + '"').encode())
+            body.extend(
+                (
+                    '--' + boundary + '\r\nContent-Disposition: form-data; name="' + field + '"'
+                ).encode()
+            )
             if filename is not None:
                 body.extend(('; filename="' + filename + '"').encode())
             body.extend(b'\r\nContent-Type: application/octet-stream\r\n\r\n')
@@ -107,7 +123,9 @@ class MeshTests(unittest.TestCase):
     def test_normalized_exact_obj_precedes_alphabetical_part_meshes(self):
         root = self.model('yacht')
         self.write(root / 'meshes/aaa_fin.stl', STL)
-        self.catalogue([{'model': 'yacht', 'category': 'yacht', 'domain': 'surface', 'lengthM': 20}])
+        self.catalogue(
+            [{'model': 'yacht', 'category': 'yacht', 'domain': 'surface', 'lengthM': 20}]
+        )
         asset = self.library.catalog()['assets'][0]
         self.assertEqual(asset['integrationStatus'], 'integrated')
         self.assertEqual(asset['category'], 'yacht')
@@ -120,14 +138,20 @@ class MeshTests(unittest.TestCase):
         alias.mkdir()
         assets = {a['id']: a for a in self.library.catalog()['assets']}
         self.assertIn('drone_racer_sim', assets)
-        self.assertEqual(self.library.resolve('drone_racer_sim', 'meshes/small_drone.obj'), source / 'meshes/small_drone.obj')
+        self.assertEqual(
+            self.library.resolve('drone_racer_sim', 'meshes/small_drone.obj'),
+            source / 'meshes/small_drone.obj',
+        )
         self.assertIn('/drone_racer_sim/', assets['drone_racer_sim']['preview']['url'])
 
     def test_lrauv_primary_comes_from_sdf_collision_not_first_fin(self):
         root = self.core / 'assets/models/lrauv'
         self.write(root / 'meshes/aaa_fin.stl', STL)
         self.write(root / 'meshes/tethys.dae', b'<COLLADA/>')
-        self.write(root / 'model.sdf', '<sdf><model><link><collision><geometry><mesh><uri>model://lrauv/meshes/tethys.dae</uri></mesh></geometry></collision></link></model></sdf>')
+        self.write(
+            root / 'model.sdf',
+            '<sdf><model><link><collision><geometry><mesh><uri>model://lrauv/meshes/tethys.dae</uri></mesh></geometry></collision></link></model></sdf>',
+        )
         asset = self.library.catalog()['assets'][0]
         self.assertTrue(asset['preview']['url'].endswith('/meshes/tethys.dae'))
 
@@ -135,44 +159,78 @@ class MeshTests(unittest.TestCase):
         root = self.core / 'assets/models/old_fremm'
         self.write(root / 'meshes/a_collision.stl', STL)
         self.write(root / 'meshes/fremm.dae', b'<COLLADA/>')
-        self.write(root / 'model.sdf', '<sdf><model><link><collision><geometry><mesh><uri>meshes/a_collision.stl</uri></mesh></geometry></collision><visual><geometry><mesh><uri>model://old_fremm/meshes/fremm.dae</uri></mesh></geometry></visual></link></model></sdf>')
-        self.assertTrue(self.library.catalog()['assets'][0]['preview']['url'].endswith('/meshes/fremm.dae'))
+        self.write(
+            root / 'model.sdf',
+            '<sdf><model><link><collision><geometry><mesh><uri>meshes/a_collision.stl</uri></mesh></geometry></collision><visual><geometry><mesh><uri>model://old_fremm/meshes/fremm.dae</uri></mesh></geometry></visual></link></model></sdf>',
+        )
+        self.assertTrue(
+            self.library.catalog()['assets'][0]['preview']['url'].endswith('/meshes/fremm.dae')
+        )
 
     def test_sdf_unbound_gazebo_sensor_attribute_does_not_hide_primary_mesh(self):
         root = self.core / 'assets/models/lrauv'
         self.write(root / 'meshes/aaa_fin.stl', STL)
         self.write(root / 'meshes/tethys.dae', b'<COLLADA/>')
-        source = self.write(root / 'model.sdf', '<sdf version="1.10"><model><link><sensor type="custom" gz:type="ais"/><collision><geometry><mesh><uri>model://lrauv/meshes/tethys.dae</uri></mesh></geometry></collision></link></model></sdf>')
+        source = self.write(
+            root / 'model.sdf',
+            '<sdf version="1.10"><model><link><sensor type="custom" gz:type="ais"/><collision><geometry><mesh><uri>model://lrauv/meshes/tethys.dae</uri></mesh></geometry></collision></link></model></sdf>',
+        )
         before = source.read_bytes()
-        self.assertTrue(self.library.catalog()['assets'][0]['preview']['url'].endswith('/meshes/tethys.dae'))
+        self.assertTrue(
+            self.library.catalog()['assets'][0]['preview']['url'].endswith('/meshes/tethys.dae')
+        )
         self.assertEqual(source.read_bytes(), before)
 
     def test_sdf_mesh_cannot_reference_another_model_or_remote_file(self):
         root = self.model('boat')
-        self.write(root / 'model.sdf', '<sdf><visual><geometry><mesh><uri>https://evil.example/boat.obj</uri></mesh></geometry></visual></sdf>')
+        self.write(
+            root / 'model.sdf',
+            '<sdf><visual><geometry><mesh><uri>https://evil.example/boat.obj</uri></mesh></geometry></visual></sdf>',
+        )
         files = self.library._files(root)
         self.assertIsNone(self.library._sdf_mesh_entry(root, files, 'boat', 'boat'))
-        self.write(root / 'model.sdf', '<sdf><visual><geometry><mesh><uri>model://other/meshes/boat.obj</uri></mesh></geometry></visual></sdf>')
+        self.write(
+            root / 'model.sdf',
+            '<sdf><visual><geometry><mesh><uri>model://other/meshes/boat.obj</uri></mesh></geometry></visual></sdf>',
+        )
         self.assertIsNone(self.library._sdf_mesh_entry(root, files, 'boat', 'boat'))
 
     def test_sdf_primitives_have_finite_positive_dimensions(self):
         root = self.core / 'assets/models/marker'
-        self.write(root / 'model.sdf', '<sdf><model><link><visual><pose>1 2 3 0 0 0</pose><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></visual><visual><geometry><sphere><radius>0.3</radius></sphere></geometry></visual><visual><geometry><box><size>1 2 3</size></box></geometry></visual></link></model></sdf>')
+        self.write(
+            root / 'model.sdf',
+            '<sdf><model><link><visual><pose>1 2 3 0 0 0</pose><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></visual><visual><geometry><sphere><radius>0.3</radius></sphere></geometry></visual><visual><geometry><box><size>1 2 3</size></box></geometry></visual></link></model></sdf>',
+        )
         asset = self.library.catalog()['assets'][0]
         self.assertEqual(asset['preview']['format'], 'sdf')
-        self.assertEqual([s['type'] for s in asset['preview']['shapes']], ['cylinder', 'sphere', 'box'])
+        self.assertEqual(
+            [s['type'] for s in asset['preview']['shapes']], ['cylinder', 'sphere', 'box']
+        )
         self.assertIn('simplifié', asset['notes'])
 
     def test_invalid_sdf_values_are_omitted_not_serialized_as_nan(self):
         root = self.core / 'assets/models/marker'
-        self.write(root / 'model.sdf', '<sdf><visual><geometry><sphere><radius>NaN</radius></sphere></geometry></visual><visual><geometry><box><size>1 2</size></box></geometry></visual><visual><geometry><cylinder><radius>-1</radius><length>2</length></cylinder></geometry></visual></sdf>')
+        self.write(
+            root / 'model.sdf',
+            '<sdf><visual><geometry><sphere><radius>NaN</radius></sphere></geometry></visual><visual><geometry><box><size>1 2</size></box></geometry></visual><visual><geometry><cylinder><radius>-1</radius><length>2</length></cylinder></geometry></visual></sdf>',
+        )
         self.assertEqual(self.library._shapes(root), [])
         self.assertEqual(self.library.catalog()['assets'], [])
 
     def test_provenance_license_author_and_noai_are_visible(self):
         root = self.model('seagull')
-        self.write(root / 'open-object-info.json', {'title': 'Oiseau réel', 'license': {'name': 'CC-BY-4.0'}, 'author': 'Créateur', 'source': 'https://example.org/model'})
-        self.write(self.unity / 'ThirdParty/OpenObjects/seagull/creator-license.json', {'tags': ['NoAI']})
+        self.write(
+            root / 'open-object-info.json',
+            {
+                'title': 'Oiseau réel',
+                'license': {'name': 'CC-BY-4.0'},
+                'author': 'Créateur',
+                'source': 'https://example.org/model',
+            },
+        )
+        self.write(
+            self.unity / 'ThirdParty/OpenObjects/seagull/creator-license.json', {'tags': ['NoAI']}
+        )
         asset = self.library.catalog()['assets'][0]
         self.assertEqual(asset['license'], 'CC-BY-4.0')
         self.assertEqual(asset['author'], 'Créateur')
@@ -203,7 +261,10 @@ class MeshTests(unittest.TestCase):
         self.assertIn('meshes/tex.png', preview['files'])
 
     def test_file_urls_encode_spaces_without_absolute_paths(self):
-        self.assertEqual(self.library.file_url('boat', 'meshes/my boat.obj'), '/api/assets/files/boat/meshes/my%20boat.obj')
+        self.assertEqual(
+            self.library.file_url('boat', 'meshes/my boat.obj'),
+            '/api/assets/files/boat/meshes/my%20boat.obj',
+        )
 
     def test_unknown_models_and_unsafe_ids_do_not_resolve(self):
         for model in ('unknown', '../boat', '', None, 3, 'boat/name'):
@@ -212,7 +273,15 @@ class MeshTests(unittest.TestCase):
 
     def test_child_rejects_traversal_absolute_hidden_and_backslash(self):
         root = self.model()
-        for name in ('../x.obj', '/tmp/x.obj', 'meshes/../x.obj', '.hidden.obj', 'meshes//buoy.obj', 'meshes\\buoy.obj', 'x\0.obj'):
+        for name in (
+            '../x.obj',
+            '/tmp/x.obj',
+            'meshes/../x.obj',
+            '.hidden.obj',
+            'meshes//buoy.obj',
+            'meshes\\buoy.obj',
+            'x\0.obj',
+        ):
             with self.subTest(name=name):
                 self.assertIsNone(self.module.child(root, name))
 
@@ -255,13 +324,19 @@ class MeshTests(unittest.TestCase):
         self.assertEqual(self.module.read_json(leaf), {})
 
     def test_strict_json_rejects_nonfinite_overflow_duplicate_and_depth(self):
-        values = (b'{"x":NaN}', b'{"x":Infinity}', b'{"x":1e9999}', b'{"x":1,"x":2}', ('[' * 80 + '0' + ']' * 80).encode())
+        values = (
+            b'{"x":NaN}',
+            b'{"x":Infinity}',
+            b'{"x":1e9999}',
+            b'{"x":1,"x":2}',
+            ('[' * 80 + '0' + ']' * 80).encode(),
+        )
         for value in values:
             with self.subTest(value=value), self.assertRaises(self.module.MeshError):
                 self.module.strict_json(value)
 
     def test_metadata_read_is_bounded_and_malformed_json_returns_empty(self):
-        for value in (b'{' , b'[]', b'{"x":NaN}', b'x' * (2 * 1024 * 1024 + 1)):
+        for value in (b'{', b'[]', b'{"x":NaN}', b'x' * (2 * 1024 * 1024 + 1)):
             path = self.write(self.root / 'bad.json', value)
             self.assertEqual(self.module.read_json(path), {})
 
@@ -273,7 +348,9 @@ class MeshTests(unittest.TestCase):
         self.assertEqual(receipt['sha256']['boat.obj'], hashlib.sha256(OBJ).hexdigest())
         self.assertEqual(receipt['entryFile'], 'boat.obj')
         self.assertEqual(self.library.resolve(asset['id'], 'boat.obj').read_bytes(), OBJ)
-        self.assertFalse(any(path.name.startswith('pending-') for path in self.library.store.iterdir()))
+        self.assertFalse(
+            any(path.name.startswith('pending-') for path in self.library.store.iterdir())
+        )
 
     def test_import_glb_with_valid_chunks(self):
         asset = self.upload(files={'boat.glb': glb(binary=b'1234')})
@@ -288,31 +365,48 @@ class MeshTests(unittest.TestCase):
         self.assertEqual(self.upload(files={'boat.stl': data})['preview']['format'], 'stl')
 
     def test_import_multifile_gltf_local_buffers_and_images(self):
-        doc = {'asset': {'version': '2.0'}, 'buffers': [{'uri': '../data/mesh.bin', 'byteLength': 4}], 'images': [{'uri': 'texture%20one.png'}], 'accessors': [{'count': 3}]}
-        files = {'models/boat.gltf': json.dumps(doc).encode(), 'data/mesh.bin': b'1234', 'models/texture one.png': b'PNG fixture'}
+        doc = {
+            'asset': {'version': '2.0'},
+            'buffers': [{'uri': '../data/mesh.bin', 'byteLength': 4}],
+            'images': [{'uri': 'texture%20one.png'}],
+            'accessors': [{'count': 3}],
+        }
+        files = {
+            'models/boat.gltf': json.dumps(doc).encode(),
+            'data/mesh.bin': b'1234',
+            'models/texture one.png': b'PNG fixture',
+        }
         asset = self.upload(files=files)
         self.assertEqual(asset['fileCount'], 3)
         self.assertEqual(set(asset['preview']['files']), set(files))
 
     def test_import_obj_mtl_and_texture_keeps_relative_resources(self):
-        files = {'meshes/boat.obj': b'mtllib boat.mtl\n' + OBJ,
-                 'meshes/boat.mtl': b'newmtl Paint\nmap_Kd ../textures/a.png\n',
-                 'textures/a.png': b'pixels'}
+        files = {
+            'meshes/boat.obj': b'mtllib boat.mtl\n' + OBJ,
+            'meshes/boat.mtl': b'newmtl Paint\nmap_Kd ../textures/a.png\n',
+            'textures/a.png': b'pixels',
+        }
         asset = self.upload(files=files)
         self.assertTrue(asset['preview']['mtlUrl'].endswith('/meshes/boat.mtl'))
 
     def test_embedded_gltf_data_is_accepted_but_not_executed(self):
         uri = 'data:application/octet-stream;base64,' + base64.b64encode(b'1234').decode()
         doc = {'asset': {'version': '2.0'}, 'buffers': [{'uri': uri, 'byteLength': 4}]}
-        self.assertEqual(self.upload(files={'x.gltf': json.dumps(doc).encode()})['preview']['format'], 'gltf')
+        self.assertEqual(
+            self.upload(files={'x.gltf': json.dumps(doc).encode()})['preview']['format'], 'gltf'
+        )
 
     def test_malformed_gltf_object_shapes_all_raise_mesherror(self):
-        cases = ({'asset': None}, {'asset': []}, {'asset': '2.0'},
-                 {'asset': {'version': '2.0'}, 'accessors': [None]},
-                 {'asset': {'version': '2.0'}, 'buffers': 'bad'},
-                 {'asset': {'version': '2.0'}, 'images': [12]},
-                 {'asset': {'version': '2.0'}, 'extensionsRequired': [None]},
-                 {'asset': {'version': '2.0'}, 'extensionsRequired': {}})
+        cases = (
+            {'asset': None},
+            {'asset': []},
+            {'asset': '2.0'},
+            {'asset': {'version': '2.0'}, 'accessors': [None]},
+            {'asset': {'version': '2.0'}, 'buffers': 'bad'},
+            {'asset': {'version': '2.0'}, 'images': [12]},
+            {'asset': {'version': '2.0'}, 'extensionsRequired': [None]},
+            {'asset': {'version': '2.0'}, 'extensionsRequired': {}},
+        )
         for doc in cases:
             with self.subTest(doc=doc):
                 self.rejected(files={'x.gltf': json.dumps(doc).encode()})
@@ -322,24 +416,43 @@ class MeshTests(unittest.TestCase):
             doc = {'asset': {'version': '2.0'}, 'accessors': [{'count': value}]}
             with self.subTest(value=value):
                 self.rejected(files={'x.gltf': json.dumps(doc).encode()})
-        self.rejected(files={'x.gltf': b'{"asset":{"version":"2.0"},"nodes":[{"translation":[NaN,0,0]}]}'})
+        self.rejected(
+            files={'x.gltf': b'{"asset":{"version":"2.0"},"nodes":[{"translation":[NaN,0,0]}]}'}
+        )
 
     def test_gltf_compressed_required_extensions_are_rejected(self):
-        for extension in ('KHR_draco_mesh_compression', 'EXT_meshopt_compression', 'KHR_texture_basisu'):
+        for extension in (
+            'KHR_draco_mesh_compression',
+            'EXT_meshopt_compression',
+            'KHR_texture_basisu',
+        ):
             doc = {'asset': {'version': '2.0'}, 'extensionsRequired': [extension]}
             with self.subTest(extension=extension):
                 self.rejected(files={'x.gltf': json.dumps(doc).encode()})
 
     def test_gltf_remote_absolute_escape_and_missing_resources_rejected(self):
-        for uri in ('https://evil.example/x.bin', '//evil.example/x.bin', 'file:///tmp/x.bin',
-                    '/tmp/x.bin', '../x.bin', '%2e%2e/x.bin', 'x.bin?query=1', 'x.bin#fragment', 'missing.bin'):
+        for uri in (
+            'https://evil.example/x.bin',
+            '//evil.example/x.bin',
+            'file:///tmp/x.bin',
+            '/tmp/x.bin',
+            '../x.bin',
+            '%2e%2e/x.bin',
+            'x.bin?query=1',
+            'x.bin#fragment',
+            'missing.bin',
+        ):
             doc = {'asset': {'version': '2.0'}, 'buffers': [{'uri': uri}]}
             with self.subTest(uri=uri):
                 self.rejected(files={'x.gltf': json.dumps(doc).encode()})
 
     def test_embedded_script_mime_invalid_base64_and_empty_payload_rejected(self):
-        for uri in ('data:text/html;base64,PHNjcmlwdD4=', 'data:image/svg+xml;base64,PHN2Zz4=',
-                    'data:image/png;base64,!!!', 'data:application/octet-stream;base64,'):
+        for uri in (
+            'data:text/html;base64,PHNjcmlwdD4=',
+            'data:image/svg+xml;base64,PHN2Zz4=',
+            'data:image/png;base64,!!!',
+            'data:application/octet-stream;base64,',
+        ):
             doc = {'asset': {'version': '2.0'}, 'images': [{'uri': uri}]}
             with self.subTest(uri=uri):
                 self.rejected(files={'x.gltf': json.dumps(doc).encode()})
@@ -348,10 +461,15 @@ class MeshTests(unittest.TestCase):
         good = glb()
         bad_json = b'not json'.ljust(8, b' ')
         duplicate = good[12:] + good[12:]
-        cases = (b'x', b'NOPE' + good[4:], good[:4] + struct.pack('<I', 1) + good[8:],
-                 good[:-1], struct.pack('<4sII', b'glTF', 2, 28) + struct.pack('<II', 8, 0x4E4F534A) + bad_json,
-                 struct.pack('<4sII', b'glTF', 2, 12 + len(duplicate)) + duplicate,
-                 good + b'junk')
+        cases = (
+            b'x',
+            b'NOPE' + good[4:],
+            good[:4] + struct.pack('<I', 1) + good[8:],
+            good[:-1],
+            struct.pack('<4sII', b'glTF', 2, 28) + struct.pack('<II', 8, 0x4E4F534A) + bad_json,
+            struct.pack('<4sII', b'glTF', 2, 12 + len(duplicate)) + duplicate,
+            good + b'junk',
+        )
         for data in cases:
             with self.subTest(data=data[:20]):
                 self.rejected(files={'x.glb': data})
@@ -379,19 +497,41 @@ class MeshTests(unittest.TestCase):
                 self.rejected(files={'x.obj': data})
 
     def test_stl_nonfinite_vertices_and_invalid_data_rejected(self):
-        binary = b'fixture'.ljust(80, b'\0') + struct.pack('<I12fH', 1, float('nan'), *([0.0] * 11), 0)
+        binary = b'fixture'.ljust(80, b'\0') + struct.pack(
+            '<I12fH', 1, float('nan'), *([0.0] * 11), 0
+        )
         for data in (b'no mesh', STL.replace(b'vertex 0 0 0', b'vertex inf 0 0'), binary):
             with self.subTest(data=data[:30]):
                 self.rejected(files={'x.stl': data})
 
     def test_mtl_remote_texture_or_unsupported_options_are_rejected(self):
-        for texture in (b'https://evil.example/x.png', b'../../x.png', b'-s 1 1 1 x.png', b'missing.png'):
+        for texture in (
+            b'https://evil.example/x.png',
+            b'../../x.png',
+            b'-s 1 1 1 x.png',
+            b'missing.png',
+        ):
             with self.subTest(texture=texture):
-                self.rejected(files={'x.obj': b'mtllib x.mtl\n' + OBJ, 'x.mtl': b'map_Kd ' + texture + b'\n'})
+                self.rejected(
+                    files={'x.obj': b'mtllib x.mtl\n' + OBJ, 'x.mtl': b'map_Kd ' + texture + b'\n'}
+                )
 
     def test_disallowed_import_formats_and_filename_paths_are_rejected(self):
-        for name in ('run.py', 'run.sh', 'x.fbx', 'x.zip', 'x.svg', 'x.html', 'x.dae',
-                     '../x.obj', '/tmp/x.obj', '.hidden.obj', 'meshes/../x.obj', 'x\\y.obj', 'x%2f.obj'):
+        for name in (
+            'run.py',
+            'run.sh',
+            'x.fbx',
+            'x.zip',
+            'x.svg',
+            'x.html',
+            'x.dae',
+            '../x.obj',
+            '/tmp/x.obj',
+            '.hidden.obj',
+            'meshes/../x.obj',
+            'x\\y.obj',
+            'x%2f.obj',
+        ):
             with self.subTest(name=name):
                 self.rejected(files={name: OBJ})
 
@@ -411,17 +551,25 @@ class MeshTests(unittest.TestCase):
                 self.rejected(metadata=value)
 
     def test_required_metadata_fields_and_control_characters_rejected(self):
-        for metadata in ({}, {'name': 'A'}, {'name': 'A', 'license': ''},
-                         {'name': ['A'], 'license': 'CC0'}, {'name': 'A\nB', 'license': 'CC0'},
-                         {'name': 'A', 'license': 'CC0', 'category': 'BOAT'},
-                         {'name': 'A', 'license': 'CC0', 'upAxis': 'X'}):
+        for metadata in (
+            {},
+            {'name': 'A'},
+            {'name': 'A', 'license': ''},
+            {'name': ['A'], 'license': 'CC0'},
+            {'name': 'A\nB', 'license': 'CC0'},
+            {'name': 'A', 'license': 'CC0', 'category': 'BOAT'},
+            {'name': 'A', 'license': 'CC0', 'upAxis': 'X'},
+        ):
             with self.subTest(metadata=metadata):
                 self.rejected(metadata=metadata)
 
     def test_multiple_model_entries_require_explicit_entry_file(self):
         files = {'a.obj': OBJ, 'b.stl': STL}
         self.rejected(files=files)
-        asset = self.upload(files=files, metadata={'name': 'A', 'license': 'à préciser', 'entryFile': 'b.stl', 'upAxis': 'Z'})
+        asset = self.upload(
+            files=files,
+            metadata={'name': 'A', 'license': 'à préciser', 'entryFile': 'b.stl', 'upAxis': 'Z'},
+        )
         self.assertEqual(asset['preview']['format'], 'stl')
         self.assertEqual(asset['preview']['upAxis'], 'Z')
 
@@ -436,7 +584,13 @@ class MeshTests(unittest.TestCase):
 
     def test_content_type_injection_nonascii_and_malformed_multipart_rejected(self):
         _, body = self.multipart()
-        for content_type in ('application/json', 'multipart/form-data', 'x\r\nX-Test: yep', 'multipart/é', None):
+        for content_type in (
+            'application/json',
+            'multipart/form-data',
+            'x\r\nX-Test: yep',
+            'multipart/é',
+            None,
+        ):
             with self.subTest(content_type=content_type), self.assertRaises(self.module.MeshError):
                 self.library.import_multipart(content_type, body)
         with self.assertRaises(self.module.MeshError):
@@ -449,13 +603,21 @@ class MeshTests(unittest.TestCase):
 
     def test_mime_parser_depth_failure_is_normalized_to_mesherror(self):
         request = self.multipart()
-        with mock.patch.object(self.module.BytesParser, 'parsebytes', side_effect=RecursionError('fixture nested MIME')):
+        with mock.patch.object(
+            self.module.BytesParser, 'parsebytes', side_effect=RecursionError('fixture nested MIME')
+        ):
             with self.assertRaises(self.module.MeshError):
                 self.library.import_multipart(*request)
 
     def test_source_url_is_provenance_only_and_has_no_credentials_or_script(self):
-        for value in ('javascript:alert(1)', 'file:///tmp/x', 'http://example.org', 'https://user:pass@example.org/x',
-                      'https://example.org/\nsecret', 'https://example.org:999999/x'):
+        for value in (
+            'javascript:alert(1)',
+            'file:///tmp/x',
+            'http://example.org',
+            'https://user:pass@example.org/x',
+            'https://example.org/\nsecret',
+            'https://example.org:999999/x',
+        ):
             with self.subTest(value=value):
                 self.assertEqual(self.module.source_url(value), '')
         self.assertEqual(self.module.source_url('https://example.org/x'), 'https://example.org/x')
@@ -481,19 +643,27 @@ class MeshTests(unittest.TestCase):
     def test_partial_write_cleanup_removes_only_own_unpublished_staging(self):
         original = self.library._write_file
         calls = [0]
+
         def fail_second(*args):
             calls[0] += 1
             if calls[0] == 2:
                 raise OSError('fixture disk write failure')
             return original(*args)
+
         with mock.patch.object(self.library, '_write_file', side_effect=fail_second):
             with self.assertRaises(self.module.MeshError):
                 self.upload()
         self.assertEqual(list(self.library.store.iterdir()), [])
 
     def test_pending_or_corrupt_receipts_are_not_published_in_catalogue(self):
-        self.write(self.library.store / 'pending-fixture/asset.json', {'schema': 'lotusim-imported-mesh-1', 'asset': {}})
-        self.write(self.library.store / 'broken/asset.json', {'schema': 'lotusim-imported-mesh-1', 'asset': None})
+        self.write(
+            self.library.store / 'pending-fixture/asset.json',
+            {'schema': 'lotusim-imported-mesh-1', 'asset': {}},
+        )
+        self.write(
+            self.library.store / 'broken/asset.json',
+            {'schema': 'lotusim-imported-mesh-1', 'asset': None},
+        )
         self.assertEqual(self.library.catalog()['assets'], [])
 
     def test_manifest_edits_cannot_promote_import_or_publish_remote_preview(self):
@@ -522,9 +692,11 @@ class MeshTests(unittest.TestCase):
 
     def test_uploads_never_run_converters_open_network_or_edit_scenes(self):
         original = self.write(self.unity / 'Assets/Scenes/unchanged.unity', 'original scene')
-        with mock.patch('subprocess.run', side_effect=AssertionError('no external commands')), \
-                mock.patch('subprocess.Popen', side_effect=AssertionError('no converter')), \
-                mock.patch('socket.socket', side_effect=AssertionError('no network')):
+        with (
+            mock.patch('subprocess.run', side_effect=AssertionError('no external commands')),
+            mock.patch('subprocess.Popen', side_effect=AssertionError('no converter')),
+            mock.patch('socket.socket', side_effect=AssertionError('no network')),
+        ):
             asset = self.upload(files={'model.obj': b'# __import__("os").system("no")\n' + OBJ})
             self.library.catalog(force=True)
         self.assertEqual(asset['integrationStatus'], 'imported_pending')

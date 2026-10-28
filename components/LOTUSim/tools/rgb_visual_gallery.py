@@ -4,6 +4,7 @@ The viewer never reads test annotations. It displays detector/review JSON and
 clean RGB, while optional metrics are supplied by the separate evaluator.
 Rejected hypotheses remain inspectable and no browser edit changes predictions.
 """
+
 import html
 import json
 import math
@@ -32,8 +33,13 @@ def _prediction(value):
     if not isinstance(value, dict):
         raise ValueError("Invalid gallery prediction")
     box = value.get("bbox")
-    if (not isinstance(box, (tuple, list)) or len(box) != 4
-            or not all(_finite(v) for v in box) or box[2] <= 0 or box[3] <= 0):
+    if (
+        not isinstance(box, (tuple, list))
+        or len(box) != 4
+        or not all(_finite(v) for v in box)
+        or box[2] <= 0
+        or box[3] <= 0
+    ):
         raise ValueError("Invalid gallery bounding box")
     if not _finite(value.get("score")) or not 0 <= value["score"] <= 1:
         raise ValueError("Invalid gallery prediction score")
@@ -56,8 +62,12 @@ def _exclusions(review):
         polygon = region.get("polygon")
         if not isinstance(polygon, list) or not 3 <= len(polygon) <= 128:
             raise ValueError("Invalid gallery exclusion polygon")
-        if any(not isinstance(p, (list, tuple)) or len(p) != 2
-               or not all(_finite(v) and 0 <= v <= 1 for v in p) for p in polygon):
+        if any(
+            not isinstance(p, (list, tuple))
+            or len(p) != 2
+            or not all(_finite(v) and 0 <= v <= 1 for v in p)
+            for p in polygon
+        ):
             raise ValueError("Exclusion coordinates must be normalized")
         result.append({"id": str(region.get("id", "ownship")), "polygon": polygon})
     return result
@@ -71,11 +81,10 @@ def build_gallery_data(output, mapping, report=None, warnings=None):
         neutral = str(item["workerImage"])
         if not re.fullmatch(r"i[0-9]{6}\.png", neutral):
             raise ValueError("Gallery requires neutral RGB names")
-        path = output/"predictions"/(Path(neutral).stem+".json")
+        path = output / "predictions" / (Path(neutral).stem + ".json")
         payload = json.loads(path.read_text()) if path.is_file() else {}
         width, height = item["width"], item["height"]
-        if (not isinstance(width, int) or not isinstance(height, int)
-                or width <= 0 or height <= 0):
+        if not isinstance(width, int) or not isinstance(height, int) or width <= 0 or height <= 0:
             raise ValueError("Invalid native gallery dimensions")
         retained = [_prediction(p) for p in payload.get("predictions", [])]
         review = payload.get("review") or {}
@@ -86,30 +95,59 @@ def build_gallery_data(output, mapping, report=None, warnings=None):
             rejected.append({**entry, "prediction": _prediction(entry["prediction"])})
         counts["retained"] += len(retained)
         counts["uncertain"] += sum(
-            p.get("reviewStatus") == "uncertain" if p.get("reviewStatus") in {"retained", "uncertain"}
-            else bool(p.get("semanticConflict")) or p.get("recognitionDecision") == "indeterminate"
-            or p.get("category") == "unknown" for p in retained)
+            (
+                p.get("reviewStatus") == "uncertain"
+                if p.get("reviewStatus") in {"retained", "uncertain"}
+                else bool(p.get("semanticConflict"))
+                or p.get("recognitionDecision") == "indeterminate"
+                or p.get("category") == "unknown"
+            )
+            for p in retained
+        )
         counts["rejected"] += len(rejected)
         mask = review.get("exclusionMask")
         if mask is not None:
             mask = _relative(mask, "input")
             if not mask.startswith("input/observer-exclusion/"):
                 raise ValueError("Only the observer exclusion mask may enter the viewer")
-        frames.append({"sourceImage": str(item["sourceImage"]), "workerImage": neutral,
-            "width": width, "height": height, "raw": "input/rgb/"+neutral,
-            "predictionFile": "predictions/"+Path(neutral).stem+".json",
-            "retained": retained, "rejected": rejected,
-            "exclusions": _exclusions(review), "exclusionMask": mask,
-            "reviewCounts": review.get("counts", {}),
-            "predictionAvailable": path.is_file()})
+        frames.append(
+            {
+                "sourceImage": str(item["sourceImage"]),
+                "workerImage": neutral,
+                "width": width,
+                "height": height,
+                "raw": "input/rgb/" + neutral,
+                "predictionFile": "predictions/" + Path(neutral).stem + ".json",
+                "retained": retained,
+                "rejected": rejected,
+                "exclusions": _exclusions(review),
+                "exclusionMask": mask,
+                "reviewCounts": review.get("counts", {}),
+                "predictionAvailable": path.is_file(),
+            }
+        )
     metrics = None
     if report:
-        fields = ("truePositives", "falsePositives", "falseNegatives", "precision",
-                  "recall", "f1", "iouThreshold", "byVisiblePixelSize", "reference")
+        fields = (
+            "truePositives",
+            "falsePositives",
+            "falseNegatives",
+            "precision",
+            "recall",
+            "f1",
+            "iouThreshold",
+            "byVisiblePixelSize",
+            "reference",
+        )
         metrics = {key: report.get(key) for key in fields}
-    return {"schema": "lotusim-rgb-gallery-2", "frames": frames, "counts": counts,
-            "warnings": [str(w) for w in (warnings or [])], "metrics": metrics,
-            "inputContract": "clean RGB + detector/review outputs; no target geometry for display correction"}
+    return {
+        "schema": "lotusim-rgb-gallery-2",
+        "frames": frames,
+        "counts": counts,
+        "warnings": [str(w) for w in (warnings or [])],
+        "metrics": metrics,
+        "inputContract": "clean RGB + detector/review outputs; no target geometry for display correction",
+    }
 
 
 PAGE = r'''<!doctype html>
@@ -189,4 +227,4 @@ def render_gallery(output, mapping, report=None, warnings=None):
     # Prevent script-tag termination from labels, warnings or source filenames.
     encoded = json.dumps(payload, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
     encoded = encoded.replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
-    (output/"index.html").write_text(PAGE.replace("__DATA__", encoded), encoding="utf-8")
+    (output / "index.html").write_text(PAGE.replace("__DATA__", encoded), encoding="utf-8")

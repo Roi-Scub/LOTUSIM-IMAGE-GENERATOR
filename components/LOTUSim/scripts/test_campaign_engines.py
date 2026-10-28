@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Offline engine preparation contract checks; no editor, network or services."""
+
 import copy
 import hashlib
 import json
@@ -11,14 +12,29 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from campaign_settings import (ADAPTER_PATH, CampaignSecurityError, CampaignStore,
-                               CampaignValidationError, SCENE_PATH)
+from campaign_settings import (
+    ADAPTER_PATH,
+    CampaignSecurityError,
+    CampaignStore,
+    CampaignValidationError,
+    SCENE_PATH,
+)
 import render_engine_agents as agents
 
-
-ASSETS = [{'model': 'buoy', 'category': 'buoy', 'domain': 'moored',
-           'heightM': 3, 'lengthM': 2, 'beamM': 2, 'draftM': 0.5,
-           'maxSpeedMps': 0, 'altitudeM': [0, 0], 'evidence': 'test_assumption'}]
+ASSETS = [
+    {
+        'model': 'buoy',
+        'category': 'buoy',
+        'domain': 'moored',
+        'heightM': 3,
+        'lengthM': 2,
+        'beamM': 2,
+        'draftM': 0.5,
+        'maxSpeedMps': 0,
+        'altitudeM': [0, 0],
+        'evidence': 'test_assumption',
+    }
+]
 
 
 class EngineTests(unittest.TestCase):
@@ -32,9 +48,11 @@ class EngineTests(unittest.TestCase):
         catalog.write_text(json.dumps({'schema': 'lotusim-traffic-catalogue-1', 'assets': ASSETS}))
         sdf = self.core / 'assets/models/buoy/model.sdf'
         sdf.parent.mkdir(parents=True)
-        sdf.write_text('<sdf version="1.10"><model name="buoy"><link name="base">'
-                       '<visual name="body"><geometry><cylinder><radius>1</radius>'
-                       '<length>3</length></cylinder></geometry></visual></link></model></sdf>')
+        sdf.write_text(
+            '<sdf version="1.10"><model name="buoy"><link name="base">'
+            '<visual name="body"><geometry><cylinder><radius>1</radius>'
+            '<length>3</length></cylinder></geometry></visual></link></model></sdf>'
+        )
         adapter = self.unity / ADAPTER_PATH
         adapter.parent.mkdir(parents=True)
         adapter.write_text('// fixture installed adapter')
@@ -63,19 +81,28 @@ class EngineTests(unittest.TestCase):
             self.assertFalse(engine['runtimeDetected'])
             self.assertFalse(engine['nativeValidated'])
             self.assertEqual(engine['validationState'], 'not_native_validated')
-        self.assertEqual({entry['engine'] for entry in catalog['scenes']}, {'unity', 'unreal', 'godot', 'blender', 'o3de'})
+        self.assertEqual(
+            {entry['engine'] for entry in catalog['scenes']},
+            {'unity', 'unreal', 'godot', 'blender', 'o3de'},
+        )
 
     def test_detection_only_checks_executable_file_presence(self):
         editor = self.root / 'UnrealEditor'
         editor.write_bytes(b'not executed')
-        with patch.object(agents, '_runtime_candidates', return_value=[editor]), \
-                patch('subprocess.Popen', side_effect=AssertionError('Must not start engine')):
+        with (
+            patch.object(agents, '_runtime_candidates', return_value=[editor]),
+            patch('subprocess.Popen', side_effect=AssertionError('Must not start engine')),
+        ):
             for engine in self.store._engines():
                 self.assertTrue(engine['runtimeDetected'])
                 self.assertFalse(engine['nativeValidated'])
 
     def test_epic_launcher_is_not_an_unreal_runtime(self):
-        with patch.object(Path, 'iterdir', return_value=iter([Path('/example/EpicGamesLauncher.app'), Path('/example/Launcher')])):
+        with patch.object(
+            Path,
+            'iterdir',
+            return_value=iter([Path('/example/EpicGamesLauncher.app'), Path('/example/Launcher')]),
+        ):
             candidates = agents._runtime_candidates('unreal', self.unity)
         self.assertFalse(any('Launcher' in str(path) for path in candidates))
 
@@ -99,18 +126,30 @@ class EngineTests(unittest.TestCase):
         self.assertFalse(actions['nativeValidated'])
         self.assertFalse(actions['runtimeDetected'])
         script = self.store.read_prepared(result['id'], 'scene_unity.cs').decode()
-        self.assertIn('public static class LOTUSimPrepared_' + result['id'].replace('-', ''), script)
+        self.assertIn(
+            'public static class LOTUSimPrepared_' + result['id'].replace('-', ''), script
+        )
         self.assertIn('DatasetManualCampaignBuilder.ImportManifest(file, true);', script)
         self.assertIn('EditorApplication.isPlayingOrWillChangePlaymode', script)
-        for automatic in ('InitializeOnLoad', 'InitializeOnLoadMethod', 'ExecuteInEditMode', 'EditorApplication.isPlaying =', 'Process.Start'):
+        for automatic in (
+            'InitializeOnLoad',
+            'InitializeOnLoadMethod',
+            'ExecuteInEditMode',
+            'EditorApplication.isPlaying =',
+            'Process.Start',
+        ):
             self.assertNotIn(automatic, script)
         self.assertEqual(script.count('{'), script.count('}'))
         self.assertEqual(script.count('#if UNITY_EDITOR'), 1)
         self.assertEqual(script.count('#endif'), 1)
 
     def test_unity_generated_path_is_a_safely_escaped_csharp_literal(self):
-        value = agents._unity(self.plan, 'd58d5558-cbe2-4e59-87d4-949a12ff076f', 'a' * 64,
-                              Path('/tmp/a"b\\c\n\u2028d'))
+        value = agents._unity(
+            self.plan,
+            'd58d5558-cbe2-4e59-87d4-949a12ff076f',
+            'a' * 64,
+            Path('/tmp/a"b\\c\n\u2028d'),
+        )
         script = value['files']['scene_unity.cs'].decode()
         line = next(line for line in script.splitlines() if 'string file =' in line)
         self.assertIn('\\"', line)
@@ -123,7 +162,10 @@ class EngineTests(unittest.TestCase):
         report = json.loads(self.store.read_prepared(result['id'], 'engine-agent.json'))
         self.assertEqual(report, result['engineAgent'])
         self.assertEqual(report['kind'], 'deterministic_role_pipeline')
-        self.assertEqual([step['role'] for step in report['traces']], ['planner', 'scene_script_builder', 'validator'])
+        self.assertEqual(
+            [step['role'] for step in report['traces']],
+            ['planner', 'scene_script_builder', 'validator'],
+        )
         self.assertTrue(all(step['state'] == 'completed' for step in report['traces']))
         self.assertFalse(report['nativeValidated'])
         self.assertTrue(any('not autonomous LLM' in text for text in report['limitations']))
@@ -149,15 +191,23 @@ class EngineTests(unittest.TestCase):
 
     def test_flat_whitelist_and_per_package_inventory_are_required(self):
         result = self.prepare()
-        for name in ('../scene_unity.cs', '/tmp/secret', 'other.cs', 'scene_unity.cs/child', 'scene_unreal.py'):
+        for name in (
+            '../scene_unity.cs',
+            '/tmp/secret',
+            'other.cs',
+            'scene_unity.cs/child',
+            'scene_unreal.py',
+        ):
             with self.subTest(name=name), self.assertRaises(CampaignSecurityError):
                 self.store.read_prepared(result['id'], name)
 
     def test_malformed_inventory_cannot_enable_arbitrary_or_duplicate_files(self):
-        for bad in ([{'name': '../secret', 'sha256': 'a' * 64, 'bytes': 1}],
-                    [{'name': [], 'sha256': 'a' * 64, 'bytes': 1}],
-                    [{'name': 'campaign.json', 'sha256': 'a' * 64, 'bytes': True}],
-                    [{'name': 'campaign.json', 'sha256': 'a' * 64, 'bytes': 1}] * 2):
+        for bad in (
+            [{'name': '../secret', 'sha256': 'a' * 64, 'bytes': 1}],
+            [{'name': [], 'sha256': 'a' * 64, 'bytes': 1}],
+            [{'name': 'campaign.json', 'sha256': 'a' * 64, 'bytes': True}],
+            [{'name': 'campaign.json', 'sha256': 'a' * 64, 'bytes': 1}] * 2,
+        ):
             with self.subTest(inventory=bad):
                 result = self.prepare()
                 self.edit_manifest(result['id'], lambda value: value.update(artifacts=bad))
@@ -181,7 +231,9 @@ class EngineTests(unittest.TestCase):
         self.edit_manifest(result['id'], lambda data: data.pop('artifacts'))
         files = self.store.read_bundle(result['id'])
         self.assertEqual(set(files), {'campaign.json', 'manifest.json'})
-        self.assertEqual(self.store.read_prepared(result['id'], 'campaign.json'), files['campaign.json'])
+        self.assertEqual(
+            self.store.read_prepared(result['id'], 'campaign.json'), files['campaign.json']
+        )
 
     def test_preparation_is_immutable_and_does_not_execute_scripts(self):
         with patch('subprocess.Popen', side_effect=AssertionError('No worker or engine allowed')):
@@ -191,23 +243,46 @@ class EngineTests(unittest.TestCase):
             second = self.prepare()
         self.assertNotEqual(first['id'], second['id'])
         self.assertEqual(self.store.read_bundle(first['id']), before)
-        self.assertNotEqual(first['manifest']['campaignSha256'], second['manifest']['campaignSha256'])
+        self.assertNotEqual(
+            first['manifest']['campaignSha256'], second['manifest']['campaignSha256']
+        )
 
     def test_unreal_has_engine_specific_provenance_and_never_unity_script(self):
         self.plan['engine'] = 'unreal'
         result = self.prepare()
         files = self.store.read_bundle(result['id'])
-        self.assertTrue({'scene_unreal.py', 'scene-plan.json', 'LOTUSimPrepared.uproject', 'unreal-instructions.txt', 'engine-agent.json'} <= set(files))
+        self.assertTrue(
+            {
+                'scene_unreal.py',
+                'scene-plan.json',
+                'LOTUSimPrepared.uproject',
+                'unreal-instructions.txt',
+                'engine-agent.json',
+            }
+            <= set(files)
+        )
         self.assertNotIn('scene_unity.cs', files)
         self.assertEqual(result['manifest']['provenance']['renderEngine'], 'unreal')
-        self.assertEqual(result['manifest']['provenance']['adapterPath'], 'tools/unreal_scene_adapter.py')
+        self.assertEqual(
+            result['manifest']['provenance']['adapterPath'], 'tools/unreal_scene_adapter.py'
+        )
         self.assertTrue(result['manifest']['provenance']['scenePath'].startswith('/Game/LOTUSim/'))
         self.assertFalse(result['engineActions']['nativeValidated'])
 
     def test_unsafe_adapter_outputs_are_refused_before_prepared_directory(self):
         self.plan['engine'] = 'unreal'
-        for files in ({'../escape.py': b'x'}, {'scene_unreal.py': b'x' * 1_048_577}, {'scene_unreal.py': 'not bytes'}):
-            with self.subTest(names=list(files)), patch('unreal_scene_adapter.prepare_unreal', return_value={'files': files, 'manifest': {}}):
+        for files in (
+            {'../escape.py': b'x'},
+            {'scene_unreal.py': b'x' * 1_048_577},
+            {'scene_unreal.py': 'not bytes'},
+        ):
+            with (
+                self.subTest(names=list(files)),
+                patch(
+                    'unreal_scene_adapter.prepare_unreal',
+                    return_value={'files': files, 'manifest': {}},
+                ),
+            ):
                 with self.assertRaises(CampaignValidationError):
                     self.prepare()
         self.assertFalse((self.core / 'artifacts/campaign-settings/prepared').exists())

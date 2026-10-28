@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fixture-only neutral-engine profiles, contracts, pinning and storage safety."""
+
 import hashlib
 import json
 import math
@@ -14,8 +15,14 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from campaign_settings import CampaignStore, CampaignValidationError
-from engine_registry import (EngineRegistry, EngineRegistryError, MAX_CUSTOM,
-                             MAX_PROFILE, PROFILE_SCHEMA, custom_id)
+from engine_registry import (
+    EngineRegistry,
+    EngineRegistryError,
+    MAX_CUSTOM,
+    MAX_PROFILE,
+    PROFILE_SCHEMA,
+    custom_id,
+)
 from scene_preparation_status import observe_preparation
 
 
@@ -30,10 +37,27 @@ class RegistryTests(unittest.TestCase):
         self.profile = self.core / 'artifacts/render-engines/profile.json'
         catalogue = self.core / 'assets/scenarios/catalogs/traffic_assets.json'
         catalogue.parent.mkdir(parents=True)
-        catalogue.write_text(json.dumps({'schema': 'lotusim-traffic-catalogue-1', 'assets': [
-            {'model': 'buoy', 'category': 'buoy', 'domain': 'moored', 'heightM': 3,
-             'lengthM': 2, 'beamM': 2, 'draftM': 0.5, 'maxSpeedMps': 0,
-             'altitudeM': [0, 0], 'license': 'Fixture declared licence'}]}))
+        catalogue.write_text(
+            json.dumps(
+                {
+                    'schema': 'lotusim-traffic-catalogue-1',
+                    'assets': [
+                        {
+                            'model': 'buoy',
+                            'category': 'buoy',
+                            'domain': 'moored',
+                            'heightM': 3,
+                            'lengthM': 2,
+                            'beamM': 2,
+                            'draftM': 0.5,
+                            'maxSpeedMps': 0,
+                            'altitudeM': [0, 0],
+                            'license': 'Fixture declared licence',
+                        }
+                    ],
+                }
+            )
+        )
 
     def generic_store(self, engine='godot'):
         self.registry.select({'engine': engine})
@@ -43,7 +67,10 @@ class RegistryTests(unittest.TestCase):
         result = self.registry.catalog()
         self.assertEqual(result['schema'], 'lotusim-engine-catalog-1')
         self.assertEqual(result['selectedEngine']['id'], 'unity')
-        self.assertEqual([item['id'] for item in result['engines']], ['unity', 'unreal', 'godot', 'blender', 'o3de'])
+        self.assertEqual(
+            [item['id'] for item in result['engines']],
+            ['unity', 'unreal', 'godot', 'blender', 'o3de'],
+        )
         self.assertFalse((self.core / 'artifacts').exists())
         self.assertFalse(any(item['nativeValidated'] for item in result['engines']))
 
@@ -76,7 +103,9 @@ class RegistryTests(unittest.TestCase):
         again = self.registry.select({'engine': 'custom', 'name': 'MON MOTEUR 3D'})
         self.assertEqual(again['selectedEngine']['id'], selected['id'])
         self.assertEqual(len(again['engines']), 6)
-        self.assertEqual(self.registry.select({'engine': selected['id']})['selectedEngine']['id'], selected['id'])
+        self.assertEqual(
+            self.registry.select({'engine': selected['id']})['selectedEngine']['id'], selected['id']
+        )
 
     def test_custom_unicode_label_normalization_never_becomes_a_path(self):
         selected = self.registry.select({'engine': 'custom', 'name': 'Écume ３D'})['selectedEngine']
@@ -93,19 +122,42 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(self.profile.read_bytes(), before)
 
     def test_unknown_id_is_not_implicitly_registered_or_dispatched(self):
-        for identifier in ('arbitrary', 'custom-' + '0' * 16, '../godot', '/tmp/engine.py', None, ['godot']):
+        for identifier in (
+            'arbitrary',
+            'custom-' + '0' * 16,
+            '../godot',
+            '/tmp/engine.py',
+            None,
+            ['godot'],
+        ):
             with self.subTest(identifier=identifier), self.assertRaises(EngineRegistryError):
                 self.registry.get(identifier)
 
     def test_selection_payload_cannot_register_paths_modules_commands_or_options(self):
-        for payload in ({'engine': 'godot', 'module': 'evil'}, {'engine': 'godot', 'path': '/tmp/x'},
-                        {'engine': 'custom', 'name': 'Test', 'command': 'touch file'},
-                        {'engine': 'custom'}, {'engine': 4}, [], {'engine': 'unknown'}):
+        for payload in (
+            {'engine': 'godot', 'module': 'evil'},
+            {'engine': 'godot', 'path': '/tmp/x'},
+            {'engine': 'custom', 'name': 'Test', 'command': 'touch file'},
+            {'engine': 'custom'},
+            {'engine': 4},
+            [],
+            {'engine': 'unknown'},
+        ):
             with self.subTest(payload=payload), self.assertRaises(EngineRegistryError):
                 self.registry.select(payload)
 
     def test_custom_name_validation_rejects_code_path_and_excess_length(self):
-        for value in ('../native.py', '/tmp/native', 'a;b', 'x$(cmd)', '<script>', '', '.' * 5, 'a' * 65, None):
+        for value in (
+            '../native.py',
+            '/tmp/native',
+            'a;b',
+            'x$(cmd)',
+            '<script>',
+            '',
+            '.' * 5,
+            'a' * 65,
+            None,
+        ):
             with self.subTest(value=value), self.assertRaises(EngineRegistryError):
                 self.registry.select({'engine': 'custom', 'name': value})
 
@@ -164,8 +216,17 @@ class RegistryTests(unittest.TestCase):
         with patch('subprocess.Popen', side_effect=AssertionError('No engine process allowed')):
             result = store.prepare(campaign)
         files = store.read_bundle(result['id'])
-        self.assertEqual(set(files), {'campaign.json', 'manifest.json', 'engine-agent.json', 'scene-contract.json',
-                                      'adapter-requirements.json', 'engine-instructions.txt'})
+        self.assertEqual(
+            set(files),
+            {
+                'campaign.json',
+                'manifest.json',
+                'engine-agent.json',
+                'scene-contract.json',
+                'adapter-requirements.json',
+                'engine-instructions.txt',
+            },
+        )
         self.assertFalse(any(name.endswith(('.cs', '.py', '.uproject')) for name in files))
         self.assertEqual(result['engineActions']['engine'], 'godot')
         self.assertEqual(result['engineActions']['mode'], 'neutral_contract_only')
@@ -173,7 +234,9 @@ class RegistryTests(unittest.TestCase):
         self.assertFalse(result['engineAgent']['nativeScriptGenerated'])
 
     def test_custom_engine_prepares_and_is_accepted_by_telemetry(self):
-        selected = self.registry.select({'engine': 'custom', 'name': 'Mon moteur'})['selectedEngine']
+        selected = self.registry.select({'engine': 'custom', 'name': 'Mon moteur'})[
+            'selectedEngine'
+        ]
         store = CampaignStore(self.core)
         result = store.prepare(store.defaults())
         agent, _ = observe_preparation(self.core)
@@ -189,7 +252,9 @@ class RegistryTests(unittest.TestCase):
         result = store.validate(campaign)
         self.assertFalse(result['valid'])
         self.assertIn('$.engine', [error['path'] for error in result['errors']])
-        selected = self.registry.select({'engine': 'custom', 'name': 'Other Engine'})['selectedEngine']
+        selected = self.registry.select({'engine': 'custom', 'name': 'Other Engine'})[
+            'selectedEngine'
+        ]
         campaign['engine'] = selected['id']
         self.assertTrue(store.validate(campaign)['valid'])
 
@@ -206,7 +271,9 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual([block['firstFrameIndex'] for block in contract['blocks']], [0, 3, 8])
         self.assertEqual(contract['classes'], [{'id': 1, 'name': 'buoy'}])
         self.assertEqual(contract['models'][0]['dimensionsM']['heightM'], 3)
-        self.assertEqual(contract['models'][0]['sourceBinding']['license'], 'Fixture declared licence')
+        self.assertEqual(
+            contract['models'][0]['sourceBinding']['license'], 'Fixture declared licence'
+        )
         self.assertEqual(contract['models'][0]['sourceBinding']['uri'], 'model://buoy')
         fy = 720 / (2 * math.tan(math.radians(60) / 2))
         self.assertAlmostEqual(contract['camera']['intrinsicsPx']['fy'], fy)
@@ -217,39 +284,70 @@ class RegistryTests(unittest.TestCase):
         store, _ = self.generic_store('o3de')
         first = store.prepare(store.defaults())
         second = store.prepare(store.defaults())
-        contracts = [json.loads(store.read_prepared(item['id'], 'scene-contract.json')) for item in (first, second)]
-        ids = [[key for block in contract['blocks'] for row in block['objects'] for key in row['instanceIds']]
-               for contract in contracts]
+        contracts = [
+            json.loads(store.read_prepared(item['id'], 'scene-contract.json'))
+            for item in (first, second)
+        ]
+        ids = [
+            [
+                key
+                for block in contract['blocks']
+                for row in block['objects']
+                for key in row['instanceIds']
+            ]
+            for contract in contracts
+        ]
         self.assertEqual(ids[0], ids[1])
         self.assertEqual(len(ids[0]), len(set(ids[0])))
 
     def test_generic_manifest_pins_geometry_not_unity_prefab_ack(self):
         store, _ = self.generic_store()
-        record = {'model': 'import_' + 'a' * 32, 'category': 'buoy', 'domain': 'moored',
-                  'heightM': 2, 'maxSpeedMps': 0, 'altitudeM': [0, 0], 'classId': 1,
-                  'importId': 'import-fixture', 'revisionSha256': 'a' * 64,
-                  'requestSha256': 'b' * 64, 'geometrySha256': 'c' * 64,
-                  'neutralSource': {'root': 'core', 'obj': 'artifacts/fixed/gazebo.obj', 'files': []}}
+        record = {
+            'model': 'import_' + 'a' * 32,
+            'category': 'buoy',
+            'domain': 'moored',
+            'heightM': 2,
+            'maxSpeedMps': 0,
+            'altitudeM': [0, 0],
+            'classId': 1,
+            'importId': 'import-fixture',
+            'revisionSha256': 'a' * 64,
+            'requestSha256': 'b' * 64,
+            'geometrySha256': 'c' * 64,
+            'neutralSource': {'root': 'core', 'obj': 'artifacts/fixed/gazebo.obj', 'files': []},
+        }
         campaign = store.defaults()
         for block in campaign['blocks']:
             block['objects'][0]['model'] = record['model']
-        with patch('mesh_integration.neutral_imports', return_value=[record]), \
-                patch('mesh_integration.ready_imports', side_effect=AssertionError('Unity ACK must not gate neutral preparation')):
+        with (
+            patch('mesh_integration.neutral_imports', return_value=[record]),
+            patch(
+                'mesh_integration.ready_imports',
+                side_effect=AssertionError('Unity ACK must not gate neutral preparation'),
+            ),
+        ):
             result = store.prepare(campaign)
         self.assertEqual(result['manifest']['importedAssetRevisions'], [])
-        self.assertEqual(result['manifest']['neutralSourceRevisions'][0]['geometrySha256'], 'c' * 64)
+        self.assertEqual(
+            result['manifest']['neutralSourceRevisions'][0]['geometrySha256'], 'c' * 64
+        )
         self.assertNotIn('prefabGuid', result['manifest']['neutralSourceRevisions'][0])
         contract = json.loads(store.read_prepared(result['id'], 'scene-contract.json'))
-        self.assertEqual(contract['models'][0]['sourceBinding']['preparedSource'], record['neutralSource'])
+        self.assertEqual(
+            contract['models'][0]['sourceBinding']['preparedSource'], record['neutralSource']
+        )
 
     def test_real_converted_bundle_prepares_for_third_engine_without_unity_ack(self):
         from test_mesh_integration import IntegrationTests
+
         fixture = IntegrationTests(methodName='runTest')
         fixture.setUp()
         self.addCleanup(fixture.tearDown)
         fixture.prepare()
         catalog_path = fixture.core / 'assets/scenarios/catalogs/traffic_assets.json'
-        catalog_path.write_bytes((self.core / 'assets/scenarios/catalogs/traffic_assets.json').read_bytes())
+        catalog_path.write_bytes(
+            (self.core / 'assets/scenarios/catalogs/traffic_assets.json').read_bytes()
+        )
         EngineRegistry(fixture.core).select({'engine': 'godot'})
         store = CampaignStore(fixture.core)
         imported = next(item for item in store.catalog()['assets'] if item.get('importId'))
@@ -257,7 +355,10 @@ class RegistryTests(unittest.TestCase):
         for block in campaign['blocks']:
             block['objects'][0]['model'] = imported['model']
         result = store.prepare(campaign)
-        self.assertEqual(result['manifest']['neutralSourceRevisions'][0]['geometrySha256'], imported['geometrySha256'])
+        self.assertEqual(
+            result['manifest']['neutralSourceRevisions'][0]['geometrySha256'],
+            imported['geometrySha256'],
+        )
         self.assertFalse((fixture.folder / 'unity-result.json').exists())
         self.assertFalse((fixture.unity / 'Assets').exists())
         self.assertIsNone(store.unity_root)
@@ -265,7 +366,12 @@ class RegistryTests(unittest.TestCase):
     def test_generic_downloads_require_exact_inventory_and_intact_hashes(self):
         store, _ = self.generic_store()
         result = store.prepare(store.defaults())
-        path = self.core / 'artifacts/campaign-settings/prepared' / result['id'] / 'adapter-requirements.json'
+        path = (
+            self.core
+            / 'artifacts/campaign-settings/prepared'
+            / result['id']
+            / 'adapter-requirements.json'
+        )
         path.write_text('{}')
         with self.assertRaisesRegex(ValueError, 'integrity'):
             store.read_bundle(result['id'])
@@ -273,6 +379,7 @@ class RegistryTests(unittest.TestCase):
 
     def test_legacy_unity_inventory_without_common_contract_is_still_readable(self):
         from campaign_settings import ADAPTER_PATH
+
         unity = self.root / 'unity'
         adapter = unity / ADAPTER_PATH
         adapter.parent.mkdir(parents=True)
@@ -281,7 +388,9 @@ class RegistryTests(unittest.TestCase):
         result = store.prepare(store.defaults())
         folder = self.core / 'artifacts/campaign-settings/prepared' / result['id']
         manifest = json.loads((folder / 'manifest.json').read_bytes())
-        manifest['artifacts'] = [row for row in manifest['artifacts'] if row['name'] != 'scene-contract.json']
+        manifest['artifacts'] = [
+            row for row in manifest['artifacts'] if row['name'] != 'scene-contract.json'
+        ]
         (folder / 'manifest.json').write_text(json.dumps(manifest))
         (folder / 'scene-contract.json').unlink()
         self.assertIn('scene_unity.cs', store.read_bundle(result['id']))

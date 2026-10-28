@@ -3,6 +3,7 @@
 This records offline package preparation only. It neither starts an engine nor
 interprets a saved package or a recently created directory as a running agent.
 """
+
 from contextlib import contextmanager
 import datetime as dt
 import fcntl
@@ -19,8 +20,11 @@ from engine_registry import EngineRegistry, EngineRegistryError, PREPARED_FILES,
 
 SCHEMA = 'lotusim-scene-preparation-status-1'
 STATUS_FILE = 'scene-preparation.json'
-ROLES = (('planner', 'Planification'), ('scene_script_builder', 'Création du script de scène'),
-         ('validator', 'Validation du paquet'))
+ROLES = (
+    ('planner', 'Planification'),
+    ('scene_script_builder', 'Création du script de scène'),
+    ('validator', 'Validation du paquet'),
+)
 MAX_STATUS = 65536
 MAX_ARTIFACT = 1048576
 MAX_HISTORY = 128
@@ -76,8 +80,10 @@ def _json(raw):
                 raise ValueError('Duplicate JSON field')
             result[key] = value
         return result
+
     def reject(value):
         raise ValueError('Non-finite JSON')
+
     value = json.loads(raw.decode('utf-8'), object_pairs_hook=pairs, parse_constant=reject)
     json.dumps(value, allow_nan=False)
     return value
@@ -97,13 +103,17 @@ def _directory(core, components, create=False):
                     os.mkdir(component, 0o700, dir_fd=descriptor)
                 except FileExistsError:
                     pass
-            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor)
+            child = os.open(
+                component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor
+            )
             os.close(descriptor)
             descriptor = child
         yield descriptor
     except OSError as error:
         if error.errno in (20, 40, 62):
-            raise ScenePreparationStorageError('Preparation storage must not contain symlinks') from error
+            raise ScenePreparationStorageError(
+                'Preparation storage must not contain symlinks'
+            ) from error
         raise
     finally:
         if descriptor is not None:
@@ -129,8 +139,9 @@ def _read(descriptor, filename, maximum, budget=None):
 
 @contextmanager
 def _locked(descriptor):
-    fd = os.open('scene-preparation.lock', os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW,
-                 0o600, dir_fd=descriptor)
+    fd = os.open(
+        'scene-preparation.lock', os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600, dir_fd=descriptor
+    )
     try:
         if not stat.S_ISREG(os.fstat(fd).st_mode):
             raise ScenePreparationStorageError('Expected a regular preparation lock')
@@ -142,25 +153,40 @@ def _locked(descriptor):
 
 class PreparationStatus:
     """One attempt owns its updates; a late older attempt cannot replace it."""
+
     def __init__(self, core, identifier, campaign, *, clock=time.time):
         if not isinstance(identifier, str) or not _UUID.fullmatch(identifier):
             raise ValueError('Expected an opaque campaign UUID')
         self.core, self.clock = Path(core), clock
         payload = campaign if isinstance(campaign, dict) else {}
-        self.data = {'schema': SCHEMA, 'campaignId': identifier, 'runId': uuid.uuid4().hex,
-                     'engine': payload.get('engine') if _registered(self.core, payload.get('engine')) else None,
-                     'campaignName': _text(payload.get('name'), 128) or 'Campagne sans nom',
-                     'pid': os.getpid(), 'processToken': _PROCESS_TOKEN,
-                     'phase': 'queued', 'currentRole': 'planner',
-                     'startedAt': _iso(clock()), 'updatedAt': _iso(clock()),
-                     'nativeValidated': False, 'steps': [
-                         {'role': role, 'label': label, 'state': 'idle', 'detail': 'En attente'}
-                         for role, label in ROLES], 'events': []}
+        self.data = {
+            'schema': SCHEMA,
+            'campaignId': identifier,
+            'runId': uuid.uuid4().hex,
+            'engine': (
+                payload.get('engine') if _registered(self.core, payload.get('engine')) else None
+            ),
+            'campaignName': _text(payload.get('name'), 128) or 'Campagne sans nom',
+            'pid': os.getpid(),
+            'processToken': _PROCESS_TOKEN,
+            'phase': 'queued',
+            'currentRole': 'planner',
+            'startedAt': _iso(clock()),
+            'updatedAt': _iso(clock()),
+            'nativeValidated': False,
+            'steps': [
+                {'role': role, 'label': label, 'state': 'idle', 'detail': 'En attente'}
+                for role, label in ROLES
+            ],
+            'events': [],
+        }
         self.started = False
 
     def _write(self, initial=False):
         self.data['updatedAt'] = _iso(self.clock())
-        raw = (json.dumps(self.data, ensure_ascii=False, allow_nan=False, sort_keys=True) + '\n').encode()
+        raw = (
+            json.dumps(self.data, ensure_ascii=False, allow_nan=False, sort_keys=True) + '\n'
+        ).encode()
         if len(raw) > MAX_STATUS:
             raise ValueError('Preparation telemetry exceeds budget')
         with _directory(self.core, ('operations',), create=True) as descriptor:
@@ -184,8 +210,12 @@ class PreparationStatus:
             except FileNotFoundError:
                 return False
         temporary = '.scene-preparation-' + uuid.uuid4().hex + '.tmp'
-        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
-                     0o600, dir_fd=descriptor)
+        fd = os.open(
+            temporary,
+            os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+            0o600,
+            dir_fd=descriptor,
+        )
         try:
             with os.fdopen(fd, 'wb') as stream:
                 stream.write(raw)
@@ -201,9 +231,19 @@ class PreparationStatus:
         return True
 
     def _event(self, role, kind, message):
-        self.data['events'] = (self.data['events'] + [
-            {'id': uuid.uuid4().hex, 'at': _iso(self.clock()), 'source': 'scene_preparation',
-             'role': role, 'kind': kind, 'message': _text(message)}])[-16:]
+        self.data['events'] = (
+            self.data['events']
+            + [
+                {
+                    'id': uuid.uuid4().hex,
+                    'at': _iso(self.clock()),
+                    'source': 'scene_preparation',
+                    'role': role,
+                    'kind': kind,
+                    'message': _text(message),
+                }
+            ]
+        )[-16:]
 
     def __enter__(self):
         self._event('planner', 'queued', 'Préparation de scène demandée ; aucun moteur lancé.')
@@ -227,7 +267,11 @@ class PreparationStatus:
         for step in self.data['steps']:
             step.update(state='complete', detail='Étape de préparation terminée')
         self.data.update(phase='complete', currentRole='validator', completedAt=_iso(self.clock()))
-        self._event('validator', 'complete', 'Paquet de scène préparé et fichiers vérifiés ; moteur non exécuté.')
+        self._event(
+            'validator',
+            'complete',
+            'Paquet de scène préparé et fichiers vérifiés ; moteur non exécuté.',
+        )
         self._write()
 
     def __exit__(self, kind, error, traceback):
@@ -237,8 +281,12 @@ class PreparationStatus:
             for step in self.data['steps']:
                 if step['role'] == self.data['currentRole']:
                     step.update(state='failed', detail='Préparation interrompue')
-            self.data.update(phase='failed', error=_safe_error(error), completedAt=_iso(self.clock()))
-            self._event(self.data['currentRole'], 'failed', 'Échec de préparation : ' + _safe_error(error))
+            self.data.update(
+                phase='failed', error=_safe_error(error), completedAt=_iso(self.clock())
+            )
+            self._event(
+                self.data['currentRole'], 'failed', 'Échec de préparation : ' + _safe_error(error)
+            )
             try:
                 self._write()
             except (OSError, ValueError):
@@ -250,8 +298,11 @@ class PreparationStatus:
 def _package(descriptor, identifier, budget, core):
     manifest_raw = _read(descriptor, 'manifest.json', MAX_ARTIFACT, budget)
     manifest = _json(manifest_raw)
-    if (not isinstance(manifest, dict) or manifest.get('schema') != 'lotusim-manual-campaign-1'
-            or manifest.get('id') != identifier):
+    if (
+        not isinstance(manifest, dict)
+        or manifest.get('schema') != 'lotusim-manual-campaign-1'
+        or manifest.get('id') != identifier
+    ):
         return None
     engine = _registered(core, manifest.get('engine'))
     if engine is None:
@@ -259,53 +310,89 @@ def _package(descriptor, identifier, budget, core):
     campaign_raw = _read(descriptor, 'campaign.json', MAX_ARTIFACT, budget)
     campaign = _json(campaign_raw)
     digest = hashlib.sha256(campaign_raw).hexdigest()
-    if (not isinstance(campaign, dict) or campaign.get('schema') != 'lotusim-campaign-settings-1'
-            or campaign.get('engine') != manifest['engine'] or campaign.get('scene') != manifest.get('scene')
-            or digest != manifest.get('campaignSha256')):
+    if (
+        not isinstance(campaign, dict)
+        or campaign.get('schema') != 'lotusim-campaign-settings-1'
+        or campaign.get('engine') != manifest['engine']
+        or campaign.get('scene') != manifest.get('scene')
+        or digest != manifest.get('campaignSha256')
+    ):
         return None
     rows = manifest.get('artifacts')
     if not isinstance(rows, list) or len(rows) > 10:
         return None
     inventory = {}
     for row in rows:
-        if (not isinstance(row, dict) or set(row) != {'name', 'sha256', 'bytes'}
-                or not isinstance(row['name'], str) or row['name'] not in PREPARED_FILES - {'manifest.json'}
-                or row['name'] in inventory or type(row['bytes']) is not int
-                or not 0 <= row['bytes'] <= MAX_ARTIFACT
-                or not isinstance(row['sha256'], str) or not re.fullmatch(r'[0-9a-f]{64}', row['sha256'])):
+        if (
+            not isinstance(row, dict)
+            or set(row) != {'name', 'sha256', 'bytes'}
+            or not isinstance(row['name'], str)
+            or row['name'] not in PREPARED_FILES - {'manifest.json'}
+            or row['name'] in inventory
+            or type(row['bytes']) is not int
+            or not 0 <= row['bytes'] <= MAX_ARTIFACT
+            or not isinstance(row['sha256'], str)
+            or not re.fullmatch(r'[0-9a-f]{64}', row['sha256'])
+        ):
             return None
         inventory[row['name']] = row
     if set(inventory) not in (expected_artifacts(engine), expected_artifacts(engine, legacy=True)):
         return None
     files = {'campaign.json': campaign_raw}
     for name, row in inventory.items():
-        raw = campaign_raw if name == 'campaign.json' else _read(descriptor, name, MAX_ARTIFACT, budget)
+        raw = (
+            campaign_raw
+            if name == 'campaign.json'
+            else _read(descriptor, name, MAX_ARTIFACT, budget)
+        )
         if len(raw) != row['bytes'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
             return None
         if name == 'engine-agent.json':
             files[name] = raw
     trace_raw = files['engine-agent.json']
     trace = _json(trace_raw)
-    if (not isinstance(trace, dict) or trace.get('schema') != 'lotusim-render-engine-agent-1'
-            or trace.get('kind') != 'deterministic_role_pipeline' or trace.get('id') != identifier
-            or trace.get('engine') != manifest['engine'] or trace.get('campaignSha256') != digest
-            or trace.get('nativeValidated') is not False):
+    if (
+        not isinstance(trace, dict)
+        or trace.get('schema') != 'lotusim-render-engine-agent-1'
+        or trace.get('kind') != 'deterministic_role_pipeline'
+        or trace.get('id') != identifier
+        or trace.get('engine') != manifest['engine']
+        or trace.get('campaignSha256') != digest
+        or trace.get('nativeValidated') is not False
+    ):
         return None
     traces = trace.get('traces')
-    if (not isinstance(traces, list) or len(traces) != 3
-            or [item.get('role') for item in traces if isinstance(item, dict)] != [role for role, _ in ROLES]
-            or any(item.get('state') != 'completed' for item in traces)):
+    if (
+        not isinstance(traces, list)
+        or len(traces) != 3
+        or [item.get('role') for item in traces if isinstance(item, dict)]
+        != [role for role, _ in ROLES]
+        or any(item.get('state') != 'completed' for item in traces)
+    ):
         return None
-    return {'campaignId': identifier, 'campaignName': _text(campaign.get('name'), 128),
-            'engine': manifest['engine'], 'updatedAt': manifest.get('createdAt'),
-            'steps': [{'role': role, 'label': label, 'state': 'complete', 'detail': 'Étape archivée, non active'}
-                      for role, label in ROLES]}
+    return {
+        'campaignId': identifier,
+        'campaignName': _text(campaign.get('name'), 128),
+        'engine': manifest['engine'],
+        'updatedAt': manifest.get('createdAt'),
+        'steps': [
+            {
+                'role': role,
+                'label': label,
+                'state': 'complete',
+                'detail': 'Étape archivée, non active',
+            }
+            for role, label in ROLES
+        ],
+    }
 
 
 def _prepared(core, identifier, budget=None):
     try:
         with _directory(core, ('campaign-settings', 'prepared', identifier)) as descriptor:
-            return _package(descriptor, identifier, budget if budget is not None else [16 * MAX_ARTIFACT], core)
+            return _package(
+                descriptor, identifier, budget if budget is not None else [16 * MAX_ARTIFACT], core
+            )
     except (OSError, ValueError, UnicodeError, TypeError, RecursionError):
         return None
 
@@ -336,22 +423,40 @@ def observe_preparation(core, *, now=None, process_alive=None):
     """Read-only agent/event view. Saved plans cannot produce an active state."""
     now = time.time() if now is None else now
     process_alive = process_alive or (lambda pid: False)
-    public = {'id': 'scene_preparation', 'label': 'Agent de préparation de scène', 'group': 'Préparation',
-              'state': 'idle', 'phase': 'idle', 'detail': 'En veille — aucune préparation observée',
-              'engine': None, 'campaignId': None, 'campaignName': None, 'updatedAt': None,
-              'historical': False, 'nativeValidated': False, 'live': False, 'links': {},
-              'steps': [{'role': role, 'label': label, 'state': 'idle', 'detail': 'En attente'}
-                        for role, label in ROLES]}
+    public = {
+        'id': 'scene_preparation',
+        'label': 'Agent de préparation de scène',
+        'group': 'Préparation',
+        'state': 'idle',
+        'phase': 'idle',
+        'detail': 'En veille — aucune préparation observée',
+        'engine': None,
+        'campaignId': None,
+        'campaignName': None,
+        'updatedAt': None,
+        'historical': False,
+        'nativeValidated': False,
+        'live': False,
+        'links': {},
+        'steps': [
+            {'role': role, 'label': label, 'state': 'idle', 'detail': 'En attente'}
+            for role, label in ROLES
+        ],
+    }
     source = None
     try:
         with _directory(Path(core), ('operations',)) as descriptor:
             source = _json(_read(descriptor, STATUS_FILE, MAX_STATUS))
     except (OSError, ValueError, UnicodeError, TypeError, RecursionError):
         pass
-    valid = (isinstance(source, dict) and source.get('schema') == SCHEMA
-             and isinstance(source.get('campaignId'), str) and _UUID.fullmatch(source['campaignId'])
-             and source.get('phase') in ('queued', 'preparing', 'complete', 'failed')
-             and source.get('nativeValidated') is False)
+    valid = (
+        isinstance(source, dict)
+        and source.get('schema') == SCHEMA
+        and isinstance(source.get('campaignId'), str)
+        and _UUID.fullmatch(source['campaignId'])
+        and source.get('phase') in ('queued', 'preparing', 'complete', 'failed')
+        and source.get('nativeValidated') is False
+    )
     events = []
     if valid:
         phase, stamp = source['phase'], _epoch(source.get('updatedAt'))
@@ -362,39 +467,69 @@ def observe_preparation(core, *, now=None, process_alive=None):
         # token proves the owning process incarnation without reading argv.
         owner_confirmed = pid == os.getpid() and source.get('processToken') == _PROCESS_TOKEN
         live = False
-        if (phase in ('queued', 'preparing') and 0 <= age <= ACTIVE_SECONDS
-                and type(pid) is int and pid > 0 and owner_confirmed):
+        if (
+            phase in ('queued', 'preparing')
+            and 0 <= age <= ACTIVE_SECONDS
+            and type(pid) is int
+            and pid > 0
+            and owner_confirmed
+        ):
             try:
                 live = bool(process_alive(pid))
             except (OSError, ValueError, TypeError):
                 pass
-        public.update(phase=phase, engine=source.get('engine') if _registered(core, source.get('engine')) else None,
-                      campaignId=source['campaignId'], campaignName=_text(source.get('campaignName'), 128),
-                      updatedAt=_iso(stamp) if stamp is not None else None, live=live,
-                      historical=not live and (phase in ('queued', 'preparing') or age > 15))
+        public.update(
+            phase=phase,
+            engine=source.get('engine') if _registered(core, source.get('engine')) else None,
+            campaignId=source['campaignId'],
+            campaignName=_text(source.get('campaignName'), 128),
+            updatedAt=_iso(stamp) if stamp is not None else None,
+            live=live,
+            historical=not live and (phase in ('queued', 'preparing') or age > 15),
+        )
         steps = source.get('steps')
         if isinstance(steps, list) and len(steps) == 3:
             for original, candidate in zip(public['steps'], steps):
                 if isinstance(candidate, dict) and candidate.get('role') == original['role']:
-                    original.update(state=candidate.get('state') if candidate.get('state') in ('idle', 'running', 'complete', 'failed') else 'idle',
-                                    detail=_text(candidate.get('detail')))
+                    original.update(
+                        state=(
+                            candidate.get('state')
+                            if candidate.get('state') in ('idle', 'running', 'complete', 'failed')
+                            else 'idle'
+                        ),
+                        detail=_text(candidate.get('detail')),
+                    )
         if phase in ('queued', 'preparing'):
-            public.update(state='running' if live else 'stale',
-                          detail='Préparation hors ligne en cours ; moteur non lancé' if live
-                          else 'Ancienne préparation en cours — processus ou fraîcheur non confirmés')
+            public.update(
+                state='running' if live else 'stale',
+                detail=(
+                    'Préparation hors ligne en cours ; moteur non lancé'
+                    if live
+                    else 'Ancienne préparation en cours — processus ou fraîcheur non confirmés'
+                ),
+            )
             if not live:
                 for step in public['steps']:
                     if step['state'] == 'running':
                         step.update(state='idle', detail='Ancienne étape — activité non confirmée')
         elif phase == 'failed':
-            public.update(state='failed', detail='Échec de préparation : ' + _redact(source.get('error')))
+            public.update(
+                state='failed', detail='Échec de préparation : ' + _redact(source.get('error'))
+            )
         else:
             package = _prepared(Path(core), source['campaignId'])
             if package:
-                public.update(package, state='complete', detail='Paquet préparé et vérifié — moteur non exécuté')
+                public.update(
+                    package,
+                    state='complete',
+                    detail='Paquet préparé et vérifié — moteur non exécuté',
+                )
                 public['updatedAt'] = _iso(stamp) if stamp is not None else package['updatedAt']
             else:
-                public.update(state='failed', detail='Paquet de préparation absent ou modifié ; succès non confirmé')
+                public.update(
+                    state='failed',
+                    detail='Paquet de préparation absent ou modifié ; succès non confirmé',
+                )
         values = source.get('events')
         if isinstance(values, list):
             for index, item in enumerate(values[-16:]):
@@ -403,23 +538,45 @@ def observe_preparation(core, *, now=None, process_alive=None):
                 at = _epoch(item.get('at'))
                 if at is None:
                     continue
-                events.append({'id': 'scene-preparation-' + _text(item.get('id'), 40),
-                               'at': _iso(at), 'source': 'scene_preparation',
-                               'level': 'error' if item.get('kind') == 'failed' else 'info',
-                               'message': _redact(item.get('message')), 'historical': not live or now - at > 15})
+                events.append(
+                    {
+                        'id': 'scene-preparation-' + _text(item.get('id'), 40),
+                        'at': _iso(at),
+                        'source': 'scene_preparation',
+                        'level': 'error' if item.get('kind') == 'failed' else 'info',
+                        'message': _redact(item.get('message')),
+                        'historical': not live or now - at > 15,
+                    }
+                )
     else:
         package = _latest(Path(core))
         if package:
-            public.update(package, state='complete', phase='complete', historical=True,
-                          detail='Paquet préparé vérifié — historique, moteur non exécuté')
+            public.update(
+                package,
+                state='complete',
+                phase='complete',
+                historical=True,
+                detail='Paquet préparé vérifié — historique, moteur non exécuté',
+            )
             stamp = _epoch(package.get('updatedAt'))
             if stamp is not None:
-                events.append({'id': 'scene-preparation-archive-' + package['campaignId'], 'at': _iso(stamp),
-                               'source': 'scene_preparation', 'level': 'info',
-                               'message': 'Paquet de scène ' + package['engine'] + ' archivé et vérifié ; aucun agent actif.',
-                               'historical': True})
+                events.append(
+                    {
+                        'id': 'scene-preparation-archive-' + package['campaignId'],
+                        'at': _iso(stamp),
+                        'source': 'scene_preparation',
+                        'level': 'info',
+                        'message': 'Paquet de scène '
+                        + package['engine']
+                        + ' archivé et vérifié ; aucun agent actif.',
+                        'historical': True,
+                    }
+                )
     if public['state'] == 'complete':
         prefix = '/api/settings/prepared/' + public['campaignId'] + '/'
-        public['links'] = {'bundleUrl': prefix + 'bundle.zip', 'manifestUrl': prefix + 'manifest.json',
-                           'traceUrl': prefix + 'engine-agent.json'}
+        public['links'] = {
+            'bundleUrl': prefix + 'bundle.zip',
+            'manifestUrl': prefix + 'manifest.json',
+            'traceUrl': prefix + 'engine-agent.json',
+        }
     return public, events

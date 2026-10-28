@@ -29,6 +29,7 @@ image provenance. Write RGB separately, then publish its timestamp/path.
 automatic engine bridge. It performs no engine launch, native render or ROS
 connection. The old Unity heartbeat is translated only by UnityTelemetryAdapter.
 """
+
 import datetime as dt
 import json
 import math
@@ -47,8 +48,11 @@ def epoch(value):
     if not isinstance(value, str):
         return None
     try:
-        value = re.sub(r'([T ]\d{2}:\d{2}:\d{2})\.(\d+)',
-                       lambda match: match.group(1) + '.' + match.group(2)[:6].ljust(6, '0'), value)
+        value = re.sub(
+            r'([T ]\d{2}:\d{2}:\d{2})\.(\d+)',
+            lambda match: match.group(1) + '.' + match.group(2)[:6].ljust(6, '0'),
+            value,
+        )
         parsed = dt.datetime.fromisoformat(value.replace('Z', '+00:00'))
         return parsed.timestamp() if parsed.tzinfo is not None else None
     except (ValueError, OverflowError, OSError):
@@ -65,7 +69,13 @@ def text(value, limit=180):
 
 def number(value, default=None):
     try:
-        return value if not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value) else default
+        return (
+            value
+            if not isinstance(value, bool)
+            and isinstance(value, (int, float))
+            and math.isfinite(value)
+            else default
+        )
     except OverflowError:
         return default
 
@@ -97,7 +107,9 @@ def safe_child(authority, relative, *, directory=False):
             if relative is None:
                 return None
             candidate = relative
-    if not candidate.parts or any(part in ('.', '..') or part.startswith('.') for part in candidate.parts):
+    if not candidate.parts or any(
+        part in ('.', '..') or part.startswith('.') for part in candidate.parts
+    ):
         return None
     try:
         current = authority
@@ -125,7 +137,9 @@ def read_json(authority, relative):
             child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor)
             os.close(descriptor)
             descriptor = child
-        file_descriptor = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=descriptor)
+        file_descriptor = os.open(
+            parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=descriptor
+        )
         with os.fdopen(file_descriptor, 'rb') as handle:
             info = os.fstat(handle.fileno())
             if not stat.S_ISREG(info.st_mode) or info.st_size > MAX_JSON:
@@ -133,6 +147,7 @@ def read_json(authority, relative):
             data = handle.read(MAX_JSON + 1)
         if len(data) > MAX_JSON:
             return None
+
         def pairs(items):
             result = {}
             for key, value in items:
@@ -140,8 +155,10 @@ def read_json(authority, relative):
                     raise ValueError('Duplicate JSON field')
                 result[key] = value
             return result
+
         def constant(value):
             raise ValueError('Non-finite JSON number')
+
         result = json.loads(data.decode('utf-8'), object_pairs_hook=pairs, parse_constant=constant)
         json.dumps(result, allow_nan=False)
         return result if isinstance(result, dict) else None
@@ -153,11 +170,22 @@ def read_json(authority, relative):
 
 
 def unknown(detail='Aucun signal du moteur graphique reçu'):
-    return {'engineId': None, 'label': None, 'source': 'none', 'type': 'unavailable',
-            'state': 'unknown', 'fresh': False, 'detail': detail,
-            'updatedAt': None, 'ageSeconds': None, 'isPlaying': None,
-            'isPaused': None, 'isCompiling': None, 'sceneName': None,
-            'nativeValidated': False}
+    return {
+        'engineId': None,
+        'label': None,
+        'source': 'none',
+        'type': 'unavailable',
+        'state': 'unknown',
+        'fresh': False,
+        'detail': detail,
+        'updatedAt': None,
+        'ageSeconds': None,
+        'isPlaying': None,
+        'isPaused': None,
+        'isCompiling': None,
+        'sceneName': None,
+        'nativeValidated': False,
+    }
 
 
 def normalize(raw, now, engine_id, label, source, kind):
@@ -168,41 +196,83 @@ def normalize(raw, now, engine_id, label, source, kind):
         return result, {}
     age = max(0.0, now - observed)
     fresh = age <= 8 and observed <= now + 5
+
     def flag(key):
         value = raw.get(key)
         return value if isinstance(value, bool) else False if kind == 'unity_legacy' else None
+
     playing, paused, compiling = flag('isPlaying'), flag('isPaused'), flag('isCompiling')
-    state = ('stale' if not fresh else 'paused' if paused is True else 'running' if playing is True
-             else 'idle' if playing is False else 'unknown')
+    state = (
+        'stale'
+        if not fresh
+        else (
+            'paused'
+            if paused is True
+            else 'running' if playing is True else 'idle' if playing is False else 'unknown'
+        )
+    )
     runtime_state = raw.get('runtimeState', raw.get('editorState'))
     if runtime_state in ('quitting', 'stopped'):
         state, fresh = 'stopped', False
     elif runtime_state in ('reloading', 'compiling') and fresh:
         state = 'ready'
-    result = {'engineId': engine_id, 'label': label, 'source': source, 'type': kind,
-              'state': state, 'fresh': fresh, 'updatedAt': iso(observed), 'ageSeconds': round(age, 2),
-              'sceneName': text(raw.get('sceneName'), 100), 'scenePath': text(raw.get('scenePath'), 200),
-              'isPlaying': playing, 'isPaused': paused,
-              'isCompiling': compiling, 'nativeValidated': False,
-              'detail': ('Rendu en pause' if state == 'paused' else 'Moteur en exécution' if state == 'running'
-                         else 'Signal reçu ; exécution non mesurée' if state == 'unknown'
-                         else 'Moteur prêt' if fresh else 'Télémétrie %s ancienne' % label)}
+    result = {
+        'engineId': engine_id,
+        'label': label,
+        'source': source,
+        'type': kind,
+        'state': state,
+        'fresh': fresh,
+        'updatedAt': iso(observed),
+        'ageSeconds': round(age, 2),
+        'sceneName': text(raw.get('sceneName'), 100),
+        'scenePath': text(raw.get('scenePath'), 200),
+        'isPlaying': playing,
+        'isPaused': paused,
+        'isCompiling': compiling,
+        'nativeValidated': False,
+        'detail': (
+            'Rendu en pause'
+            if state == 'paused'
+            else (
+                'Moteur en exécution'
+                if state == 'running'
+                else (
+                    'Signal reçu ; exécution non mesurée'
+                    if state == 'unknown'
+                    else 'Moteur prêt' if fresh else 'Télémétrie %s ancienne' % label
+                )
+            )
+        ),
+    }
     # Virtual scene identifiers are useful; absolute host paths are not public
     # telemetry and must not leak through a producer's incidental file choice.
     scene_path = result['scenePath']
-    if ((scene_path.startswith('/') and not scene_path.startswith('/Game/'))
-            or re.match(r'^[A-Za-z]:[\\/]', scene_path)):
+    if (scene_path.startswith('/') and not scene_path.startswith('/Game/')) or re.match(
+        r'^[A-Za-z]:[\\/]', scene_path
+    ):
         result['scenePath'] = '[chemin local]'
     ros = raw.get('ros') if isinstance(raw.get('ros'), dict) else {}
-    result['ros'] = {key: number(ros.get(key)) for key in
-                     ('instanceCount', 'activeInstanceCount', 'threadCount', 'connectedCount', 'lastMessageAgeSeconds')}
-    result['ros'].update(connectionState=text(ros.get('connectionState'), 80),
-                         hasConnectionError=ros.get('hasConnectionError') is True)
+    result['ros'] = {
+        key: number(ros.get(key))
+        for key in (
+            'instanceCount',
+            'activeInstanceCount',
+            'threadCount',
+            'connectedCount',
+            'lastMessageAgeSeconds',
+        )
+    }
+    result['ros'].update(
+        connectionState=text(ros.get('connectionState'), 80),
+        hasConnectionError=ros.get('hasConnectionError') is True,
+    )
     return result, raw
 
 
 class UnityTelemetryAdapter:
     """The legacy Unity schema remains Unity-specific, regardless of selection."""
+
     def __init__(self, unity_root):
         self.root = Path(unity_root)
 
@@ -216,9 +286,13 @@ class UnityTelemetryAdapter:
 class RendererTelemetryAdapter:
     def __init__(self, core_root, profiles):
         self.root = Path(core_root)
-        self.profiles = {item['id']: item for item in profiles
-                         if isinstance(item, dict) and isinstance(item.get('id'), str)
-                         and _ENGINE_ID.fullmatch(item['id'])}
+        self.profiles = {
+            item['id']: item
+            for item in profiles
+            if isinstance(item, dict)
+            and isinstance(item.get('id'), str)
+            and _ENGINE_ID.fullmatch(item['id'])
+        }
 
     def observe(self, now):
         raw = read_json(self.root, 'artifacts/operations/renderer.json')
@@ -236,9 +310,18 @@ class RendererTelemetryAdapter:
 def choose_renderer(neutral, legacy):
     """Prefer fresh evidence, then its timestamp; selection is never consulted."""
     candidates = [item for item in (neutral, legacy) if item[0].get('updatedAt') is not None]
-    return max(candidates, key=lambda item: (bool(item[0].get('fresh')),
-                                           epoch(item[0]['updatedAt']) or 0,
-                                           item[0].get('type') == 'neutral')) if candidates else neutral
+    return (
+        max(
+            candidates,
+            key=lambda item: (
+                bool(item[0].get('fresh')),
+                epoch(item[0]['updatedAt']) or 0,
+                item[0].get('type') == 'neutral',
+            ),
+        )
+        if candidates
+        else neutral
+    )
 
 
 def publish_renderer_state(core_root, engine_id, payload, *, unity_root=None, registry=None):
@@ -251,16 +334,26 @@ def publish_renderer_state(core_root, engine_id, payload, *, unity_root=None, re
     """
     if registry is None:
         from engine_registry import EngineRegistry
+
         registry = EngineRegistry(core_root, unity_root)
     descriptor = registry.get(engine_id)
-    if not isinstance(engine_id, str) or not _ENGINE_ID.fullmatch(engine_id) or descriptor.get('id') != engine_id:
+    if (
+        not isinstance(engine_id, str)
+        or not _ENGINE_ID.fullmatch(engine_id)
+        or descriptor.get('id') != engine_id
+    ):
         raise ValueError('Expected a registered renderer engine id')
     if not isinstance(payload, dict) or epoch(payload.get('updatedAt')) is None:
         raise ValueError('A renderer timestamp with a timezone is required')
-    if payload.get('engineId', engine_id) != engine_id or payload.get('engine', engine_id) != engine_id:
+    if (
+        payload.get('engineId', engine_id) != engine_id
+        or payload.get('engine', engine_id) != engine_id
+    ):
         raise ValueError('Renderer source does not match the explicit engine id')
     result = dict(payload, schema=SCHEMA, engineId=engine_id)
-    data = (json.dumps(result, allow_nan=False, ensure_ascii=False, sort_keys=True, indent=2) + '\n').encode('utf-8')
+    data = (
+        json.dumps(result, allow_nan=False, ensure_ascii=False, sort_keys=True, indent=2) + '\n'
+    ).encode('utf-8')
     if len(data) > MAX_JSON:
         raise ValueError('Renderer heartbeat exceeds 2 MiB')
     core = Path(core_root).resolve()
@@ -277,8 +370,16 @@ def publish_renderer_state(core_root, engine_id, payload, *, unity_root=None, re
                     relative = str(Path(relative).relative_to(authority))
                 except ValueError as error:
                     raise ValueError('Renderer artifact path escapes its engine root') from error
-            if (not relative or len(relative) > 4096 or '\\' in relative or '\0' in relative
-                    or any(piece in ('', '.', '..') or piece.startswith('.') for piece in relative.split('/'))):
+            if (
+                not relative
+                or len(relative) > 4096
+                or '\\' in relative
+                or '\0' in relative
+                or any(
+                    piece in ('', '.', '..') or piece.startswith('.')
+                    for piece in relative.split('/')
+                )
+            ):
                 raise ValueError('Unsafe renderer artifact path')
     descriptor_fd = os.open(str(core), os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     temporary = 'renderer-' + uuid.uuid4().hex + '.tmp'
@@ -288,17 +389,25 @@ def publish_renderer_state(core_root, engine_id, payload, *, unity_root=None, re
                 os.mkdir(component, 0o700, dir_fd=descriptor_fd)
             except FileExistsError:
                 pass
-            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor_fd)
+            child = os.open(
+                component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor_fd
+            )
             os.close(descriptor_fd)
             descriptor_fd = child
         try:
             existing = os.stat('renderer.json', dir_fd=descriptor_fd, follow_symlinks=False)
             if not stat.S_ISREG(existing.st_mode):
-                raise ValueError('Renderer heartbeat must not replace a symlink or non-regular file')
+                raise ValueError(
+                    'Renderer heartbeat must not replace a symlink or non-regular file'
+                )
         except FileNotFoundError:
             pass
-        file_fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
-                          0o600, dir_fd=descriptor_fd)
+        file_fd = os.open(
+            temporary,
+            os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+            0o600,
+            dir_fd=descriptor_fd,
+        )
         with os.fdopen(file_fd, 'wb') as handle:
             handle.write(data)
             handle.flush()
@@ -311,5 +420,9 @@ def publish_renderer_state(core_root, engine_id, payload, *, unity_root=None, re
         except FileNotFoundError:
             pass
         os.close(descriptor_fd)
-    return {'engineId': engine_id, 'schema': SCHEMA, 'updatedAt': result['updatedAt'],
-            'relativeHeartbeatFile': 'artifacts/operations/renderer.json'}
+    return {
+        'engineId': engine_id,
+        'schema': SCHEMA,
+        'updatedAt': result['updatedAt'],
+        'relativeHeartbeatFile': 'artifacts/operations/renderer.json',
+    }

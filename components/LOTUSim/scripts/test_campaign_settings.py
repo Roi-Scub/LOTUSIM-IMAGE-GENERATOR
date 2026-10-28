@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Standard-library regression and file-safety checks for manual settings."""
+
 import copy
 import hashlib
 import json
@@ -13,20 +14,54 @@ from unittest.mock import patch
 import uuid
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from campaign_settings import (ADAPTER_PATH, CampaignSecurityError, CampaignStore,
-                               CampaignValidationError, MAX_JSON_BYTES, load_json_bytes)
-
+from campaign_settings import (
+    ADAPTER_PATH,
+    CampaignSecurityError,
+    CampaignStore,
+    CampaignValidationError,
+    MAX_JSON_BYTES,
+    load_json_bytes,
+)
 
 ASSETS = [
-    {'model': 'buoy', 'category': 'buoy', 'domain': 'moored', 'heightM': 3,
-     'maxSpeedMps': 0, 'altitudeM': [0, 0], 'evidence': 'generic_assumption'},
-    {'model': 'buoy_navigation_ozzy', 'category': 'buoy', 'domain': 'moored', 'heightM': 2.5,
-     'maxSpeedMps': 0, 'altitudeM': [0, 0], 'evidence': 'generic_assumption'},
-    {'model': 'sailboat', 'category': 'sailboat', 'domain': 'sea', 'heightM': 18,
-     'maxSpeedMps': 4.5, 'altitudeM': [0, 0], 'evidence': 'generic_assumption'},
-    {'model': 'small_drone', 'category': 'drone', 'domain': 'air', 'heightM': 0.3,
-     'maxSpeedMps': 15, 'maxAltitudeM': 120, 'maxWindMps': 10,
-     'altitudeM': [60, 100], 'evidence': 'reference_class_drone'},
+    {
+        'model': 'buoy',
+        'category': 'buoy',
+        'domain': 'moored',
+        'heightM': 3,
+        'maxSpeedMps': 0,
+        'altitudeM': [0, 0],
+        'evidence': 'generic_assumption',
+    },
+    {
+        'model': 'buoy_navigation_ozzy',
+        'category': 'buoy',
+        'domain': 'moored',
+        'heightM': 2.5,
+        'maxSpeedMps': 0,
+        'altitudeM': [0, 0],
+        'evidence': 'generic_assumption',
+    },
+    {
+        'model': 'sailboat',
+        'category': 'sailboat',
+        'domain': 'sea',
+        'heightM': 18,
+        'maxSpeedMps': 4.5,
+        'altitudeM': [0, 0],
+        'evidence': 'generic_assumption',
+    },
+    {
+        'model': 'small_drone',
+        'category': 'drone',
+        'domain': 'air',
+        'heightM': 0.3,
+        'maxSpeedMps': 15,
+        'maxAltitudeM': 120,
+        'maxWindMps': 10,
+        'altitudeM': [60, 100],
+        'evidence': 'reference_class_drone',
+    },
 ]
 
 
@@ -39,8 +74,15 @@ class SettingsTests(unittest.TestCase):
         self.unity = self.root / 'unity'
         catalog = self.core / 'assets/scenarios/catalogs/traffic_assets.json'
         catalog.parent.mkdir(parents=True)
-        catalog.write_text(json.dumps({'schema': 'lotusim-traffic-catalogue-1',
-                                       'notes': 'Test catalogue assumptions', 'assets': ASSETS}))
+        catalog.write_text(
+            json.dumps(
+                {
+                    'schema': 'lotusim-traffic-catalogue-1',
+                    'notes': 'Test catalogue assumptions',
+                    'assets': ASSETS,
+                }
+            )
+        )
         adapter = self.unity / ADAPTER_PATH
         adapter.parent.mkdir(parents=True)
         adapter.write_text('// installed test adapter marker\n')
@@ -106,9 +148,12 @@ class SettingsTests(unittest.TestCase):
 
     def test_unknown_models_fields_duplicate_ids_and_scalar_shapes(self):
         for field, value, path in (
-                ('bogus', True, '$.bogus'), ('schema', 'old', '$.schema'),
-                ('engine', 'gazebo', '$.engine'), ('blocks', None, '$.blocks'),
-                ('name', '\n', '$.name')):
+            ('bogus', True, '$.bogus'),
+            ('schema', 'old', '$.schema'),
+            ('engine', 'gazebo', '$.engine'),
+            ('blocks', None, '$.blocks'),
+            ('name', '\n', '$.name'),
+        ):
             plan = copy.deepcopy(self.plan)
             plan[field] = value
             self.assertIn(path, self.paths(plan))
@@ -131,12 +176,18 @@ class SettingsTests(unittest.TestCase):
         self.assertIn('$.camera.outputPath', self.paths())
 
     def test_nonfinite_and_overflow_json(self):
-        for value in (math.nan, math.inf, -math.inf, 10 ** 400):
+        for value in (math.nan, math.inf, -math.inf, 10**400):
             plan = copy.deepcopy(self.plan)
             plan['camera']['verticalFovDeg'] = value
             self.assertFalse(self.store.validate(plan)['valid'])
-        for raw in (b'{"x":NaN}', b'{"x":Infinity}', b'{"x":1e999}',
-                    b'{"x":1,"x":2}', b'\xff', b'{}' + b' ' * MAX_JSON_BYTES):
+        for raw in (
+            b'{"x":NaN}',
+            b'{"x":Infinity}',
+            b'{"x":1e999}',
+            b'{"x":1,"x":2}',
+            b'\xff',
+            b'{}' + b' ' * MAX_JSON_BYTES,
+        ):
             with self.subTest(raw=raw[:30]):
                 with self.assertRaises(ValueError):
                     load_json_bytes(raw)
@@ -158,11 +209,16 @@ class SettingsTests(unittest.TestCase):
 
     def test_camera_and_observer_preserve_runtime_bounds(self):
         for section, key, value in (
-                ('camera', 'width', 4097), ('camera', 'height', 63),
-                ('camera', 'verticalFovDeg', 29), ('camera', 'verticalFovDeg', 91),
-                ('camera', 'farClipM', 4999), ('camera', 'viewDownPitchDeg', 16),
-                ('observer', 'speedMps', 13.90), ('observer', 'rollMaxDeg', 13),
-                ('observer', 'pitchMaxDeg', 9)):
+            ('camera', 'width', 4097),
+            ('camera', 'height', 63),
+            ('camera', 'verticalFovDeg', 29),
+            ('camera', 'verticalFovDeg', 91),
+            ('camera', 'farClipM', 4999),
+            ('camera', 'viewDownPitchDeg', 16),
+            ('observer', 'speedMps', 13.90),
+            ('observer', 'rollMaxDeg', 13),
+            ('observer', 'pitchMaxDeg', 9),
+        ):
             plan = copy.deepcopy(self.plan)
             plan[section][key] = value
             self.assertIn('$.' + section + '.' + key, self.paths(plan))
@@ -185,7 +241,9 @@ class SettingsTests(unittest.TestCase):
         expected = 3 * 720 / (2 * math.tan(math.radians(60) / 2) * 20)
         self.assertAlmostEqual(row['distanceM'], expected)
         self.assertNotIn('scale', row)
-        self.assertTrue(any('Approximate pixel' in warning['message'] for warning in result['warnings']))
+        self.assertTrue(
+            any('Approximate pixel' in warning['message'] for warning in result['warnings'])
+        )
         self.assertEqual(self.first()['distanceM'], 400)
 
     def test_infeasible_pixel_target_and_sensor_flags(self):
@@ -200,20 +258,37 @@ class SettingsTests(unittest.TestCase):
         self.first()['bearingDeg'] = 90
         result = self.store.validate(self.plan)
         self.assertTrue(result['valid'])
-        self.assertTrue(any('outside horizontal camera FOV' in warning['message'] for warning in result['warnings']))
+        self.assertTrue(
+            any(
+                'outside horizontal camera FOV' in warning['message']
+                for warning in result['warnings']
+            )
+        )
         self.first().update(bearingDeg=0, distanceM=5)
         result = self.store.validate(self.plan)
         self.assertTrue(result['valid'])
-        self.assertTrue(any('outside vertical camera FOV' in warning['message'] for warning in result['warnings']))
+        self.assertTrue(
+            any(
+                'outside vertical camera FOV' in warning['message']
+                for warning in result['warnings']
+            )
+        )
         self.first().update(distanceM=400, count=2, spreadDeg=0)
         result = self.store.validate(self.plan)
         self.assertTrue(result['valid'])
-        self.assertTrue(any('same nominal 3D centre' in warning['message'] for warning in result['warnings']))
-        self.assertEqual(result['summary']['countSemantics'], 'planned_actor_image_instances_not_verified_visible_objects')
+        self.assertTrue(
+            any('same nominal 3D centre' in warning['message'] for warning in result['warnings'])
+        )
+        self.assertEqual(
+            result['summary']['countSemantics'],
+            'planned_actor_image_instances_not_verified_visible_objects',
+        )
 
     def test_scene_path_is_generated_manual_scene_not_existing_traffic_scene(self):
         catalog = self.store.catalog()
-        self.assertEqual(catalog['scenes'][0]['path'], 'Assets/Scenes/Dataset/ManualCampaign_<id>.unity')
+        self.assertEqual(
+            catalog['scenes'][0]['path'], 'Assets/Scenes/Dataset/ManualCampaign_<id>.unity'
+        )
         manifest = self.store.prepare(self.plan)['manifest']
         self.assertEqual(manifest['provenance']['scenePath'], catalog['scenes'][0]['path'])
 
@@ -240,7 +315,9 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(manifest['campaignSha256'], hashlib.sha256(data).hexdigest())
         self.assertEqual(manifest['schema'], 'lotusim-manual-campaign-1')
         self.assertEqual(manifest['relativeCampaignFile'], 'campaign.json')
-        self.assertEqual(manifest['provenance']['distanceReference'], 'bridge_camera_horizontal_range_m')
+        self.assertEqual(
+            manifest['provenance']['distanceReference'], 'bridge_camera_horizontal_range_m'
+        )
         self.assertEqual(load_json_bytes(data), first['campaign'])
         second = self.store.prepare(self.plan)
         self.assertNotEqual(first['id'], second['id'])

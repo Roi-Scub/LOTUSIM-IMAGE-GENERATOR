@@ -30,11 +30,9 @@
 
 namespace lotusim::gazebo {
 
-std::shared_ptr<RenderInterfaceBase> CreateRenderInterface(
-    const std::string& protocol,
-    const std::string& world_name,
-    std::shared_ptr<spdlog::logger> logger)
-{
+std::shared_ptr<RenderInterfaceBase> CreateRenderInterface(const std::string &protocol,
+                                                           const std::string &world_name,
+                                                           std::shared_ptr<spdlog::logger> logger) {
     if (protocol == "TCPUDP") {
         return std::make_shared<TcpUdpInterface>(world_name, logger);
     }
@@ -64,30 +62,24 @@ class RenderPlugin : public gz::sim::System,
                      public gz::sim::ISystemPreUpdate,
                      public gz::sim::ISystemUpdate,
                      public gz::sim::ISystemPostUpdate {
-public:
+  public:
     RenderPlugin();
 
     ~RenderPlugin();
 
-    void Configure(
-        const gz::sim::Entity& _entity,
-        const std::shared_ptr<const sdf::Element>& _sdf,
-        gz::sim::EntityComponentManager& _ecm,
-        gz::sim::EventManager& _eventMgr) override;
+    void Configure(const gz::sim::Entity &_entity, const std::shared_ptr<const sdf::Element> &_sdf,
+                   gz::sim::EntityComponentManager &_ecm,
+                   gz::sim::EventManager &_eventMgr) override;
 
-    void PreUpdate(
-        const gz::sim::UpdateInfo& _info,
-        gz::sim::EntityComponentManager& _ecm) override;
+    void PreUpdate(const gz::sim::UpdateInfo &_info,
+                   gz::sim::EntityComponentManager &_ecm) override;
 
-    void PostUpdate(
-        const gz::sim::UpdateInfo& _info,
-        const gz::sim::EntityComponentManager& _ecm) override;
+    void PostUpdate(const gz::sim::UpdateInfo &_info,
+                    const gz::sim::EntityComponentManager &_ecm) override;
 
-    void Update(
-        const gz::sim::UpdateInfo& _info,
-        gz::sim::EntityComponentManager& _ecm) override;
+    void Update(const gz::sim::UpdateInfo &_info, gz::sim::EntityComponentManager &_ecm) override;
 
-private:
+  private:
     /**
      * @brief Spdlogger
      *
@@ -115,5 +107,5 @@ private:
     std::shared_ptr<RenderInterfaceBase> m_render_interface;
 };
 
-}  // namespace lotusim::gazebo
+} // namespace lotusim::gazebo
 #endif

@@ -1,4 +1,5 @@
 """Trusted optional Unity Editor bootstrap; existing manual import is unchanged."""
+
 import json
 from pathlib import Path
 from engine_registry import UNITY_ADAPTER, UNITY_SCENE
@@ -37,18 +38,40 @@ public static class LOTUSimPrepared_%s
         'Alternatively, copy scene_unity.cs into the project Assets/Editor folder, wait for compilation, then invoke its explicit LOTUSim > Prepared campaigns menu. This is optional.',
         'The existing adapter creates a new scene and LOTUSim scenario files. It checks campaign and imported-prefab revision hashes.',
         'Open the new scene and enter Play explicitly only when your existing LOTUSim/ROS services are ready. Existing annotations and capture workflow remain in use.',
-        'Check the generated RGB images and annotation quality; preparation and executable detection do not prove native rendering or calibrated weather.']
-    plan = {'schema': 'lotusim-engine-scene-plan-1', 'engine': 'unity', 'id': identifier,
-            'campaignSha256': campaign_sha, 'scenePath': UNITY_SCENE.replace('<id>', identifier),
-            'adapterPath': UNITY_ADAPTER, 'entryPoint': 'DatasetManualCampaignBuilder.ImportManifest',
-            'sampleCount': campaign['totalImages'], 'imageSemantics': 'independent_seeded_samples',
-            'sourceOfTruth': 'campaign.json', 'automaticExecution': False,
-            'environmentApplication': 'existing_manual_campaign_adapter', 'nativeValidated': False}
-    return {'files': {'scene_unity.cs': script.encode('utf-8'),
-                      'scene-plan.json': (json.dumps(plan, ensure_ascii=False, sort_keys=True, indent=2) + '\n').encode(),
-                      'unity-instructions.txt': ('\n\n'.join(instructions) + '\n').encode('utf-8')},
-            'manifest': {'scenePath': plan['scenePath'], 'adapterPath': UNITY_ADAPTER, 'instructions': instructions,
-                         'runtimeRequirements': ['Existing LOTUSim Unity project and manual campaign adapter',
-                                                 'Existing connected LOTUSim/ROS workflow for capture'],
-                         'limitations': ['No native execution or rendering was performed during preparation.'],
-                         'nativeValidated': False}}
+        'Check the generated RGB images and annotation quality; preparation and executable detection do not prove native rendering or calibrated weather.',
+    ]
+    plan = {
+        'schema': 'lotusim-engine-scene-plan-1',
+        'engine': 'unity',
+        'id': identifier,
+        'campaignSha256': campaign_sha,
+        'scenePath': UNITY_SCENE.replace('<id>', identifier),
+        'adapterPath': UNITY_ADAPTER,
+        'entryPoint': 'DatasetManualCampaignBuilder.ImportManifest',
+        'sampleCount': campaign['totalImages'],
+        'imageSemantics': 'independent_seeded_samples',
+        'sourceOfTruth': 'campaign.json',
+        'automaticExecution': False,
+        'environmentApplication': 'existing_manual_campaign_adapter',
+        'nativeValidated': False,
+    }
+    return {
+        'files': {
+            'scene_unity.cs': script.encode('utf-8'),
+            'scene-plan.json': (
+                json.dumps(plan, ensure_ascii=False, sort_keys=True, indent=2) + '\n'
+            ).encode(),
+            'unity-instructions.txt': ('\n\n'.join(instructions) + '\n').encode('utf-8'),
+        },
+        'manifest': {
+            'scenePath': plan['scenePath'],
+            'adapterPath': UNITY_ADAPTER,
+            'instructions': instructions,
+            'runtimeRequirements': [
+                'Existing LOTUSim Unity project and manual campaign adapter',
+                'Existing connected LOTUSim/ROS workflow for capture',
+            ],
+            'limitations': ['No native execution or rendering was performed during preparation.'],
+            'nativeValidated': False,
+        },
+    }

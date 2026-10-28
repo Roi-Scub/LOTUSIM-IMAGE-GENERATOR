@@ -1,4 +1,5 @@
 """Geometry source availability must not require an installed Unity project."""
+
 import sys
 from pathlib import Path
 import unittest
@@ -11,7 +12,8 @@ import mesh_integration as mesh
 
 class NeutralMeshTests(unittest.TestCase):
     def setUp(self):
-        self.fixture = fixtures.IntegrationTests(); self.fixture.setUp()
+        self.fixture = fixtures.IntegrationTests()
+        self.fixture.setUp()
         self.addCleanup(self.fixture.tearDown)
         self.core = self.fixture.core
 
@@ -19,11 +21,13 @@ class NeutralMeshTests(unittest.TestCase):
         self.assertEqual(mesh.neutral_imports(self.core), [])
 
     def test_converted_source_is_available_without_prefab_ack_or_unity_project(self):
-        self.fixture.prepare(); self.fixture.unity.rmdir()
+        self.fixture.prepare()
+        self.fixture.unity.rmdir()
         records = mesh.neutral_imports(self.core)
         self.assertEqual(len(records), 1)
         record = records[0]
-        self.assertTrue(record['neutralReady']); self.assertFalse(record['rendererReady'])
+        self.assertTrue(record['neutralReady'])
+        self.assertFalse(record['rendererReady'])
         self.assertNotIn('prefabGuid', record)
         self.assertEqual(record['license'], 'CC0')
         self.assertEqual(record['sourceUrl'], 'https://example.org/own-model')
@@ -53,15 +57,20 @@ class NeutralMeshTests(unittest.TestCase):
     def test_unreal_binding_accepts_verified_geometry_without_sdf_or_unity(self):
         import unreal_scene_adapter as unreal_adapter
         import unreal_scene_template as unreal_template
-        self.fixture.prepare(); self.fixture.unity.rmdir()
+
+        self.fixture.prepare()
+        self.fixture.unity.rmdir()
         record = mesh.neutral_imports(self.core)[0]
         binding = unreal_adapter._mesh_binding(self.core, record['model'], record)
         self.assertEqual(binding['kind'], 'static-obj')
         self.assertEqual(binding['sourceDimensionsM'], [2, 2, 1])
-        self.assertTrue(unreal_template._verify_sources({'coreRoot': str(self.core), 'bindings': [binding]}))
+        self.assertTrue(
+            unreal_template._verify_sources({'coreRoot': str(self.core), 'bindings': [binding]})
+        )
 
     def test_unreal_binding_rejects_changed_neutral_declaration(self):
         import unreal_scene_adapter as unreal_adapter
+
         self.fixture.prepare()
         record = copy.deepcopy(mesh.neutral_imports(self.core)[0])
         record['neutralSource']['obj'] = 'assets/config-private.obj'

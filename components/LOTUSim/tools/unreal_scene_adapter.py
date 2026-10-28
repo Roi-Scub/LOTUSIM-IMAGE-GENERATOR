@@ -1,4 +1,5 @@
 """Prepare data and a fixed editor script; never start or import Unreal here."""
+
 from __future__ import annotations
 
 import copy
@@ -27,7 +28,12 @@ REFERENCES = [
 
 
 def _json(value):
-    return (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode('utf-8')
+    return (
+        json.dumps(
+            value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False
+        )
+        + '\n'
+    ).encode('utf-8')
 
 
 def _safe_file(root, candidate):
@@ -57,7 +63,11 @@ def _descriptor(root, path):
     with path.open('rb') as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b''):
             digest.update(chunk)
-    return {'path': path.relative_to(root).as_posix(), 'bytes': path.stat().st_size, 'sha256': digest.hexdigest()}
+    return {
+        'path': path.relative_to(root).as_posix(),
+        'bytes': path.stat().st_size,
+        'sha256': digest.hexdigest(),
+    }
 
 
 def _words(line):
@@ -88,18 +98,30 @@ def _mesh_binding(core_root, model, record):
         pose = ancestor.find('pose')
         if pose is not None:
             values = [float(v) for v in (pose.text or '').split()]
-            if (len(values) != 6 or not all(math.isfinite(v) for v in values)
-                    or any(abs(v) > .00001 for v in values) or pose.get('relative_to')):
+            if (
+                len(values) != 6
+                or not all(math.isfinite(v) for v in values)
+                or any(abs(v) > 0.00001 for v in values)
+                or pose.get('relative_to')
+            ):
                 raise ValueError('Unreal preview requires baked model/link transforms: ' + model)
     visuals = sdf.findall('.//visual')
     mesh_visuals = [v for v in visuals if v.find('geometry/mesh/uri') is not None]
     if not mesh_visuals:
         if model != 'buoy':
-            raise ValueError('No vetted static OBJ binding for ' + model + '; supply an imported static asset first')
+            raise ValueError(
+                'No vetted static OBJ binding for '
+                + model
+                + '; supply an imported static asset first'
+            )
         primitives = []
         for visual in visuals:
             pose = [float(v) for v in (visual.findtext('pose') or '0 0 0 0 0 0').split()]
-            if len(pose) != 6 or not all(math.isfinite(v) for v in pose) or any(abs(v) > .00001 for v in pose[3:]):
+            if (
+                len(pose) != 6
+                or not all(math.isfinite(v) for v in pose)
+                or any(abs(v) > 0.00001 for v in pose[3:])
+            ):
                 raise ValueError('Unsupported buoy visual pose')
             geometry = visual.find('geometry')
             if geometry is None:
@@ -115,58 +137,93 @@ def _mesh_binding(core_root, model, record):
                 raise ValueError('Unsupported buoy primitive')
             if not all(math.isfinite(v) and 0 < v <= 100 for v in dimensions):
                 raise ValueError('Invalid buoy dimensions')
-            color = [float(v) for v in (visual.findtext('material/diffuse') or '.8 .2 .05 1').split()]
+            color = [
+                float(v) for v in (visual.findtext('material/diffuse') or '.8 .2 .05 1').split()
+            ]
             if len(color) != 4 or not all(math.isfinite(v) and 0 <= v <= 1 for v in color):
                 raise ValueError('Invalid buoy color')
-            primitives.append({'kind': kind, 'dimensionsM': dimensions, 'localPositionM': pose[:3], 'color': color})
-        return {'model': model, 'kind': 'sdf-primitives', 'primitives': primitives,
-                'sourceFiles': [_descriptor(core_root, sdf_path)],
-                'provenance': 'Gazebo SDF primitives, not the more detailed Unity buoy prefab', 'category': record['category']}
+            primitives.append(
+                {
+                    'kind': kind,
+                    'dimensionsM': dimensions,
+                    'localPositionM': pose[:3],
+                    'color': color,
+                }
+            )
+        return {
+            'model': model,
+            'kind': 'sdf-primitives',
+            'primitives': primitives,
+            'sourceFiles': [_descriptor(core_root, sdf_path)],
+            'provenance': 'Gazebo SDF primitives, not the more detailed Unity buoy prefab',
+            'category': record['category'],
+        }
     if len(mesh_visuals) != 1 or len(visuals) != 1:
         raise ValueError('Unreal preview currently requires one static visual mesh: ' + model)
     visual = mesh_visuals[0]
     pose = visual.find('pose')
     values = [float(v) for v in (visual.findtext('pose') or '0 0 0 0 0 0').split()]
-    if (len(values) != 6 or not all(math.isfinite(v) for v in values) or any(abs(v) > .00001 for v in values)
-            or pose is not None and pose.get('relative_to')):
+    if (
+        len(values) != 6
+        or not all(math.isfinite(v) for v in values)
+        or any(abs(v) > 0.00001 for v in values)
+        or pose is not None
+        and pose.get('relative_to')
+    ):
         raise ValueError('Unreal preview requires baked visual transforms: ' + model)
     mesh_node = visual.find('geometry/mesh')
     if mesh_node.find('submesh') is not None:
-        raise ValueError('Unreal preview requires a baked mesh, not an SDF submesh selection: ' + model)
+        raise ValueError(
+            'Unreal preview requires a baked mesh, not an SDF submesh selection: ' + model
+        )
     mesh_scale = [float(v) for v in (mesh_node.findtext('scale') or '1 1 1').split()]
     if len(mesh_scale) != 3 or not all(math.isfinite(v) and 0 < v <= 1000 for v in mesh_scale):
         raise ValueError('Invalid SDF mesh scale')
     uri = mesh_node.findtext('uri')
     if uri.startswith('model://'):
-        relative = uri[len('model://'):]
+        relative = uri[len('model://') :]
         if '\\' in relative or PurePosixPath(relative).is_absolute():
             raise ValueError('Invalid mesh URI')
         mesh_path = _safe_file(library, library / relative)
     else:
         mesh_path = _safe_file(library, model_root / uri)
-    return _static_obj_binding(core_root, library, model, record, mesh_path, mesh_scale, {mesh_path, sdf_path})
+    return _static_obj_binding(
+        core_root, library, model, record, mesh_path, mesh_scale, {mesh_path, sdf_path}
+    )
 
 
 def _neutral_mesh_binding(core_root, model, record):
     from mesh_integration import neutral_imports
+
     verified = next((item for item in neutral_imports(core_root) if item['model'] == model), None)
-    if (verified is None or verified['neutralSource'] != record.get('neutralSource')
-            or verified['revisionSha256'] != record.get('revisionSha256')
-            or verified['requestSha256'] != record.get('requestSha256')):
+    if (
+        verified is None
+        or verified['neutralSource'] != record.get('neutralSource')
+        or verified['revisionSha256'] != record.get('revisionSha256')
+        or verified['requestSha256'] != record.get('requestSha256')
+    ):
         raise ValueError('Converted source revision is not verified: ' + model)
     source = verified['neutralSource']
     bundle = (core_root / source['obj']).parent
     mesh_path = _safe_file(bundle, core_root / source['obj'])
     dependencies = {_safe_file(bundle, core_root / item['path']) for item in source['files']}
-    result = _static_obj_binding(core_root, bundle, model, record, mesh_path, [1, 1, 1], dependencies)
-    result['provenance'] = 'Verified engine-neutral converted source; no Unity prefab or native compatibility implied'
+    result = _static_obj_binding(
+        core_root, bundle, model, record, mesh_path, [1, 1, 1], dependencies
+    )
+    result['provenance'] = (
+        'Verified engine-neutral converted source; no Unity prefab or native compatibility implied'
+    )
     result['sourceRevisionSha256'] = verified['revisionSha256']
     return result
 
 
 def _static_obj_binding(core_root, library, model, record, mesh_path, mesh_scale, dependencies):
     if mesh_path.suffix.lower() != '.obj':
-        raise ValueError('Unreal preview requires static OBJ for ' + model + '; DAE/STL are not silently approximated')
+        raise ValueError(
+            'Unreal preview requires static OBJ for '
+            + model
+            + '; DAE/STL are not silently approximated'
+        )
     dependencies = set(dependencies)
     materials = []
     low, high = [math.inf] * 3, [-math.inf] * 3
@@ -203,21 +260,39 @@ def _static_obj_binding(core_root, library, model, record, mesh_path, mesh_scale
                 if words and words[0] in MAPS:
                     # Normalize only explicit filenames, not unverified importer command/options syntax.
                     if len(words) != 2:
-                        raise ValueError('Unsupported MTL map options; normalize the model before preparing: ' + model)
+                        raise ValueError(
+                            'Unsupported MTL map options; normalize the model before preparing: '
+                            + model
+                        )
                     texture = _safe_file(library, mtl.parent / words[1])
                     if texture.suffix.lower() not in RASTER:
                         raise ValueError('Unsupported raster map type')
                     dependencies.add(texture)
-                    textures.append({'directive': words[0], 'source': texture.relative_to(core_root).as_posix(), 'token': words[1]})
-        material_records.append({'source': mtl.relative_to(core_root).as_posix(), 'textures': textures})
+                    textures.append(
+                        {
+                            'directive': words[0],
+                            'source': texture.relative_to(core_root).as_posix(),
+                            'token': words[1],
+                        }
+                    )
+        material_records.append(
+            {'source': mtl.relative_to(core_root).as_posix(), 'textures': textures}
+        )
     if len(dependencies) > 4096:
         raise ValueError('Too many mesh dependencies')
-    return {'model': model, 'kind': 'static-obj', 'category': record['category'],
-            'meshPath': mesh_path.relative_to(core_root).as_posix(), 'meshScale': mesh_scale,
-            'materials': material_records, 'boundsMinM': low, 'boundsMaxM': high,
-            'sourceFiles': [_descriptor(core_root, f) for f in sorted(dependencies)],
-            'provenance': 'Existing licensed LOTUSim static model; retain its original library credits',
-            'sourceDimensionsM': [high[n] - low[n] for n in range(3)]}
+    return {
+        'model': model,
+        'kind': 'static-obj',
+        'category': record['category'],
+        'meshPath': mesh_path.relative_to(core_root).as_posix(),
+        'meshScale': mesh_scale,
+        'materials': material_records,
+        'boundsMinM': low,
+        'boundsMaxM': high,
+        'sourceFiles': [_descriptor(core_root, f) for f in sorted(dependencies)],
+        'provenance': 'Existing licensed LOTUSim static model; retain its original library credits',
+        'sourceDimensionsM': [high[n] - low[n] for n in range(3)],
+    }
 
 
 def prepare_unreal(campaign, identifier, campaign_sha, core_root, unity_root, catalogue):
@@ -225,7 +300,11 @@ def prepare_unreal(campaign, identifier, campaign_sha, core_root, unity_root, ca
     parsed_id = uuid.UUID(str(identifier))
     if str(parsed_id) != identifier or not SHA.fullmatch(str(campaign_sha)):
         raise ValueError('Invalid campaign UUID/hash')
-    if campaign.get('schema') != 'lotusim-campaign-settings-1' or campaign.get('engine') != 'unreal' or campaign.get('scene') != 'maritime_manual':
+    if (
+        campaign.get('schema') != 'lotusim-campaign-settings-1'
+        or campaign.get('engine') != 'unreal'
+        or campaign.get('scene') != 'maritime_manual'
+    ):
         raise ValueError('Unreal adapter requires a validated Unreal maritime_manual campaign')
     core_root = Path(core_root).resolve(strict=True)
     # unity_root deliberately is not read: Unreal must not need Unity binaries/assets.
@@ -242,7 +321,19 @@ def prepare_unreal(campaign, identifier, campaign_sha, core_root, unity_root, ca
         if model not in by_model:
             raise ValueError('Unknown model: ' + model)
         binding = _mesh_binding(core_root, model, by_model[model])
-        binding['catalogue'] = {key: copy.deepcopy(by_model[model][key]) for key in ('lengthM', 'beamM', 'heightM', 'maxSpeedMps', 'maxAltitudeM', 'domain', 'category') if key in by_model[model]}
+        binding['catalogue'] = {
+            key: copy.deepcopy(by_model[model][key])
+            for key in (
+                'lengthM',
+                'beamM',
+                'heightM',
+                'maxSpeedMps',
+                'maxAltitudeM',
+                'domain',
+                'category',
+            )
+            if key in by_model[model]
+        }
         bindings.append(binding)
     scene_path = '/Game/LOTUSim/Campaigns/' + parsed_id.hex + '/Scene'
     limitations = [
@@ -254,35 +345,81 @@ def prepare_unreal(campaign, identifier, campaign_sha, core_root, unity_root, ca
         'Le cadrage en pixels est une estimation pinhole à partir des dimensions catalogue, pas une garantie de pixels visibles.',
         'Les matériaux OBJ/MTL sont importés sans garantie de parité avec les shaders Unity ; garder les crédits et restrictions des modèles sources.',
     ]
-    script_path = core_root / 'artifacts/campaign-settings/prepared' / identifier / 'scene_unreal.py'
+    script_path = (
+        core_root / 'artifacts/campaign-settings/prepared' / identifier / 'scene_unreal.py'
+    )
     instructions = [
         'Ouvrir LOTUSimPrepared.uproject avec Unreal Engine 5.5/5.6 (ou un projet UE compatible avec les plugins indiqués). Aucune ouverture automatique par le dashboard.',
         'Enregistrer/fermer les niveaux et assets modifiés avant de créer la scène ; le script refuse de perdre des modifications et refuse les destinations déjà présentes.',
-        "Dans la console Python d'Unreal (Output Log, mode Python), charger le module explicitement et créer la scène : import runpy; scene = runpy.run_path(" + repr(str(script_path)) + "); scene['build']()",
+        "Dans la console Python d'Unreal (Output Log, mode Python), charger le module explicitement et créer la scène : import runpy; scene = runpy.run_path("
+        + repr(str(script_path))
+        + "); scene['build']()",
         "Dans la même console : scene['sample'](0) applique la première image ; scene['capture_rgb'](0) demande un PNG ; scene['capture_all']() programme toute la campagne RGB. Ne pas capturer deux fois le même index : les fichiers existants ne sont jamais écrasés.",
         'Si le paquet est déplacé/extrait ailleurs, remplacer seulement le chemin du script dans la commande runpy. Tous les fichiers préparés doivent rester voisins. Aucune exécution automatique au chargement du script.',
         'Les captures et leur reçu technique sont enregistrés dans Saved/LOTUSim/<identifiant>/ du projet Unreal. Attendre les ticks éditeur, sans recharger le niveau pendant une capture.',
     ]
-    plan = {'schema': SCHEMA, 'id': identifier, 'campaignSha256': campaign_sha, 'coreRoot': str(core_root),
-            'scenePath': scene_path, 'campaign': copy.deepcopy(campaign), 'bindings': bindings,
-            'coordinates': {'sourceWorld': 'ENU metres: x=east,y=north,z=up', 'unrealWorld': 'centimetres: x=north,y=east,z=up',
-                            'sourceGeometry': 'right-handed +X forward,+Y port,+Z up metres',
-                            'unrealGeometry': 'left-handed +X forward,+Y starboard,+Z up centimetres',
-                            'worldConversion': '[north*100,east*100,up*100]', 'localMeshConversion': '[x*100,-y*100,z*100]; reverse face winding',
-                            'heading': '0=north,90=east -> Unreal yaw=headingDeg'},
-            'nativeValidated': False, 'limitations': limitations, 'references': REFERENCES}
-    project = {'FileVersion': 3, 'Category': 'LOTUSim prepared local preview',
-               'Description': 'Experimental UE static maritime preview; not Unity/LOTUSim pipeline parity.',
-               'Plugins': [{'Name': name, 'Enabled': True} for name in ('PythonScriptPlugin', 'EditorScriptingUtilities', 'SequencerScripting', 'MovieRenderPipeline', 'Water')]}
+    plan = {
+        'schema': SCHEMA,
+        'id': identifier,
+        'campaignSha256': campaign_sha,
+        'coreRoot': str(core_root),
+        'scenePath': scene_path,
+        'campaign': copy.deepcopy(campaign),
+        'bindings': bindings,
+        'coordinates': {
+            'sourceWorld': 'ENU metres: x=east,y=north,z=up',
+            'unrealWorld': 'centimetres: x=north,y=east,z=up',
+            'sourceGeometry': 'right-handed +X forward,+Y port,+Z up metres',
+            'unrealGeometry': 'left-handed +X forward,+Y starboard,+Z up centimetres',
+            'worldConversion': '[north*100,east*100,up*100]',
+            'localMeshConversion': '[x*100,-y*100,z*100]; reverse face winding',
+            'heading': '0=north,90=east -> Unreal yaw=headingDeg',
+        },
+        'nativeValidated': False,
+        'limitations': limitations,
+        'references': REFERENCES,
+    }
+    project = {
+        'FileVersion': 3,
+        'Category': 'LOTUSim prepared local preview',
+        'Description': 'Experimental UE static maritime preview; not Unity/LOTUSim pipeline parity.',
+        'Plugins': [
+            {'Name': name, 'Enabled': True}
+            for name in (
+                'PythonScriptPlugin',
+                'EditorScriptingUtilities',
+                'SequencerScripting',
+                'MovieRenderPipeline',
+                'Water',
+            )
+        ],
+    }
     script = Path(__file__).with_name('unreal_scene_template.py').read_bytes()
-    files = {'LOTUSimPrepared.uproject': _json(project), 'scene_unreal.py': script,
-             'scene-plan.json': _json(plan), 'unreal-instructions.txt': ('\n\n'.join(instructions + limitations) + '\n').encode('utf-8')}
+    files = {
+        'LOTUSimPrepared.uproject': _json(project),
+        'scene_unreal.py': script,
+        'scene-plan.json': _json(plan),
+        'unreal-instructions.txt': ('\n\n'.join(instructions + limitations) + '\n').encode('utf-8'),
+    }
     if any(len(value) > 1024 * 1024 for value in files.values()):
         raise ValueError('Prepared Unreal package metadata exceeds 1 MiB per file')
-    return {'files': files, 'manifest': {'scenePath': scene_path, 'nativeValidated': False,
-             'runtimeRequirements': ['Unreal Editor 5.5/5.6 with Python/editor scripting and OBJ static import support',
-                                     'Local access to unchanged CORE assets/models sources', 'Interactive editor viewport for screenshot tasks'],
-             'limitations': limitations, 'instructions': instructions, 'references': REFERENCES,
-             'annotationSupported': False, 'rosConnectionSupported': False, 'waveSimulationSupported': False,
-             'rgbCaptureMethod': 'AutomationLibrary.take_high_res_screenshot; editor ticks required',
-             'sampleSemantics': 'independent deterministic samples; not temporal trajectories'}}
+    return {
+        'files': files,
+        'manifest': {
+            'scenePath': scene_path,
+            'nativeValidated': False,
+            'runtimeRequirements': [
+                'Unreal Editor 5.5/5.6 with Python/editor scripting and OBJ static import support',
+                'Local access to unchanged CORE assets/models sources',
+                'Interactive editor viewport for screenshot tasks',
+            ],
+            'limitations': limitations,
+            'instructions': instructions,
+            'references': REFERENCES,
+            'annotationSupported': False,
+            'rosConnectionSupported': False,
+            'waveSimulationSupported': False,
+            'rgbCaptureMethod': 'AutomationLibrary.take_high_res_screenshot; editor ticks required',
+            'sampleSemantics': 'independent deterministic samples; not temporal trajectories',
+        },
+    }
