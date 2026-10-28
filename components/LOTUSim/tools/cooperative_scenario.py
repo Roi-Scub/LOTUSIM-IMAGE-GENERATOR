@@ -18,6 +18,8 @@ import unicodedata
 import plan_maritime_traffic as traffic
 from campaign_settings import CampaignStore, load_json_bytes
 from neutral_scene_adapter import CLASS_IDS
+from capture_schedule import (build_schedule, legacy_count_schedule, legacy_frame_schedule,
+                              validate_plan_schedule, summary as capture_summary)
 
 REFERENCES = [
     {'title': 'IMO — COLREG convention, scope of Rules 11–19',
@@ -68,7 +70,7 @@ def _read(core, relative):
 
 def _request(request):
     fields = {'name', 'seed', 'durationSeconds', 'actionProfile'}
-    optional = {'campaign', 'blockId', 'speedPolicy', 'headingPolicy'}
+    optional = {'campaign', 'blockId', 'speedPolicy', 'headingPolicy', 'capture'}
     if not isinstance(request, dict) or not fields <= set(request) or set(request) - fields - optional:
         raise ValueError('Expected name, seed, durationSeconds and actionProfile; unsupported request field')
     name = request['name']
@@ -90,6 +92,8 @@ def _request(request):
         raise ValueError('campaign must be a validated campaign object')
     if 'campaign' not in result and (result['speedPolicy'] == 'requested' or result['headingPolicy'] == 'requested'):
         raise ValueError('Requested speed/heading policies require a campaign block')
+    if 'capture' in result:
+        build_schedule(result['capture'], result['durationSeconds'], 30)
     return result
 
 
@@ -359,6 +363,9 @@ def revalidate_plan(plan, scope, catalogue, template):
               'continuousSafetyApproved': False, 'fullColregCompliance': False, 'notCertified': True,
               'checks': [], 'pairChecks': 0, 'errors': [], 'limitations': list(LIMITATIONS), 'references': REFERENCES}
     try:
+        if not isinstance(plan, dict):
+            raise ValueError('Expected a kinematic plan object')
+        capture_schedule = validate_plan_schedule(plan, scope)
         routes, observer = _routes(plan, scope, catalogue, template)
         safety = traffic.SafetyAgent(scope, observer)
         for route in routes:
@@ -386,6 +393,12 @@ def revalidate_plan(plan, scope, catalogue, template):
                       approved=continuous and colreg['approved'], status='approved_limited' if continuous and colreg['approved'] else 'unsafe')
         motion = {key: plan.get(key) for key in ('schema', 'seed', 'maxActive', 'events')}
         result['inputSha256'] = _hash({'plan': motion, 'scope': scope, 'catalogue': catalogue, 'template': template})
+        result['motionSha256'] = _hash({'plan': motion, 'observer': scope['observer'],
+                                       'durationSeconds': scope['durationSeconds'], 'template': template})
+        if capture_schedule:
+            result['captureScheduleSha256'] = capture_schedule['sha256']
+            result['captureScheduleValidated'] = True
+            result['plannedCaptureImages'] = capture_schedule['count']
     except (ValueError, KeyError, TypeError, OverflowError, ArithmeticError) as error:
         result.update(status='unsupported', errors=[str(error)[:240]])
     return result
@@ -449,7 +462,18 @@ def render_scenario_yaml(plan, scope, template, catalogue=None):
              'name: ' + scope['name'], 'description: ' + json.dumps('Preplanned kinematic traffic; no reactive avoidance or calibrated wave dynamics.'),
              'reference_position: {latitude: 1.2421, longitude: 103.7198, altitude: 0}',
              'dataset_sequence:', '  plan_id: ' + audit['inputSha256'], '  observer: ObserverBoat',
-             '  fps: ' + str(scope['fps']), '  frames: ' + str(math.ceil(scope['durationSeconds'] * scope['fps'])), 'agents:']
+             '  fps: ' + str(scope['fps']), '  frames: ' + str(math.ceil(scope['durationSeconds'] * scope['fps']))]
+    schedule = plan.get('captureSchedule')
+    if schedule:
+        lines += ['# Capture metadata uses simulated seconds; no wall-clock timer or hidden burst.',
+                  'capture_schedule:', '  schema: ' + schedule['schema'],
+                  '  mode: ' + schedule['mode'], '  source: ' + schedule['source'],
+                  '  clock: simulated_seconds', '  duration_seconds: ' + repr(schedule['durationSeconds']),
+                  '  fps: ' + str(schedule['fps']), '  count: ' + str(schedule['count']),
+                  '  frames: ' + json.dumps(schedule['frames']), '  sha256: ' + schedule['sha256']]
+        if schedule['requestedIntervalSeconds'] is not None:
+            lines += ['  interval_seconds: ' + repr(schedule['requestedIntervalSeconds'])]
+    lines += ['agents:']
     routes, _ = _routes(plan, scope, catalogue, template)
     for route in routes:
         observer = route.get('observer', False); model = 'fremm_observer' if observer else route['profile']['model']
@@ -489,14 +513,19 @@ def generate(core_root, unity_root, request):
                 last = 'Continuous safety or limited encounter geometry did not pass'; continue
             plan.setdefault('traffic', {}).update(continuousSafetyApproved=True, fullColregCompliance=False,
                                                   notCertified=True, reactiveAvoidance=False, scenarioName=scope['name'])
+            if 'capture' in request:
+                schedule = build_schedule(request['capture'], scope['durationSeconds'], scope['fps'])
+            elif block:
+                schedule = legacy_count_schedule(block['images'], scope['durationSeconds'], scope['fps'])
+            else:
+                frames = plan.get('captureFrames', list(range(0, math.ceil(scope['durationSeconds'] * scope['fps']), scope['captureEveryFrames'])))
+                schedule = legacy_frame_schedule(frames, scope['durationSeconds'], scope['fps'])
+            plan['captureFrames'] = list(schedule['frames'])
+            plan['captureSchedule'] = copy.deepcopy(schedule)
+            scope['captureSchedule'] = copy.deepcopy(schedule)
+            plan['traffic'].update(captureScheduleVersion=1, requestedCaptureImages=schedule['count'])
             if block:
-                frame_count = math.ceil(scope['durationSeconds'] * scope['fps'])
-                count = block['images']
-                if count > frame_count:
-                    raise ValueError('Requested images exceed available source frames for this duration/FPS')
-                plan['captureFrames'] = ([0] if count == 1 else
-                                        [round(index * (frame_count - 1) / (count - 1)) for index in range(count)])
-                plan['traffic'].update(requestedCaptureImages=count,
+                plan['traffic'].update(campaignBlockImagesRequested=block['images'],
                     requestedRangeSemantics='Exact horizontal camera range at each actor centerSeconds, not every moving-episode frame')
             # Stored snapshots make three-argument YAML re-export independently auditable.
             scope['catalogueSnapshot'] = copy.deepcopy(catalogue)
@@ -505,6 +534,7 @@ def generate(core_root, unity_root, request):
             return {'schema': 'lotusim-generated-cooperative-scenario-1', 'name': request['name'],
                     'request': request, 'plan': plan, 'scope': scope, 'catalogue': catalogue, 'template': template,
                     'audit': audit, 'messages': messages, 'scenarioYaml': scenario,
+                    'captureSummary': capture_summary(schedule),
                     'warnings': list(LIMITATIONS), 'engineId': request.get('campaign', {}).get('engine') or CampaignStore(core, unity_root).engine_registry.selection()['id'],
                     'generationAttempts': attempt + 1, 'fullColregCompliance': False, 'notCertified': True}
         except (ValueError, RuntimeError) as error:

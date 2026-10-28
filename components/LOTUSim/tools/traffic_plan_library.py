@@ -25,6 +25,7 @@ import zipfile
 from traffic_plan_editor import (TrafficPlanStore, TrafficValidationError,
                                  TrafficConflictError, TrafficPlanSecurityError,
                                  _UUID, _decode, _encode)
+from capture_schedule import summary as capture_summary
 
 SCHEMA = 'lotusim-traffic-library-1'
 CONTEXT_VERSION = 'lotusim-cooperative-context-1'
@@ -200,7 +201,9 @@ class TrafficPlanLibrary:
                 'durationSeconds':row['duration_seconds'],'applied':False,
                 'requiresRevalidation':row['audit_status']!='approved','metadata':metadata,
                 'status':'ready' if row['audit_status']=='approved' else 'needs_revalidation' if row['audit_status']=='requires_revalidation' else 'refused',
-                'readyScope':'bounded_kinematic_audit_only','isSafetyCertified':False}
+                'readyScope':'bounded_kinematic_audit_only','isSafetyCertified':False,
+                **{key:metadata[key] for key in ('plannedCaptureImages','captureMode','captureIntervalSeconds',
+                    'captureDurationSeconds','captureLastSeconds','captureClock','captureScheduleSha256') if key in metadata}}
 
     def list(self):
         try:
@@ -249,6 +252,8 @@ class TrafficPlanLibrary:
         result.update(planId=record['id'],record=record,audit=payload['audit'],
                       requiresRevalidation=not record['ready'],collisionChecked=record['ready'],
                       exportFiles=sorted(self._files(record,payload)))
+        if isinstance(payload['plan'].get('captureSchedule'),dict):
+            result['captureSchedule']=copy.deepcopy(payload['plan']['captureSchedule'])
         limitations=payload['audit'].get('limitations',[])
         if isinstance(limitations,list):
             result['warnings']=list(dict.fromkeys(result['warnings']+[item[:1000] for item in limitations[:16] if isinstance(item,str)]))
@@ -280,6 +285,7 @@ class TrafficPlanLibrary:
                  'changes':changes or [],'request':request or {},'applied':False}
         events=plan['events'];duration=max(e['endSeconds'] for e in events)-min(e['startSeconds'] for e in events)
         metadata=copy.deepcopy(metadata) if isinstance(metadata,dict) else {}
+        metadata.update(capture_summary(plan.get('captureSchedule')))
         if request:
             campaign=request.get('campaign') if isinstance(request.get('campaign'),dict) else {}
             block=next((item for item in campaign.get('blocks',[]) if isinstance(item,dict) and item.get('id')==request.get('blockId')),None)
@@ -426,6 +432,7 @@ class TrafficPlanLibrary:
                   'requiresRevalidation':not record['ready'],'sourceContextVersion':CONTEXT_VERSION,
                   'changes':payload.get('changes',[]),
                   'files':{name:{'sha256':_sha(data),'bytes':len(data)} for name,data in sorted(result.items())}}
+        manifest['artifacts']=[dict(name=name,**item) for name,item in manifest['files'].items()]
         result['manifest.json']=_encode(manifest)
         return result
 
