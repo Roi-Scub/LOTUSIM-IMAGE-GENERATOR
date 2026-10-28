@@ -1,0 +1,367 @@
+diff --git a/Assets/Resources/ROSConnectionPrefab.prefab b/Assets/Resources/ROSConnectionPrefab.prefab
+index 53e0a1e..c5b4a15 100644
+--- a/Assets/Resources/ROSConnectionPrefab.prefab
++++ b/Assets/Resources/ROSConnectionPrefab.prefab
+@@ -44,13 +44,13 @@ MonoBehaviour:
+   m_Script: {fileID: 11500000, guid: 7acef0b79454c9b4dae3f8139bc4ba77, type: 3}
+   m_Name: 
+   m_EditorClassIdentifier: 
+-  m_RosIPAddress: 192.168.0.144
++  m_RosIPAddress: 127.0.0.1
+   m_RosPort: 10000
+-  m_ConnectOnStart: 1
++  m_ConnectOnStart: 0
+   m_KeepaliveTime: 1
+   m_NetworkTimeoutSeconds: 2
+   m_SleepTimeSeconds: 0.01
+   m_ShowHUD: 1
+   m_TFTopics:
+   - /tf
+-  listenForTFMessages: 1
++  listenForTFMessages: 0
+diff --git a/Assets/RosMessages/Lotusim/msg/MASCmdMsg.cs b/Assets/RosMessages/Lotusim/msg/MASCmdMsg.cs
+index 6ab318b..3cbca55 100644
+--- a/Assets/RosMessages/Lotusim/msg/MASCmdMsg.cs
++++ b/Assets/RosMessages/Lotusim/msg/MASCmdMsg.cs
+@@ -23,13 +23,18 @@ namespace RosMessageTypes.Lotusim
+         //  If model has been created with folder in `assets/models` directory, sdf will be retrieved. 
+         //  Lotusim param will be retrieved from sdf_string
+         public string model_name;
+-        //  Name of vessel in gazebo
++        //  Optional SDF file name inside the model folder.
++        //  If not specified, the default file `model.sdf` will be used.
++        //  Only applicable when the model exists in `assets/models`.
++        public string sdf_file;
++        //  Name of vessel in gazebo. Names must not start with number of special character
+         public string vessel_name;
+         //  ID of vessel in gazebo. 
+         //  During creation, the entity entered does not matter and will be overwritten
+         public ushort entity;
+         //  vessel position if create or modify cmd
+         public Geometry.PoseMsg vessel_position;
++        //  Having geographic coordinate system or heading replace Pose
+         public Geographic.GeoPointMsg geo_point;
+         public float heading;
+ 
+@@ -38,6 +43,7 @@ namespace RosMessageTypes.Lotusim
+             this.cmd_type = 0;
+             this.sdf_string = "";
+             this.model_name = "";
++            this.sdf_file = "";
+             this.vessel_name = "";
+             this.entity = 0;
+             this.vessel_position = new Geometry.PoseMsg();
+@@ -45,11 +51,12 @@ namespace RosMessageTypes.Lotusim
+             this.heading = 0.0f;
+         }
+ 
+-        public MASCmdMsg(byte cmd_type, string sdf_string, string model_name, string vessel_name, ushort entity, Geometry.PoseMsg vessel_position, Geographic.GeoPointMsg geo_point, float heading)
++        public MASCmdMsg(byte cmd_type, string sdf_string, string model_name, string sdf_file, string vessel_name, ushort entity, Geometry.PoseMsg vessel_position, Geographic.GeoPointMsg geo_point, float heading)
+         {
+             this.cmd_type = cmd_type;
+             this.sdf_string = sdf_string;
+             this.model_name = model_name;
++            this.sdf_file = sdf_file;
+             this.vessel_name = vessel_name;
+             this.entity = entity;
+             this.vessel_position = vessel_position;
+@@ -64,6 +71,7 @@ namespace RosMessageTypes.Lotusim
+             deserializer.Read(out this.cmd_type);
+             deserializer.Read(out this.sdf_string);
+             deserializer.Read(out this.model_name);
++            deserializer.Read(out this.sdf_file);
+             deserializer.Read(out this.vessel_name);
+             deserializer.Read(out this.entity);
+             this.vessel_position = Geometry.PoseMsg.Deserialize(deserializer);
+@@ -76,6 +84,7 @@ namespace RosMessageTypes.Lotusim
+             serializer.Write(this.cmd_type);
+             serializer.Write(this.sdf_string);
+             serializer.Write(this.model_name);
++            serializer.Write(this.sdf_file);
+             serializer.Write(this.vessel_name);
+             serializer.Write(this.entity);
+             serializer.Write(this.vessel_position);
+@@ -89,6 +98,7 @@ namespace RosMessageTypes.Lotusim
+             "\ncmd_type: " + cmd_type.ToString() +
+             "\nsdf_string: " + sdf_string.ToString() +
+             "\nmodel_name: " + model_name.ToString() +
++            "\nsdf_file: " + sdf_file.ToString() +
+             "\nvessel_name: " + vessel_name.ToString() +
+             "\nentity: " + entity.ToString() +
+             "\nvessel_position: " + vessel_position.ToString() +
+diff --git a/Assets/RosMessages/Lotusim/msg/VesselPositionMsg.cs b/Assets/RosMessages/Lotusim/msg/VesselPositionMsg.cs
+index f765773..feae716 100644
+--- a/Assets/RosMessages/Lotusim/msg/VesselPositionMsg.cs
++++ b/Assets/RosMessages/Lotusim/msg/VesselPositionMsg.cs
+@@ -14,6 +14,7 @@ namespace RosMessageTypes.Lotusim
+         public override string RosMessageName => k_RosMessageName;
+ 
+         public string vessel_name;
++        public string model_name;
+         public Geometry.PoseMsg pose;
+         //  Orientation uses front-left-up
+         public Geographic.GeoPointMsg geo_point;
+@@ -21,13 +22,15 @@ namespace RosMessageTypes.Lotusim
+         public VesselPositionMsg()
+         {
+             this.vessel_name = "";
++            this.model_name = "";
+             this.pose = new Geometry.PoseMsg();
+             this.geo_point = new Geographic.GeoPointMsg();
+         }
+ 
+-        public VesselPositionMsg(string vessel_name, Geometry.PoseMsg pose, Geographic.GeoPointMsg geo_point)
++        public VesselPositionMsg(string vessel_name, string model_name, Geometry.PoseMsg pose, Geographic.GeoPointMsg geo_point)
+         {
+             this.vessel_name = vessel_name;
++            this.model_name = model_name;
+             this.pose = pose;
+             this.geo_point = geo_point;
+         }
+@@ -37,6 +40,7 @@ namespace RosMessageTypes.Lotusim
+         private VesselPositionMsg(MessageDeserializer deserializer)
+         {
+             deserializer.Read(out this.vessel_name);
++            deserializer.Read(out this.model_name);
+             this.pose = Geometry.PoseMsg.Deserialize(deserializer);
+             this.geo_point = Geographic.GeoPointMsg.Deserialize(deserializer);
+         }
+@@ -44,6 +48,7 @@ namespace RosMessageTypes.Lotusim
+         public override void SerializeTo(MessageSerializer serializer)
+         {
+             serializer.Write(this.vessel_name);
++            serializer.Write(this.model_name);
+             serializer.Write(this.pose);
+             serializer.Write(this.geo_point);
+         }
+@@ -52,6 +57,7 @@ namespace RosMessageTypes.Lotusim
+         {
+             return "VesselPositionMsg: " +
+             "\nvessel_name: " + vessel_name.ToString() +
++            "\nmodel_name: " + model_name.ToString() +
+             "\npose: " + pose.ToString() +
+             "\ngeo_point: " + geo_point.ToString();
+         }
+diff --git a/Assets/Scripts/lotusim_interface/InterfaceFactory.cs b/Assets/Scripts/lotusim_interface/InterfaceFactory.cs
+index 8fe1e4a..042df4e 100644
+--- a/Assets/Scripts/lotusim_interface/InterfaceFactory.cs
++++ b/Assets/Scripts/lotusim_interface/InterfaceFactory.cs
+@@ -35,18 +35,16 @@ namespace Lotusim
+             };
+ 
+         /// <summary>
+-        /// Creates and initializes a Lotusim interface of the specified type.
++        /// Creates a Lotusim interface of the specified type. The caller owns
++        /// initialization so it can provide the configured namespace exactly once.
+         /// </summary>
+         /// <param name="type">Interface type ("ROS2", "TCPIP", etc.)</param>
+-        /// <param name="rosNamespace">Optional namespace for ROS2 interfaces.</param>
+-        /// <returns>The initialized interface instance, or null if type is not found.</returns>
+-        public static LotusimBaseInterface CreateInterface(string type, string rosNamespace = "")
++        /// <returns>The interface instance, or null if type is not found.</returns>
++        public static LotusimBaseInterface CreateInterface(string type)
+         {
+             if (s_interfaceMap.TryGetValue(type.ToUpperInvariant(), out var constructor))
+             {
+-                var iface = constructor();
+-                iface.Start(rosNamespace); // Important for ROS2 interface initialization
+-                return iface;
++                return constructor();
+             }
+ 
+             Debug.LogError($"[LotusimInterfaceFactory] Interface type '{type}' not found.");
+diff --git a/Assets/Scripts/lotusim_interface/LotusimConnector.cs b/Assets/Scripts/lotusim_interface/LotusimConnector.cs
+index d3ededf..303963d 100644
+--- a/Assets/Scripts/lotusim_interface/LotusimConnector.cs
++++ b/Assets/Scripts/lotusim_interface/LotusimConnector.cs
+@@ -48,6 +48,7 @@ namespace Lotusim
+ 
+         // Mapping of Animation name to Animation.
+         private Dictionary<string, Animator> m_animatorMap = new Dictionary<string, Animator>();
++        private HashSet<string> m_pendingAssetLoads = new HashSet<string>();
+ 
+         public void OnNamespaceChanged()
+         {
+@@ -101,9 +102,17 @@ namespace Lotusim
+ 
+                 if (m_objectMap.ContainsKey(vesselName))
+                 {
++                    Debug.Log($"[LotusimInterface] Ignoring duplicate CREATE for '{vesselName}': object already exists.");
+                     continue;
+                 }
+ 
++                if (!m_pendingAssetLoads.Add(vesselName))
++                {
++                    Debug.Log($"[LotusimInterface] Ignoring duplicate CREATE for '{vesselName}': prefab load is pending.");
++                    continue;
++                }
++
++                Debug.Log($"[LotusimInterface] Loading vessel prefab '{assetAddress}' for '{vesselName}'.");
+                 Addressables.LoadAssetAsync<GameObject>(assetAddress).Completed += handle =>
+                     OnFindAssetLocation(handle, vesselName, assetAddress, pose);
+             }
+@@ -117,8 +126,16 @@ namespace Lotusim
+             Pose pose
+         )
+         {
++            m_pendingAssetLoads.Remove(vesselName);
++
+             if (handle.Status == AsyncOperationStatus.Succeeded)
+             {
++                if (m_objectMap.ContainsKey(vesselName))
++                {
++                    Debug.LogWarning($"[LotusimInterface] Prefab load completed for '{vesselName}', but the vessel already exists; skipping duplicate.");
++                    return;
++                }
++
+                 // Instantiate the prefab at the origin with no rotation
+                 GameObject instantiatedObject = Instantiate(
+                     handle.Result,
+@@ -126,9 +143,13 @@ namespace Lotusim
+                     pose.rotation
+                 );
+                 instantiatedObject.name = vesselName;
++                // A ROS-owned root must never also be integrated by Unity's
++                // free Rigidbody buoyancy. Only its visual child follows waves.
++                instantiatedObject.GetComponent<Lotusim.Dataset.MarineVesselWaveMotion>()?.MarkExternallyDriven();
+ 
+                 m_objectMap.Add(vesselName, instantiatedObject);
+                 m_transformMap.Add(vesselName, instantiatedObject.transform);
++                Debug.Log($"[LotusimInterface] Instantiated vessel '{vesselName}' from '{assetAddress}'.");
+ 
+                 Animator[] _animator = instantiatedObject.GetComponentsInChildren<Animator>();
+                 foreach (Animator _a in _animator)
+@@ -140,7 +161,10 @@ namespace Lotusim
+             }
+             else
+             {
+-                Debug.LogWarning($"Failed to create object with type {assetAddress}.");
++                Debug.LogError(
++                    $"[LotusimInterface] Failed to load prefab '{assetAddress}' for '{vesselName}': " +
++                    $"{handle.OperationException?.Message ?? "unknown Addressables error"}"
++                );
+             }
+         }
+ 
+@@ -216,7 +240,7 @@ namespace Lotusim
+ 
+         private void OnDestroy()
+         {
+-            m_interface.Destroy();
++            m_interface?.Destroy();
+         }
+ 
+         private void UpdateVesselsList()
+diff --git a/Assets/Scripts/lotusim_interface/ROS2_interface/RosInterface.cs b/Assets/Scripts/lotusim_interface/ROS2_interface/RosInterface.cs
+index 1a3e2b9..2e3a566 100644
+--- a/Assets/Scripts/lotusim_interface/ROS2_interface/RosInterface.cs
++++ b/Assets/Scripts/lotusim_interface/ROS2_interface/RosInterface.cs
+@@ -77,6 +77,7 @@ namespace Lotusim
+         #region Private Fields
+ 
+         private ROSConnection m_rosConnection;
++        private bool m_isStarted;
+ 
+         private VesselPositionArrayMsg m_vessel_array_msg;
+         private Mutex m_vessel_array_mutex = new Mutex();
+@@ -101,10 +102,33 @@ namespace Lotusim
+         /// <param name="_namespace">Namespace for ROS topics.</param>
+         public override void Start(string _namespace)
+         {
++            _namespace = (_namespace ?? string.Empty).Trim('/');
++            ROSConnection rosConnection = ROSConnection.GetOrCreateInstance();
++
++            // RosInterface is a singleton. The ROS TCP endpoint bundled with
++            // this project does not implement the client's remove_subscriber
++            // syscommand, so don't remove/recreate subscriptions on the same
++            // connection. If the connection itself was replaced, subscribe
++            // the new one instead of retaining callbacks on a dead instance.
++            if (m_isStarted && RosNamespace == _namespace && m_rosConnection == rosConnection)
++            {
++                Debug.Log($"[RosInterface] Already subscribed to namespace '{_namespace}'.");
++                return;
++            }
++
++            if (m_isStarted && RosNamespace != _namespace)
++            {
++                Debug.LogError(
++                    $"[RosInterface] Already initialized for namespace '{RosNamespace}'; " +
++                    $"cannot switch to '{_namespace}' with this ROS TCP endpoint."
++                );
++                return;
++            }
++
+             Debug.Log("[RosInterface] Starting ROS2 interface with namespace: " + _namespace);
+ 
+             RosNamespace = _namespace;
+-            m_rosConnection = ROSConnection.GetOrCreateInstance();
++            m_rosConnection = rosConnection;
+ 
+             // Subscribe to vessel poses
+             m_rosConnection.Subscribe<VesselPositionArrayMsg>(
+@@ -130,10 +154,19 @@ namespace Lotusim
+                 OnSimStatsReceived
+             );
+ 
++            m_isStarted = true;
+             Debug.Log("[RosInterface] Subscribed to all ROS topics.");
+         }
+ 
+-        public override void Destroy() { }
++        public override void Destroy()
++        {
++            // Intentionally keep the subscriptions alive. ROSConnection.Unsubscribe
++            // sends __remove_subscriber, which is not implemented by the
++            // ros_tcp_endpoint version used by LOTUSim and crashes its client
++            // thread (AttributeError: SysCommands has no remove_subscriber).
++            // The interface is a singleton and reuses these subscriptions when
++            // Unity transitions between scenes.
++        }
+ 
+         public override void Update()
+         {
+@@ -155,6 +188,10 @@ namespace Lotusim
+ 
+         private void OnRendererCommandReceived(RendererCmdMsg command)
+         {
++            Debug.Log(
++                $"[RosInterface] ROS callback received renderer command: " +
++                $"type={command.cmd_type}, vessel='{command.vessel_name}', asset='{command.renderer_obj_name}'."
++            );
+             m_render_commands_mutex.WaitOne();
+             m_render_commands.Add(command);
+             m_render_commands_mutex.ReleaseMutex();
+diff --git a/Assets/Scripts/lotusim_interface/ROSConnectionConfigurator.cs b/Assets/Scripts/lotusim_interface/ROSConnectionConfigurator.cs
+index 2e66334..4e6a812 100644
+--- a/Assets/Scripts/lotusim_interface/ROSConnectionConfigurator.cs
++++ b/Assets/Scripts/lotusim_interface/ROSConnectionConfigurator.cs
+@@ -49,9 +49,29 @@ namespace Lotusim
+             }
+ 
+             ROSConnection rosConnection = ROSConnection.GetOrCreateInstance();
++
++            // Keep the connector alive while Photon/Unity reloads the scenario
++            // scene. Otherwise the old TCP worker can outlive its GameObject,
++            // then GetOrCreateInstance creates a second connection on reload.
++            DontDestroyOnLoad(rosConnection.gameObject);
++
++            // Configure before the connector's Start runs, then open exactly
++            // one connection explicitly. The package's ConnectOnStart path
++            // does not guard against a second Connect() call.
++            rosConnection.ConnectOnStart = false;
+             rosConnection.RosIPAddress = ip;
+             rosConnection.RosPort = port;
+ 
++            if (!rosConnection.HasConnectionThread)
++            {
++                rosConnection.Connect();
++                Debug.Log($"[ROSConnectionConfigurator] Opened ROS TCP connection instance {rosConnection.GetInstanceID()}.");
++            }
++            else
++            {
++                Debug.Log($"[ROSConnectionConfigurator] Reusing ROS TCP connection instance {rosConnection.GetInstanceID()}.");
++            }
++
+             Debug.Log($"[ROSConnectionConfigurator] Applied ROS IP: {ip}, Port: {port}");
+         }
+ 

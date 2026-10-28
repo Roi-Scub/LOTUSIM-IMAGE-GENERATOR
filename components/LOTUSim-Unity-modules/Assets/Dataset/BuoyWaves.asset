@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ec948215207e437ab9e9565b8c7a36f, type: 3}
+  m_Name: BuoyWaves
+  m_EditorClassIdentifier: 
+  objectSource: 1
+  rosNamespace: lotusim
+  scenarioFile: BuoyDatasetPilot.yaml
+  targetName: Buoy_001
+  modelAddress: buoy
+  category: buoy
+  classId: 1
+  launchScenario: 0
+  stopOwnedScenarioOnCompletion: 1
+  localPreviewPrefab: {fileID: 8850721854599462305, guid: 1a5f988ad00a94b72a9f2f6371f1cbec,
+    type: 3}
+  localPreviewPosition: {x: 0, y: 0, z: 0}
+  outputRoot: artifacts/dataset-waves
+  seed: 42
+  width: 1280
+  height: 720
+  verticalFovDeg: 50
+  annotations:
+    enabled: 1
+    reviewMinVisiblePixels: 16
+    reviewMinBoxSidePixels: 2
+  cameraMotion:
+    enabled: 0
+    rollAmplitudeDeg: 1.5
+    pitchAmplitudeDeg: 0.8
+    rollPeriodSeconds: 5.5
+    pitchPeriodSeconds: 7
+  distancesM:
+  - 6
+  azimuthsDeg:
+  - 0
+  elevationsDeg:
+  - 12
+  flotation:
+    enabled: 1
+    sampleRadiusM: 0.35
+    waterlineOffsetM: -0.15
+    heightResponsePerSecond: 6
+    tiltResponsePerSecond: 3
+    maxTiltDeg: 25
+  waterOptics:
+    absorptionDistanceM: 0.8
+    maxRefractionDistanceM: 0.6
+    refractionColor: {r: 0.06, g: 0.24, b: 0.3, a: 1}
+    scatteringColor: {r: 0.03, g: 0.16, b: 0.19, a: 1}
+  lantern:
+    enabled: 1
+    periodSeconds: 2
+    flashSeconds: 0.25
+    edgeFadeSeconds: 0.03
+    phaseOffsetSeconds: 0
+    color: {r: 1, g: 0.28, b: 0.02, a: 1}
+    peakEmissionIntensity: 1000
+    pointLightLumens: 3
+    pointLightRangeM: 2
+  seas:
+  - name: calm
+    windKmh: 0
+    band0: 0
+    band1: 0
+    ripplesKmh: 2
+    foam: 0
+    directionDeg: 35
+    patchSizeM: 128
+  - name: moderate
+    windKmh: 35
+    band0: 0.7
+    band1: 0.6
+    ripplesKmh: 10
+    foam: 0.2
+    directionDeg: 35
+    patchSizeM: 192
+  - name: rough
+    windKmh: 70
+    band0: 1
+    band1: 0.9
+    ripplesKmh: 18
+    foam: 0.5
+    directionDeg: 35
+    patchSizeM: 256
+  lights:
+  - name: front
+    relativeBearingDeg: 0
+    elevationDeg: 45
+    intensityLux: 80000
+    exposureEV100: 13
+    temperatureKelvin: 5600
+  samplesPerCondition: 4
+  settleRenderedFrames: 60
+  simulationFps: 30
+  sampleIntervalSeconds: 1
+  connectionTimeoutSeconds: 45
+  objectTimeoutSeconds: 45
+  renderTimeoutSeconds: 45
+  shuffleConditions: 0

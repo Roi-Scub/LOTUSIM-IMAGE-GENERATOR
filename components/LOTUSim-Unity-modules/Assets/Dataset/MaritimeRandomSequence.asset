@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c7fab225b1c4a31bd15a65deba7a31a, type: 3}
+  m_Name: MaritimeRandomSequence
+  m_EditorClassIdentifier: 
+  seed: 20261014
+  width: 1920
+  height: 1080
+  simulationFps: 30
+  captureEveryFrames: 5
+  warmupFrames: 60
+  durationSeconds: 60
+  verticalFovDeg: 55
+  observerSpeedMps: 4
+  observerHeightM: 3.5
+  routeHeadingDeg: 0
+  viewHeadingDeg: 0
+  viewDownPitchDeg: 2
+  origin: {x: 0, y: 0, z: 0}
+  maxActiveObjects: 12
+  maxRollDeg: 2.5
+  maxPitchDeg: 1.5
+  waterTiltGain: 0.4
+  heaveGain: 0.45
+  maxHeaveM: 1.2
+  responsePerSecond: 2
+  renderTimeoutSeconds: 45
+  outputRoot: artifacts/dataset-sequences
+  annotations:
+    enabled: 1
+    displayName: 
+    reviewMinVisiblePixels: 16
+    reviewMinBoxSidePixels: 2
+  flotation:
+    enabled: 1
+    sampleRadiusM: 0.35
+    waterlineOffsetM: -0.15
+    heightResponsePerSecond: 6
+    tiltResponsePerSecond: 3
+    maxTiltDeg: 25
+  waterOptics:
+    absorptionDistanceM: 0.8
+    maxRefractionDistanceM: 0.6
+    refractionColor: {r: 0.06, g: 0.24, b: 0.3, a: 1}
+    scatteringColor: {r: 0.03, g: 0.16, b: 0.19, a: 1}
+  lantern:
+    enabled: 1
+    periodSeconds: 2
+    flashSeconds: 0.25
+    edgeFadeSeconds: 0.03
+    phaseOffsetSeconds: 0
+    color: {r: 1, g: 0.28, b: 0.02, a: 1}
+    peakEmissionIntensity: 1000
+    pointLightLumens: 3
+    pointLightRangeM: 2
+  classes:
+  - category: buoy
+    displayName: "bou\xE9e"
+    classId: 1
+    count: 3
+    prefab: {fileID: 8850721854599462305, guid: 1a5f988ad00a94b72a9f2f6371f1cbec,
+      type: 3}
+    moored: 1
+    distanceM: {x: 20, y: 70}
+    altitudeM: {x: 0, y: 0}
+    speedMps: {x: 0, y: 0}
+    separationM: 5
+  - category: drone
+    displayName: drone
+    classId: 2
+    count: 2
+    prefab: {fileID: 6078880521541706090, guid: fa2d8039a80a9419c9954f6e890a554f,
+      type: 3}
+    moored: 0
+    distanceM: {x: 20, y: 55}
+    altitudeM: {x: 6, y: 18}
+    speedMps: {x: 3, y: 7}
+    separationM: 3
+  - category: helicopter
+    displayName: "h\xE9licopt\xE8re"
+    classId: 3
+    count: 1
+    prefab: {fileID: 601548824454675149, guid: 3700b2cdfbf3346a78d5d02d3db25efb, type: 3}
+    moored: 0
+    distanceM: {x: 280, y: 700}
+    altitudeM: {x: 40, y: 110}
+    speedMps: {x: 25, y: 45}
+    separationM: 20
+  - category: airplane
+    displayName: avion
+    classId: 4
+    count: 1
+    prefab: {fileID: 4623156053532310699, guid: 675ca74669fbb482fa517483557df1e1,
+      type: 3}
+    moored: 0
+    distanceM: {x: 750, y: 1600}
+    altitudeM: {x: 160, y: 350}
+    speedMps: {x: 50, y: 70}
+    separationM: 30
+  - category: bird
+    displayName: oiseau
+    classId: 5
+    count: 4
+    prefab: {fileID: 7796383544303936974, guid: 707eac4bf4c18454b9505c542245b6aa,
+      type: 3}
+    moored: 0
+    distanceM: {x: 25, y: 110}
+    altitudeM: {x: 3, y: 22}
+    speedMps: {x: 8, y: 14}
+    separationM: 1

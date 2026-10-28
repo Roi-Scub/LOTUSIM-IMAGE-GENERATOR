@@ -1,0 +1,153 @@
+diff --git a/Assets/AddressableAssetsData/AssetGroups/SpawnInterface.asset b/Assets/AddressableAssetsData/AssetGroups/SpawnInterface.asset
+index cca3f73..9602328 100644
+--- a/Assets/AddressableAssetsData/AssetGroups/SpawnInterface.asset
++++ b/Assets/AddressableAssetsData/AssetGroups/SpawnInterface.asset
+@@ -17,6 +17,46 @@ MonoBehaviour:
+     m_SerializedData: []
+   m_GUID: be314f4f1b02c251d86d1aeb9f1532d9
+   m_SerializeEntries:
++  - m_GUID: 04149b3038921459db04a4be01ab18d0
++    m_Address: buoy_navigation_ozzy
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 18dfce9ba2c4f4ddca971880499d06d8
++    m_Address: drone_amvlab
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 0df2f9657258845e6b4e2b3af71a8daa
++    m_Address: helicopter_utility_gb
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 536f188ddbdd44acdbc19f8ce6bd1029
++    m_Address: airplane_a320
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 3359b93659b5744d1bd2adac2118ed01
++    m_Address: airplane_c172
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 4feb5a76e50134c26a72d5131c102ab3
++    m_Address: seagull_dayvable
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 235c8222219274067b4482823c48e4c2
++    m_Address: speedboat_smolbot
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: ece752866fe8149279c8bee30ca70f8a
++    m_Address: speedboat_racing
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
+   - m_GUID: 1534544eb72990752a85f0976fee408f
+     m_Address: mine
+     m_ReadOnly: 0
+@@ -57,6 +97,101 @@ MonoBehaviour:
+     m_ReadOnly: 0
+     m_SerializedLabels: []
+     FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 1a5f988ad00a94b72a9f2f6371f1cbec
++    m_Address: buoy
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: fa2d8039a80a9419c9954f6e890a554f
++    m_Address: small_drone
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 3700b2cdfbf3346a78d5d02d3db25efb
++    m_Address: helicopter
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 675ca74669fbb482fa517483557df1e1
++    m_Address: airplane
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 707eac4bf4c18454b9505c542245b6aa
++    m_Address: seagull
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 7b38f2aa7fb0e40738e4e5a723d97b40
++    m_Address: fishing_trawler
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 33dd8cd19f22f49888bbeef305577178
++    m_Address: container_ship
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 8dd9030eda6e34635b6f2db1cc9e4df8
++    m_Address: motor_yacht
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: ceedbcbaa7e6243139dce577af3f763e
++    m_Address: speedboat
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 08fb758b811f441e9ac90fb4499c8ebe
++    m_Address: jetski
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 5b946c7a7c4294343acde0eb2e5e3c7c
++    m_Address: ferry
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: f3db63fad79bd4a8b98fd19e6f4bc05f
++    m_Address: sailboat
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: c8f29efc648d941318ad59621b62e73f
++    m_Address: speedboat_zefiro
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: c93728f2a07b041a5a6da2b9da8c1874
++    m_Address: rib_assault
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 5f00394ad439942e0a2c8945079a2b9d
++    m_Address: motor_yacht_35
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 57db6fe1087b443c2a043e7f06b45a7b
++    m_Address: jetski_seadoo_gti
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: ee974d5d8b8e14a278be64513efe3b0e
++    m_Address: cabin_cruiser_minnow
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 31d37071c5c3945db9f9d95436a2df09
++    m_Address: rib_zodiac
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
++  - m_GUID: 68f236080811e4759956fc337c191e76
++    m_Address: drone_racer_sim
++    m_ReadOnly: 0
++    m_SerializedLabels: []
++    FlaggedDuringContentUpdateRestriction: 0
+   m_ReadOnly: 0
+   m_Settings: {fileID: 11400000, guid: dff253635c443ea09ac6aabf80e24a23, type: 2}
+   m_SchemaSet:
