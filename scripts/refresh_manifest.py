@@ -7,6 +7,11 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+GENERATED_QA_ROOTS = ('qa/', 'components/LOTUSim/qa/', 'components/LOTUSim-Unity-modules/qa/')
+
+
+def generated_qa(name):
+    return Path(name).as_posix().startswith(GENERATED_QA_ROOTS)
 
 
 def main():
@@ -25,6 +30,8 @@ def main():
                      not any(part.startswith('.') or part == '__pycache__' for part in path.relative_to(ROOT).parts))
     records = []
     for name in sorted(paths):
+        if generated_qa(name):
+            continue
         relative = Path(name)
         if relative.is_absolute() or '..' in relative.parts or relative.parts[0] in ('runtime', '.local'):
             raise ValueError('Unsafe portable path: ' + name)

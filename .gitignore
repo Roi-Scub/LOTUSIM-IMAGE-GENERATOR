@@ -20,6 +20,10 @@ result-*
 # Generated datasets and reports are local data, not source history.
 /results/
 /datasets/
+# Browser QA outputs are local evidence, never portable sources.
+/qa/
+/components/LOTUSim/qa/
+/components/LOTUSim-Unity-modules/qa/
 # Credentials, temporary files and crash dumps must never be committed.
 .env
 .env.*
