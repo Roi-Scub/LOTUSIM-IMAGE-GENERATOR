@@ -1,0 +1,42 @@
+# Source snapshot: keep patches, models, textures and all Unity .meta files.
+**/__pycache__/
+**/*.pyc
+.DS_Store
+.venv*/
+**/Library/
+**/Temp/
+**/Logs/
+**/obj/
+**/build/
+**/install/
+**/log/
+**/artifacts/
+result
+result-*
+.export-install-backups/
+# Complete working clones and host-specific state are not the portable source snapshot.
+/runtime/
+/.local/
+# Generated datasets and reports are local data, not source history.
+/results/
+/datasets/
+# Credentials, temporary files and crash dumps must never be committed.
+.env
+.env.*
+!.env.example
+**/.ssh/
+**/secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.bak
+*.partial
+mono_crash.*.json
+*.dmp

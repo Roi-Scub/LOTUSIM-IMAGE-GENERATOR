@@ -1,0 +1,123 @@
+{
+  "schema": "lotusim-export-provenance-1",
+  "date": "2026-10-27",
+  "repositories": {
+    "LOTUSim": {
+      "origin": "https://github.com/naval-group/LOTUSim.git",
+      "baseCommit": "803c739e4c3222cde54704e94b9f4a89d53fee89"
+    },
+    "LOTUSim-Unity-modules": {
+      "origin": "https://github.com/naval-group/LOTUSim-Unity-modules.git",
+      "baseCommit": "68e56588f5b469201fcb50a90b571e357a89ad9c"
+    }
+  },
+  "patches": [
+    {
+      "id": "lotusim-functional",
+      "repository": "LOTUSim",
+      "file": "patches/lotusim-functional.patch",
+      "default": true,
+      "option": "core",
+      "paths": [
+        "systems/lotusim_mas/CMakeLists.txt",
+        "systems/lotusim_mas/package.xml",
+        "systems/lotusim_mas/include/lotusim_mas/scenario_manager.hpp",
+        "systems/lotusim_mas/include/lotusim_mas/scenario_types.hpp",
+        "systems/lotusim_mas/src/entity_spawner.cpp",
+        "systems/lotusim_mas/src/multi_agent_system.cpp",
+        "systems/lotusim_mas/src/scenario_manager.cpp",
+        "systems/lotusim_mas/src/scenario_parser.cpp",
+        "systems/render_interface/include/render_interface/render_plugin.hpp",
+        "systems/render_interface/src/render_plugin.cpp",
+        "systems/lotusim_mas/include/lotusim_mas/dataset_motion.hpp",
+        "systems/lotusim_mas/include/lotusim_mas/dataset_timeline.hpp",
+        "systems/lotusim_mas/src/dataset_timeline.cpp"
+      ]
+    },
+    {
+      "id": "lotusim-environment",
+      "repository": "LOTUSim",
+      "file": "patches/lotusim-environment.patch",
+      "default": false,
+      "option": "environment",
+      "paths": [
+        "flake.nix",
+        "mise.toml"
+      ]
+    },
+    {
+      "id": "lotusim-ignore",
+      "repository": "LOTUSim",
+      "file": "patches/lotusim-ignore.patch",
+      "default": false,
+      "option": "environment",
+      "paths": [
+        ".gitignore"
+      ]
+    },
+    {
+      "id": "unity-ros-bridge",
+      "repository": "LOTUSim-Unity-modules",
+      "file": "patches/unity-ros-bridge.patch",
+      "default": true,
+      "option": "core",
+      "paths": [
+        "Assets/Resources/ROSConnectionPrefab.prefab",
+        "Assets/RosMessages/Lotusim/msg/MASCmdMsg.cs",
+        "Assets/RosMessages/Lotusim/msg/VesselPositionMsg.cs",
+        "Assets/Scripts/lotusim_interface/InterfaceFactory.cs",
+        "Assets/Scripts/lotusim_interface/LotusimConnector.cs",
+        "Assets/Scripts/lotusim_interface/ROS2_interface/RosInterface.cs",
+        "Assets/Scripts/lotusim_interface/ROSConnectionConfigurator.cs"
+      ]
+    },
+    {
+      "id": "unity-addressables",
+      "repository": "LOTUSim-Unity-modules",
+      "file": "patches/unity-addressables.patch",
+      "default": true,
+      "option": "core",
+      "paths": [
+        "Assets/AddressableAssetsData/AssetGroups/SpawnInterface.asset"
+      ]
+    },
+    {
+      "id": "unity-interactive",
+      "repository": "LOTUSim-Unity-modules",
+      "file": "patches/unity-interactive.patch",
+      "default": false,
+      "option": "interactive",
+      "paths": [
+        "Assets/Scenes/Defense/defenseScenario.unity",
+        "Assets/Scenes/Launcher.unity",
+        "Assets/Scenes/MultiUser/Launcher.unity",
+        "Assets/Scripts/MultiUser/Launcher.cs",
+        "Assets/Scripts/camera/CameraDynamicTargetsNavigator.cs"
+      ]
+    },
+    {
+      "id": "unity-xr-local",
+      "repository": "LOTUSim-Unity-modules",
+      "file": "patches/unity-xr-local.patch",
+      "default": false,
+      "option": "interactive",
+      "paths": [
+        "Assets/XR/XRGeneralSettingsPerBuildTarget.asset"
+      ]
+    }
+  ],
+  "externalEndpoint": {
+    "origin": "https://github.com/naval-group/LOTUSim-Unity-ros-tcp-endpoint.git",
+    "baseCommit": "3e3db753c916356f8e32fb602b02fc5dbc1764f1",
+    "localChanges": false
+  },
+  "excludedLocalChanges": [
+    "Assets/msgbrowser_settings.asset (personal editor folder preference, not required)"
+  ],
+  "transformations": [
+    "Personal CORE/Unity absolute paths replaced by /chemin/projets/... in historical Markdown guides only.",
+    "Exported tools/ops_collector.py normalizes Unity ISO fractional seconds to six digits for Python 3.9 compatibility; original working source unchanged.",
+    "Resolvable historical Markdown links rebased to paths inside the exported components; local shell examples retain /chemin/projets placeholders."
+  ],
+  "overlaySemantics": "New reusable source/assets only; upstream projects are separate pinned dependencies. Functional source changes supplied as patches."
+}

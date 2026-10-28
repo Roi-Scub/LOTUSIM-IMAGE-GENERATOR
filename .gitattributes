@@ -1,0 +1,16 @@
+# Preserve exact bytes across checkouts: manifest.json pins SHA-256 hashes.
+* -text
+
+# Media and generated geometry are versioned; do not render enormous text diffs.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.glb binary
+*.fbx binary
+*.blend binary
+*.woff binary
+*.woff2 binary
+components/LOTUSim/assets/models/motor_yacht_35/meshes/motor_yacht_35.obj -diff -merge
+components/LOTUSim/assets/models/container_ship/meshes/container_ship.obj -diff -merge
+components/LOTUSim-Unity-modules/Assets/models/marine_library/container_ship/Meshes/CompleteVessel.asset -diff -merge
