@@ -1,0 +1,823 @@
+diff --git a/systems/lotusim_mas/CMakeLists.txt b/systems/lotusim_mas/CMakeLists.txt
+index e655816..a3fd07f 100644
+--- a/systems/lotusim_mas/CMakeLists.txt
++++ b/systems/lotusim_mas/CMakeLists.txt
+@@ -43,11 +43,13 @@ endif()
+ find_package(ament_cmake REQUIRED)
+ find_package(rclcpp REQUIRED)
+ find_package(rclcpp_action REQUIRED)
++find_package(std_srvs REQUIRED)
+ find_package(geometry_msgs REQUIRED)
+ find_package(geographic_msgs REQUIRED)
+ find_package(lotusim_common REQUIRED)
+ find_package(lotusim_msgs REQUIRED)
+ find_package(yaml-cpp REQUIRED)
++find_package(nlohmann_json REQUIRED)
+ 
+ # Gazebo packages
+ find_package(gz-cmake3 REQUIRED)
+@@ -78,6 +80,7 @@ add_library(multi_agent_system_plugin
+   src/entity_spawner.cpp
+   src/scenario_parser.cpp
+   src/scenario_manager.cpp
++  src/dataset_timeline.cpp
+   src/multi_agent_system.cpp
+ )
+ 
+@@ -91,11 +94,13 @@ target_link_libraries(multi_agent_system_plugin
+   gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
+   gz-plugin${GZ_PLUGIN_VER}::gz-plugin${GZ_PLUGIN_VER}
+   yaml-cpp
++  nlohmann_json::nlohmann_json
+ )
+ 
+ ament_target_dependencies(multi_agent_system_plugin 
+   rclcpp
+   rclcpp_action
++  std_srvs
+   geometry_msgs
+   geographic_msgs
+   lotusim_msgs
+@@ -127,8 +132,10 @@ install(
+ #============================================================================
+ ament_export_targets(export_multi_agent_system_plugin HAS_LIBRARY_TARGET)
+ ament_export_dependencies(
++  nlohmann_json
+   rclcpp
+   rclcpp_action
++  std_srvs
+   geometry_msgs
+   geographic_msgs
+   lotusim_msgs
+@@ -138,4 +145,4 @@ ament_export_dependencies(
+ )
+ ament_export_include_directories(include)
+ 
+-ament_package()
+\ No newline at end of file
++ament_package()
+diff --git a/systems/lotusim_mas/include/lotusim_mas/scenario_manager.hpp b/systems/lotusim_mas/include/lotusim_mas/scenario_manager.hpp
+index e226c88..aa0f3b3 100644
+--- a/systems/lotusim_mas/include/lotusim_mas/scenario_manager.hpp
++++ b/systems/lotusim_mas/include/lotusim_mas/scenario_manager.hpp
+@@ -6,17 +6,21 @@
+ #ifndef LOTUSIM_SCENARIO_MANAGER_HH_
+ #define LOTUSIM_SCENARIO_MANAGER_HH_
+ 
++#include <functional>
+ #include <memory>
++#include <mutex>
+ #include <optional>
+ #include <rclcpp/rclcpp.hpp>
+ #include <std_srvs/srv/trigger.hpp>
+ #include <string>
++#include <vector>
+ 
+ #include "lotusim_common/common.hpp"
+ #include "lotusim_common/logger.hpp"
+ #include "lotusim_mas/entity_spawner.hpp"
+ #include "lotusim_mas/scenario_parser.hpp"
+ #include "lotusim_mas/scenario_types.hpp"
++#include "lotusim_mas/dataset_timeline.hpp"
+ #include "lotusim_msgs/msg/mas_cmd.hpp"
+ #include "lotusim_msgs/srv/string.hpp"
+ 
+@@ -50,10 +54,13 @@ public:
+ 
+     ~ScenarioManager() = default;
+ 
+-    // Non-copyable, movable
++    // Owns a synchronized queue; never copy or move it while callbacks exist.
+     ScenarioManager(const ScenarioManager&) = delete;
+     ScenarioManager& operator=(const ScenarioManager&) = delete;
+-    ScenarioManager(ScenarioManager&&) = default;
++    ScenarioManager(ScenarioManager&&) = delete;
++
++    /** Execute deferred ROS operations on the Gazebo PreUpdate thread only. */
++    void processPendingRequests(double world_seconds = 0);
+ 
+     /**
+      * @brief Currently active scenario, if any.
+@@ -113,6 +120,14 @@ private:
+     void applyReferencePosition(const GeoPoint& ref);
+ 
+ private:
++    void enqueueRequest(std::function<void()> operation);
++    void handleDataset(const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
++                       std::shared_ptr<lotusim_msgs::srv::String::Response> response);
++    double m_world_seconds{0};
++    std::unique_ptr<DatasetTimeline> m_dataset;
++    std::mutex m_requests_mutex;
++    std::vector<std::function<void()>> m_pending_requests;
++
+     std::shared_ptr<spdlog::logger> m_logger;
+ 
+     rclcpp::Node::SharedPtr m_ros_node;
+@@ -128,7 +143,8 @@ private:
+     rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr m_launch_srv;
+ 
+     rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr m_stop_srv;
++    rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr m_dataset_srv;
+ };
+ 
+ }  // namespace lotusim::scenario
+-#endif  // LOTUSIM_SCENARIO_MANAGER_HH_
+\ No newline at end of file
++#endif  // LOTUSIM_SCENARIO_MANAGER_HH_
+diff --git a/systems/lotusim_mas/include/lotusim_mas/scenario_types.hpp b/systems/lotusim_mas/include/lotusim_mas/scenario_types.hpp
+index d9f6891..3106b13 100644
+--- a/systems/lotusim_mas/include/lotusim_mas/scenario_types.hpp
++++ b/systems/lotusim_mas/include/lotusim_mas/scenario_types.hpp
+@@ -11,6 +11,7 @@
+ #define LOTUSIM_SCENARIO_TYPES_HH_
+ 
+ #include <optional>
++#include <array>
+ #include <string>
+ #include <vector>
+ 
+@@ -31,6 +32,16 @@ struct Agent {
+     /// Fully-formed <lotus_param>…</lotus_param> XML string,
+     /// built by ScenarioParser from physics_interface + render_interface.
+     std::string lotus_param;
++
++    // Optional dataset-only trajectory. ENU metres; +X is the model's nose.
++    struct Trajectory {
++        std::array<double, 3> center{}, velocity{};
++        double center_seconds{0}, start_seconds{0}, end_seconds{0};
++        double yaw_rate_deg_s{0}; // Constant ENU turn rate about center_seconds.
++        bool bounded_turn{false}; // Straight before/after a tangent-continuous turn.
++        double turn_start_seconds{0}, turn_end_seconds{0};
++    };
++    std::optional<Trajectory> trajectory;
+ };
+ 
+ struct ScenarioConfig {
+@@ -44,7 +55,12 @@ struct ScenarioConfig {
+     // Environment environment;
+ 
+     std::vector<Agent> agents;  ///< ordered list, name stored inside Agent
++    struct DatasetSequence {
++        std::string plan_id, observer;
++        int fps{30}, frames{1800};
++    };
++    std::optional<DatasetSequence> dataset_sequence;
+ };
+ 
+ }  // namespace lotusim
+-#endif  // LOTUSIM_SCENARIO_TYPES_HH_
+\ No newline at end of file
++#endif  // LOTUSIM_SCENARIO_TYPES_HH_
+diff --git a/systems/lotusim_mas/package.xml b/systems/lotusim_mas/package.xml
+index ba6e567..6a12324 100644
+--- a/systems/lotusim_mas/package.xml
++++ b/systems/lotusim_mas/package.xml
+@@ -15,6 +15,8 @@
+   <depend>gz-cmake3</depend>
+   <depend>rclcpp</depend>
+   <depend>rclcpp_action</depend>
++  <depend>std_srvs</depend>
++  <depend>nlohmann_json</depend>
+   <depend>lotusim_msgs</depend>
+   <depend>lotusim_common</depend>
+   <depend>geographic_msgs</depend>
+@@ -22,4 +24,4 @@
+   <export>
+     <build_type>ament_cmake</build_type>
+   </export>
+-</package>
+\ No newline at end of file
++</package>
+diff --git a/systems/lotusim_mas/src/entity_spawner.cpp b/systems/lotusim_mas/src/entity_spawner.cpp
+index ce611d8..2d69e56 100644
+--- a/systems/lotusim_mas/src/entity_spawner.cpp
++++ b/systems/lotusim_mas/src/entity_spawner.cpp
+@@ -228,15 +228,17 @@ bool EntitySpawner::moveEntity(const lotusim_msgs::msg::MASCmd& msg)
+             pose.Rot() = gz::math::Quaterniond(0.0, 0.0, msg.heading);
+         }
+ 
+-        if (!m_ecm.SetComponentData<gz::sim::components::Pose>(
+-                vessel_entity,
+-                pose)) {
+-            m_logger->warn(
+-                "EntitySpawner::moveEntity: SetComponentData failed "
++        if (!m_ecm.Component<gz::sim::components::Pose>(vessel_entity)) {
++            m_logger->error(
++                "EntitySpawner::moveEntity: Pose component not found "
+                 "(vessel='{}', entity={})",
+                 msg.vessel_name,
+                 msg.entity);
++            return false;
+         }
++        // SetComponentData returns false for an unchanged pose, too. Spawning
++        // at the world reference (0,0,0) is valid, not a failed teleport.
++        m_ecm.SetComponentData<gz::sim::components::Pose>(vessel_entity, pose);
+ 
+         m_ecm.SetChanged(
+             vessel_entity,
+@@ -401,4 +403,4 @@ std::string EntitySpawner::modelName(const std::string& vessel_name) const
+     return it != m_vessels_models.end() ? it->second : std::string{};
+ }
+ 
+-}  // namespace lotusim::mas
+\ No newline at end of file
++}  // namespace lotusim::mas
+diff --git a/systems/lotusim_mas/src/multi_agent_system.cpp b/systems/lotusim_mas/src/multi_agent_system.cpp
+index a10c3f4..30c38a4 100644
+--- a/systems/lotusim_mas/src/multi_agent_system.cpp
++++ b/systems/lotusim_mas/src/multi_agent_system.cpp
+@@ -180,9 +180,13 @@ bool MultiAgentSystem::initROSNode()
+ }
+ 
+ void MultiAgentSystem::PreUpdate(
+-    const gz::sim::UpdateInfo&,
++    const gz::sim::UpdateInfo& _info,
+     gz::sim::EntityComponentManager&)
+ {
++    if (m_scenario_manager) {
++        m_scenario_manager->processPendingRequests(std::chrono::duration<double>(_info.simTime).count());
++    }
++
+     // Handle MultiAgentSystem Array cmd
+     {
+         std::vector<std::shared_ptr<GoalHandleMASCmdArray>> tmp_vec;
+@@ -514,4 +518,4 @@ GZ_ADD_PLUGIN(
+     lotusim::gazebo::MultiAgentSystem::ISystemConfigure,
+     lotusim::gazebo::MultiAgentSystem::ISystemPreUpdate,
+     lotusim::gazebo::MultiAgentSystem::ISystemUpdate,
+-    lotusim::gazebo::MultiAgentSystem::ISystemPostUpdate)
+\ No newline at end of file
++    lotusim::gazebo::MultiAgentSystem::ISystemPostUpdate)
+diff --git a/systems/lotusim_mas/src/scenario_manager.cpp b/systems/lotusim_mas/src/scenario_manager.cpp
+index 9d7debd..ca95f57 100644
+--- a/systems/lotusim_mas/src/scenario_manager.cpp
++++ b/systems/lotusim_mas/src/scenario_manager.cpp
+@@ -27,11 +27,22 @@ ScenarioManager::ScenarioManager(
+         rclcpp::CallbackGroupType::MutuallyExclusive));
+     m_launch_srv = m_ros_node->create_service<lotusim_msgs::srv::String>(
+         "launch_scenario",
+-        std::bind(
+-            &ScenarioManager::handleLaunch,
+-            this,
+-            std::placeholders::_1,
+-            std::placeholders::_2),
++        [this](rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr service,
++               std::shared_ptr<rmw_request_id_t> header,
++               std::shared_ptr<lotusim_msgs::srv::String::Request> request) {
++            // Deferred-response callback: never mutate the ECM in a ROS thread.
++            enqueueRequest([this, service, header, request]() {
++                auto response = std::make_shared<lotusim_msgs::srv::String::Response>();
++                try {
++                    handleLaunch(request, response);
++                } catch (const std::exception& error) {
++                    response->success = false;
++                    response->message = std::string("Scenario launch failed: ") + error.what();
++                    m_logger->error("{}", response->message);
++                }
++                service->send_response(*header, *response);
++            });
++        },
+         rmw_qos_profile_services_default,
+         m_callback_group.back());
+ 
+@@ -39,17 +50,64 @@ ScenarioManager::ScenarioManager(
+         rclcpp::CallbackGroupType::MutuallyExclusive));
+     m_stop_srv = m_ros_node->create_service<std_srvs::srv::Trigger>(
+         "stop_scenario",
+-        std::bind(
+-            &ScenarioManager::handleStop,
+-            this,
+-            std::placeholders::_1,
+-            std::placeholders::_2),
++        [this](rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr service,
++               std::shared_ptr<rmw_request_id_t> header,
++               std::shared_ptr<std_srvs::srv::Trigger::Request> request) {
++            enqueueRequest([this, service, header, request]() {
++                auto response = std::make_shared<std_srvs::srv::Trigger::Response>();
++                try {
++                    handleStop(request, response);
++                } catch (const std::exception& error) {
++                    response->success = false;
++                    response->message = std::string("Scenario stop failed: ") + error.what();
++                    m_logger->error("{}", response->message);
++                }
++                service->send_response(*header, *response);
++            });
++        },
+         rmw_qos_profile_services_default,
+         m_callback_group.back());
+ 
++    m_callback_group.push_back(m_ros_node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive));
++    m_dataset_srv = m_ros_node->create_service<lotusim_msgs::srv::String>(
++        "dataset_control",
++        [this](rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr service,
++               std::shared_ptr<rmw_request_id_t> header,
++               std::shared_ptr<lotusim_msgs::srv::String::Request> request) {
++            enqueueRequest([this, service, header, request]() {
++                auto response = std::make_shared<lotusim_msgs::srv::String::Response>();
++                try { handleDataset(request, response); }
++                catch (const std::exception& e) { response->success = false; response->message = e.what(); }
++                service->send_response(*header, *response);
++            });
++        }, rmw_qos_profile_services_default, m_callback_group.back());
+     m_logger->info("ScenarioManager: Services registered.");
+ }
+ 
++void ScenarioManager::enqueueRequest(std::function<void()> operation)
++{
++    std::lock_guard<std::mutex> lock(m_requests_mutex);
++    m_pending_requests.push_back(std::move(operation));
++}
++
++void ScenarioManager::processPendingRequests(double world_seconds)
++{
++    m_world_seconds = world_seconds;
++    std::vector<std::function<void()>> requests;
++    {
++        std::lock_guard<std::mutex> lock(m_requests_mutex);
++        requests.swap(m_pending_requests);
++    }
++    // Release the queue lock before executing. Arrival order is preserved.
++    for (auto& request : requests) {
++        try {
++            request();
++        } catch (const std::exception& error) {
++            m_logger->error("ScenarioManager: Deferred request failed: {}", error.what());
++        }
++    }
++}
++
+ void ScenarioManager::handleLaunch(
+     const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
+     std::shared_ptr<lotusim_msgs::srv::String::Response> response)
+@@ -91,7 +149,18 @@ void ScenarioManager::handleLaunch(
+         applyReferencePosition(m_current_scenario->reference_position);
+     }
+ 
+-    int spawned = spawnAgents(*m_current_scenario);
++    int spawned = 0;
++    if (m_current_scenario->dataset_sequence) {
++        try {
++            m_dataset = std::make_unique<DatasetTimeline>(*m_current_scenario, *m_spawner, *m_ecm);
++            m_dataset->advance(0, m_world_seconds);
++            spawned = static_cast<int>(m_dataset->size());
++        } catch (...) {
++            if (m_dataset) m_dataset->clear();
++            m_dataset.reset(); m_current_scenario.reset();
++            throw;
++        }
++    } else { spawned = spawnAgents(*m_current_scenario); }
+ 
+     m_logger->info(
+         "ScenarioManager::handleLaunch: Scenario '{}' started. {}/{} agents spawned.",
+@@ -100,7 +169,7 @@ void ScenarioManager::handleLaunch(
+         static_cast<int>(m_current_scenario->agents.size()));
+ 
+     response->success = true;
+-    response->message = "Scenario launched: " + m_current_scenario->name;
++    response->message = m_dataset ? m_dataset->describe().dump() : "Scenario launched: " + m_current_scenario->name;
+ }
+ 
+ void ScenarioManager::handleStop(
+@@ -149,7 +218,41 @@ int ScenarioManager::spawnAgents(const ScenarioConfig& cfg)
+ 
+ void ScenarioManager::despawnAgents()
+ {
+-    m_spawner->deleteAllEntities();
++    if (m_dataset) { m_dataset->clear(); m_dataset.reset(); }
++    else { m_spawner->deleteAllEntities(); }
++}
++
++void ScenarioManager::handleDataset(
++    const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
++    std::shared_ptr<lotusim_msgs::srv::String::Response> response)
++{
++    const auto command = nlohmann::json::parse(request->data);
++    const auto operation = command.at("operation").get<std::string>();
++    // Read-only preflight is available before launch, including while an
++    // unrelated scenario is running. A legacy backend must never be launched
++    // speculatively just to discover its response format.
++    if (operation == "capabilities") {
++        response->success = true;
++        response->message = nlohmann::json({
++            {"schema", "lotusim-dataset-capabilities-1"},
++            {"snapshotSchema", "lotusim-dataset-step-1"},
++            {"ownedStop", true}, {"steppedTimeline", true}, {"constantTurnTrajectories", true},
++            {"maxDatasetSpeedMps", 350}, {"boundedTurnTrajectories",true}}).dump();
++        return;
++    }
++    if (!m_dataset) throw std::runtime_error("No stepped LOTUSim dataset is running");
++    if (operation == "inspect") { response->message = m_dataset->describe().dump(); }
++    else {
++        if (command.at("runId").get<std::string>() != m_dataset->token())
++            throw std::runtime_error("Dataset ownership token mismatch; no scenario was modified");
++        if (operation == "step") {
++            if (!command.at("frame").is_number_integer()) throw std::invalid_argument("frame must be an integer");
++            response->message = m_dataset->advance(command.at("frame").get<int>(), m_world_seconds).dump();
++        } else if (operation == "stop") {
++            despawnAgents(); m_current_scenario.reset(); response->message = "Owned dataset stopped";
++        } else { throw std::invalid_argument("Unknown dataset operation"); }
++    }
++    response->success = true;
+ }
+ 
+ lotusim_msgs::msg::MASCmd ScenarioManager::agentToMASCmd(
+@@ -213,4 +316,4 @@ void ScenarioManager::applyReferencePosition(const GeoPoint& ref)
+         ref.altitude);
+ }
+ 
+-}  // namespace lotusim::scenario
+\ No newline at end of file
++}  // namespace lotusim::scenario
+diff --git a/systems/lotusim_mas/src/scenario_parser.cpp b/systems/lotusim_mas/src/scenario_parser.cpp
+index 060c3eb..6d48d76 100644
+--- a/systems/lotusim_mas/src/scenario_parser.cpp
++++ b/systems/lotusim_mas/src/scenario_parser.cpp
+@@ -12,6 +12,9 @@
+ 
+ #include <cctype>
+ #include <unordered_map>
++#include <cmath>
++#include <set>
++#include <stdexcept>
+ 
+ namespace lotusim::scenario {
+ 
+@@ -44,6 +47,9 @@ std::optional<ScenarioConfig> ScenarioParser::fromString(
+     } catch (const YAML::Exception& e) {
+         fprintf(stderr, "[ScenarioParser] YAML parse error: %s\n", e.what());
+         return std::nullopt;
++    } catch (const std::exception& e) {
++        fprintf(stderr, "[ScenarioParser] Invalid scenario: %s\n", e.what());
++        return std::nullopt;
+     }
+ }
+ 
+@@ -68,6 +74,54 @@ std::optional<ScenarioConfig> ScenarioParser::parseRoot(const YAML::Node& root)
+     if (root["agents"])
+         cfg.agents = parseAgents(root["agents"]);
+ 
++    if (root["dataset_sequence"]) {
++        const auto d = root["dataset_sequence"];
++        ScenarioConfig::DatasetSequence sequence;
++        sequence.plan_id = d["plan_id"].as<std::string>();
++        sequence.observer = d["observer"].as<std::string>();
++        sequence.fps = d["fps"].as<int>();
++        sequence.frames = d["frames"].as<int>();
++        if (sequence.plan_id.empty() || sequence.observer.empty() || sequence.fps < 1 ||
++            sequence.fps > 60 || sequence.frames < 1 || sequence.frames > 36000 ||
++            cfg.agents.empty() || cfg.agents.size() > 41)
++            throw std::invalid_argument("Invalid dataset_sequence bounds");
++        std::set<std::string> names;
++        bool observer_found = false;
++        const double duration = double(sequence.frames) / sequence.fps;
++        for (const auto& agent : cfg.agents) {
++            if (!agent.trajectory || !names.insert(agent.name).second || agent.name.empty() ||
++                agent.name.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_") != std::string::npos ||
++                agent.model.empty()) throw std::invalid_argument("Dataset actors require unique names and trajectories");
++            const auto& t = *agent.trajectory;
++            if (!(t.start_seconds >= 0 && t.end_seconds > t.start_seconds &&
++                  t.end_seconds <= duration + 1e-5 && std::isfinite(t.center_seconds)))
++                throw std::invalid_argument("Invalid dataset trajectory lifetime");
++            for (int i=0; i<3; ++i)
++                if (!std::isfinite(t.center[i]) || !std::isfinite(t.velocity[i]) ||
++                    std::abs(t.center[i]) > 1e6 || std::abs(t.velocity[i]) > 350)
++                    throw std::invalid_argument("Invalid dataset trajectory vector");
++            if (std::hypot(t.velocity[0], t.velocity[1], t.velocity[2]) > 350)
++                throw std::invalid_argument("Dataset trajectory exceeds 350 m/s");
++            if (!std::isfinite(agent.heading)) throw std::invalid_argument("Invalid dataset heading");
++            if(t.bounded_turn&&(!std::isfinite(t.turn_start_seconds)||!std::isfinite(t.turn_end_seconds)||
++                t.turn_start_seconds<t.start_seconds||t.turn_end_seconds>t.end_seconds||t.turn_end_seconds<=t.turn_start_seconds||
++                t.center_seconds<t.turn_start_seconds||t.center_seconds>t.turn_end_seconds))
++                throw std::invalid_argument("Invalid bounded dataset turn window");
++            const double turn_duration=t.bounded_turn?t.turn_end_seconds-t.turn_start_seconds:t.end_seconds-t.start_seconds;
++            if (!std::isfinite(t.yaw_rate_deg_s) || std::abs(t.yaw_rate_deg_s)>5 ||
++                std::abs(t.yaw_rate_deg_s)*turn_duration>45+1e-6)
++                throw std::invalid_argument("Invalid dataset constant turn rate");
++            if (agent.name == sequence.observer) {
++                observer_found = t.start_seconds == 0 && t.end_seconds >= duration - 1e-5;
++            }
++        }
++        if (!observer_found) throw std::invalid_argument("Dataset observer must cover the entire sequence");
++        cfg.dataset_sequence = sequence;
++    } else {
++        for (const auto& agent : cfg.agents)
++            if (agent.trajectory) throw std::invalid_argument("trajectory requires dataset_sequence");
++    }
++
+     return cfg;
+ }
+ 
+@@ -88,6 +142,24 @@ Agent ScenarioParser::parseAgent(const std::string& key, const YAML::Node& node)
+     agent.model = getOrDefault<std::string>(node, "model", "");
+     agent.heading = getOrDefault<double>(node, "heading", 0.0);
+ 
++    if (node["trajectory"]) {
++        if ((node["physics_interface"] && getOrDefault<bool>(node["physics_interface"], "enabled", true)) ||
++            (node["waypoint_interface"] && getOrDefault<bool>(node["waypoint_interface"], "enabled", true)))
++            throw std::invalid_argument("Dataset trajectories cannot share a physics/waypoint writer");
++        const auto t = node["trajectory"];
++        Agent::Trajectory motion;
++        motion.center = t["center_enu_m"].as<std::array<double, 3>>();
++        motion.velocity = t["velocity_enu_mps"].as<std::array<double, 3>>();
++        motion.center_seconds = t["center_seconds"].as<double>();
++        motion.start_seconds = t["start_seconds"].as<double>();
++        motion.end_seconds = t["end_seconds"].as<double>();
++        motion.yaw_rate_deg_s = getOrDefault<double>(t,"yaw_rate_deg_s",0);
++        if(static_cast<bool>(t["turn_start_seconds"])!=static_cast<bool>(t["turn_end_seconds"]))
++            throw std::invalid_argument("Both bounded turn endpoints are required");
++        if(t["turn_start_seconds"]){motion.bounded_turn=true;motion.turn_start_seconds=t["turn_start_seconds"].as<double>();motion.turn_end_seconds=t["turn_end_seconds"].as<double>();}
++        agent.trajectory = motion;
++    }
++
+     if (node["position"]) {
+         const auto& p = node["position"];
+         agent.position.latitude = getOrDefault<double>(p, "latitude", 0.0);
+@@ -186,12 +258,16 @@ void ScenarioParser::appendPhysicsEngineInterface(
+         if (params && params["thrusters"] && params["thrusters"].IsSequence()) {
+             xml += "            <thrusters>\n";
+             int idx = 1;
++
+             for (const auto& t : params["thrusters"]) {
+                 const std::string name =
+                     getOrDefault<std::string>(t, "name", "");
+-                xml += "                <thrusters" + std::to_string(idx++) +
+-                       ">" + name + "</thrusters" + std::to_string(idx - 1) +
+-                       ">\n";
++
++                const std::string tag =
++                    "thrusters" + std::to_string(idx++);
++
++                xml += "                <" + tag + ">" + name +
++                       "</" + tag + ">\n";
+             }
+             xml += "            </thrusters>\n";
+         }
+@@ -285,4 +361,4 @@ T ScenarioParser::getOrDefault(
+     return default_val;
+ }
+ 
+-}  // namespace lotusim::scenario
+\ No newline at end of file
++}  // namespace lotusim::scenario
+diff --git a/systems/render_interface/include/render_interface/render_plugin.hpp b/systems/render_interface/include/render_interface/render_plugin.hpp
+index 3126f51..817c897 100644
+--- a/systems/render_interface/include/render_interface/render_plugin.hpp
++++ b/systems/render_interface/include/render_interface/render_plugin.hpp
+@@ -62,6 +62,7 @@ std::shared_ptr<RenderInterfaceBase> CreateRenderInterface(
+ class RenderPlugin : public gz::sim::System,
+                      public gz::sim::ISystemConfigure,
+                      public gz::sim::ISystemPreUpdate,
++                     public gz::sim::ISystemUpdate,
+                      public gz::sim::ISystemPostUpdate {
+ public:
+     RenderPlugin();
+@@ -82,6 +83,10 @@ public:
+         const gz::sim::UpdateInfo& _info,
+         const gz::sim::EntityComponentManager& _ecm) override;
+ 
++    void Update(
++        const gz::sim::UpdateInfo& _info,
++        gz::sim::EntityComponentManager& _ecm) override;
++
+ private:
+     /**
+      * @brief Spdlogger
+@@ -111,4 +116,4 @@ private:
+ };
+ 
+ }  // namespace lotusim::gazebo
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/systems/render_interface/src/render_plugin.cpp b/systems/render_interface/src/render_plugin.cpp
+index 51110cb..9eb88cb 100644
+--- a/systems/render_interface/src/render_plugin.cpp
++++ b/systems/render_interface/src/render_plugin.cpp
+@@ -56,8 +56,14 @@ void RenderPlugin::PreUpdate(
+     gz::sim::EntityComponentManager& _ecm)
+ {
+     m_render_interface->customPreUpdates(_info, _ecm);
++}
+ 
+-    // Note: Once the callback return false, the callback is never called again.
++void RenderPlugin::Update(
++    const gz::sim::UpdateInfo&,
++    gz::sim::EntityComponentManager& _ecm)
++{
++    // Gazebo clears entity "newness" at the end of each step. EachNew must
++    // run after every PreUpdate creator, not before or concurrently with it.
+     _ecm.EachNew<
+         gz::sim::components::ModelSdf,
+         gz::sim::components::ParentEntity>(
+@@ -89,12 +95,12 @@ void RenderPlugin::PreUpdate(
+                     m_vessel_entity[name_opt->Data()] = _entity;
+                 } else {
+                     m_logger->warn(
+-                        "RenderPlugin::PreUpdate: Vessel entity {} name not found. Not publishing rendering.",
++                        "RenderPlugin::Update: Vessel entity {} name not found. Not publishing rendering.",
+                         _entity);
+                     return true;
+                 }
+                 m_logger->info(
+-                    "RenderPlugin::PreUpdate: Creation detected of vessel named {}",
++                    "RenderPlugin::Update: Creation detected of vessel named {}",
+                     name_opt->Data());
+                 gz::math::Pose3d pose =
+                     _ecm.Component<gz::sim::components::Pose>(_entity)->Data();
+@@ -113,10 +119,11 @@ void RenderPlugin::PreUpdate(
+             const gz::sim::components::ModelSdf*,
+             const gz::sim::components::ParentEntity*) -> bool {
+             auto name_opt = _ecm.Component<gz::sim::components::Name>(_entity);
++            if (!name_opt) return true;
+             if (m_vessel_entity.find(name_opt->Data()) !=
+                 m_vessel_entity.end()) {
+                 m_logger->info(
+-                    "RenderPlugin::PreUpdate: Destruction detected of vessel named {}",
++                    "RenderPlugin::Update: Destruction detected of vessel named {}",
+                     name_opt->Data());
+                 std::lock_guard<std::mutex> lock(m_mutex);
+                 m_vessel_entity.erase(name_opt->Data());
+@@ -157,4 +164,5 @@ GZ_ADD_PLUGIN(
+     gz::sim::System,
+     lotusim::gazebo::RenderPlugin::ISystemConfigure,
+     lotusim::gazebo::RenderPlugin::ISystemPreUpdate,
+-    lotusim::gazebo::RenderPlugin::ISystemPostUpdate)
+\ No newline at end of file
++    lotusim::gazebo::RenderPlugin::ISystemUpdate,
++    lotusim::gazebo::RenderPlugin::ISystemPostUpdate)
+diff --git a/systems/lotusim_mas/include/lotusim_mas/dataset_motion.hpp b/systems/lotusim_mas/include/lotusim_mas/dataset_motion.hpp
+new file mode 100644
+index 0000000..2ed2813
+--- /dev/null
++++ b/systems/lotusim_mas/include/lotusim_mas/dataset_motion.hpp
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: EPL-2.0 */
++#pragma once
++#include <algorithm>
++#include <array>
++#include <cmath>
++#include "lotusim_mas/scenario_types.hpp"
++
++namespace lotusim::scenario {
++struct MotionSample { std::array<double,3> position{},velocity{}; double yaw{}; };
++// Dataset kinematics only; no flight controller, aerodynamic or weapon model.
++// Position and velocity are continuous at the bounded turn's two joins.
++inline MotionSample sampleMotion(const Agent::Trajectory& t,double time,double heading_deg=0)
++{
++    constexpr double pi=3.14159265358979323846;
++    const double dt=time-t.center_seconds,w=t.yaw_rate_deg_s*pi/180.0;
++    const double q=(t.bounded_turn?std::clamp(time,t.turn_start_seconds,t.turn_end_seconds):time)-t.center_seconds;
++    const auto velocity=[&](double at){const double a=w*at;return std::array<double,2>{std::cos(a)*t.velocity[0]-std::sin(a)*t.velocity[1],std::sin(a)*t.velocity[0]+std::cos(a)*t.velocity[1]};};
++    double x=std::abs(w)<1e-9?t.velocity[0]*q:(t.velocity[0]*std::sin(w*q)+t.velocity[1]*(std::cos(w*q)-1))/w;
++    double y=std::abs(w)<1e-9?t.velocity[1]*q:(t.velocity[0]*(1-std::cos(w*q))+t.velocity[1]*std::sin(w*q))/w;
++    if(t.bounded_turn){
++        const double before=std::min(0.0,time-t.turn_start_seconds),after=std::max(0.0,time-t.turn_end_seconds);
++        const auto a=velocity(t.turn_start_seconds-t.center_seconds),b=velocity(t.turn_end_seconds-t.center_seconds);
++        x+=before*a[0]+after*b[0];y+=before*a[1]+after*b[1];
++    }
++    const auto v=velocity(q);MotionSample result;
++    result.position={t.center[0]+x,t.center[1]+y,t.center[2]+t.velocity[2]*dt};result.velocity={v[0],v[1],t.velocity[2]};
++    result.yaw=std::hypot(v[0],v[1])>1e-8?std::atan2(v[1],v[0]):heading_deg*pi/180.0+w*q;
++    return result;
++}
++}
+diff --git a/systems/lotusim_mas/include/lotusim_mas/dataset_timeline.hpp b/systems/lotusim_mas/include/lotusim_mas/dataset_timeline.hpp
+new file mode 100644
+index 0000000..98cdb3b
+--- /dev/null
++++ b/systems/lotusim_mas/include/lotusim_mas/dataset_timeline.hpp
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: EPL-2.0 */
++#pragma once
++#include <map>
++#include <nlohmann/json.hpp>
++#include "lotusim_mas/entity_spawner.hpp"
++#include "lotusim_mas/scenario_types.hpp"
++
++namespace lotusim::scenario {
++// Only called on the Gazebo PreUpdate thread. Unity never submits positions:
++// it acknowledges rendered frame N and requests frame N+1.
++class DatasetTimeline {
++public:
++    DatasetTimeline(const ScenarioConfig& config, mas::EntitySpawner& spawner,
++                    gz::sim::EntityComponentManager& ecm);
++    nlohmann::json advance(int frame, double world_seconds);
++    nlohmann::json describe() const;
++    void clear();
++    const std::string& token() const { return m_token; }
++    std::size_t size() const { return m_entities.size(); }
++private:
++    const ScenarioConfig m_config;
++    mas::EntitySpawner& m_spawner;
++    gz::sim::EntityComponentManager& m_ecm;
++    std::map<std::string, gz::sim::Entity> m_entities;
++    std::string m_token;
++    int m_frame{-1};
++    nlohmann::json m_snapshot;
++};
++}
+diff --git a/systems/lotusim_mas/src/dataset_timeline.cpp b/systems/lotusim_mas/src/dataset_timeline.cpp
+new file mode 100644
+index 0000000..5295c9c
+--- /dev/null
++++ b/systems/lotusim_mas/src/dataset_timeline.cpp
+@@ -0,0 +1,98 @@
++/* SPDX-License-Identifier: EPL-2.0 */
++#include "lotusim_mas/dataset_timeline.hpp"
++#include "lotusim_mas/dataset_motion.hpp"
++#include <chrono>
++#include <random>
++#include <sstream>
++#include <stdexcept>
++#include <gz/sim/components/Name.hh>
++#include <gz/sim/components/Pose.hh>
++#include <gz/sim/components/Static.hh>
++
++namespace lotusim::scenario {
++using json = nlohmann::json;
++DatasetTimeline::DatasetTimeline(const ScenarioConfig& config, mas::EntitySpawner& spawner,
++                                 gz::sim::EntityComponentManager& ecm)
++    : m_config(config), m_spawner(spawner), m_ecm(ecm)
++{
++    std::ostringstream id;
++    id << std::hex << std::chrono::steady_clock::now().time_since_epoch().count()
++       << std::random_device{}();
++    m_token = id.str();
++    // Refuse collisions before creating anything; never rename a dataset ID.
++    for (const auto& agent : config.agents)
++        if (m_ecm.EntityByComponents(gz::sim::components::Name(agent.name)) != gz::sim::kNullEntity)
++            throw std::runtime_error("Dataset actor already exists: " + agent.name);
++}
++json DatasetTimeline::describe() const
++{
++    const auto& d = *m_config.dataset_sequence;
++    return {{"schema", "lotusim-dataset-step-1"}, {"scenario", m_config.name},
++            {"runId", m_token}, {"planId", d.plan_id}, {"observer", d.observer},
++            {"fps", d.fps}, {"frames", d.frames}, {"frame", m_frame},
++            {"motionSource", "LOTUSim ENU kinematic timeline"}};
++}
++json DatasetTimeline::advance(int frame, double world_seconds)
++{
++    const auto& d = *m_config.dataset_sequence;
++    if (frame == m_frame && frame >= 0) return m_snapshot; // Safe retry, no second spawn.
++    if (frame < 0 || frame >= d.frames || frame != m_frame + 1)
++        throw std::invalid_argument("Expected next dataset frame " + std::to_string(m_frame + 1));
++    const double time = double(frame) / d.fps;
++    json objects = json::array();
++    for (const auto& agent : m_config.agents) {
++        const auto& t = *agent.trajectory;
++        auto found = m_entities.find(agent.name);
++        if (time < t.start_seconds || time >= t.end_seconds) {
++            if (found != m_entities.end()) {
++                lotusim_msgs::msg::MASCmd remove; remove.entity = found->second;
++                if (!m_spawner.deleteEntity(remove)) throw std::runtime_error("Dataset deletion failed");
++                m_entities.erase(found);
++            }
++            continue;
++        }
++        if (found == m_entities.end()) {
++            lotusim_msgs::msg::MASCmd create;
++            create.model_name = agent.model; create.vessel_name = agent.name;
++            create.sdf_string = agent.lotus_param;
++            create.vessel_position.orientation.w = 1;
++            auto result = m_spawner.addEntity(create);
++            if (!result || std::get<0>(*result) == gz::sim::kNullEntity)
++                throw std::runtime_error("Cannot create dataset actor: " + agent.name);
++            auto entity = std::get<0>(*result);
++            m_entities[agent.name] = entity;
++            if (std::get<1>(*result) != agent.name) throw std::runtime_error("Dataset ID was renamed");
++            const auto* stationary = m_ecm.Component<gz::sim::components::Static>(entity);
++            if (!stationary || !stationary->Data())
++                throw std::runtime_error("Dataset kinematic actors must use static SDF models: " + agent.model);
++            found = m_entities.find(agent.name);
++        }
++        const auto sample=sampleMotion(t,time,agent.heading);
++        gz::math::Pose3d pose(sample.position[0],sample.position[1],sample.position[2],0,0,sample.yaw);
++        if (!m_ecm.Component<gz::sim::components::Pose>(found->second))
++            throw std::runtime_error("Dataset actor lost its ECM pose");
++        m_ecm.SetComponentData<gz::sim::components::Pose>(found->second, pose);
++        m_ecm.SetChanged(found->second, gz::sim::components::Pose::typeId, gz::sim::ComponentState::OneTimeChange);
++        // Read back the actual ECM state, not just the requested transform.
++        pose = m_ecm.Component<gz::sim::components::Pose>(found->second)->Data();
++        objects.push_back({{"instance", agent.name}, {"model", agent.model},
++            {"entity", found->second}, {"position", {{"x",pose.X()},{"y",pose.Y()},{"z",pose.Z()}}},
++            {"rotation", {{"x",pose.Rot().X()},{"y",pose.Rot().Y()},{"z",pose.Rot().Z()},{"w",pose.Rot().W()}}},
++            {"velocity", {{"x",sample.velocity[0]},{"y",sample.velocity[1]},{"z",sample.velocity[2]}}}});
++    }
++    m_frame = frame;
++    m_snapshot = describe();
++    m_snapshot["timeSeconds"] = time;
++    m_snapshot["worldTimeSeconds"] = world_seconds;
++    m_snapshot["objects"] = std::move(objects);
++    return m_snapshot;
++}
++void DatasetTimeline::clear()
++{
++    for (const auto& item : m_entities) {
++        lotusim_msgs::msg::MASCmd remove; remove.entity = item.second;
++        m_spawner.deleteEntity(remove);
++    }
++    m_entities.clear();
++}
++}

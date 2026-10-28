@@ -1,0 +1,72 @@
+name: TestScenario
+description: ""
+version: v0.0.1
+author: ""
+tags: []
+time_of_day: "12:00"
+date: "10/07/2026"
+reference_position:
+  latitude: 1.2421
+  longitude: 103.7198
+  altitude: 0
+environment:
+  atmosphere:
+    windSpeed: 0
+    windDirection: 0
+    temperature: 15
+    pressure: 1013.25
+    humidity: 0.5
+  ocean:
+    seaState: 0
+    waveHeight: 0
+    waveDirection: 0
+    wavePeriod: 0
+    waveSpectrum: PM
+    currentSpeed: 0
+    currentDirection: 0
+    waterTemperature: 20
+    salinity: 35
+  visibility:
+    horizontal: 10000
+    vertical: 10000
+  weather: CLEAR
+agents:
+  CommandoVessel:
+    model: lrauv
+    position:
+      latitude: 1.2427748599592028
+      longitude: 103.7206792831421
+      altitude: 0
+    heading: 0
+    physics_interface:
+      init_domain: SURFACE
+      domains:
+        - domain: SURFACE
+          interface_type: XDynWebsocket
+          interface_params:
+            uri: ws://127.0.0.1:12346
+            thrusters:
+              - name: propeller
+    render_interface:
+      enabled: true
+      renderer_type: lrauv
+  buoy:
+    model: buoy
+    position:
+      latitude: 1.2432922205763153
+      longitude: 103.719220161438
+      altitude: 0
+    heading: 0
+    render_interface:
+      enabled: true
+      renderer_type: buoy
+  x500:
+    model: x500
+    position:
+      latitude: 1.2431634850329476
+      longitude: 103.71788978576662
+      altitude: 0
+    heading: 0
+    render_interface:
+      enabled: true
+      renderer_type: x500

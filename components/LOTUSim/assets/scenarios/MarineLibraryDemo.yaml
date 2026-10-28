@@ -1,0 +1,42 @@
+name: MarineLibraryDemo
+description: Seven original vessels. Static LOTUSim roots, HDRP wave response in Unity; no Gazebo hydrodynamic engine.
+version: v1.0.0
+tags: [dataset, marine-library]
+time_of_day: "12:00"
+reference_position: {latitude: 1.2421, longitude: 103.7198, altitude: 0}
+agents:
+  Trawler_001:
+    model: fishing_trawler
+    position: {latitude: 1.24255, longitude: 103.7200, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: fishing_trawler, publish_render: false}
+  Cargo_001:
+    model: container_ship
+    position: {latitude: 1.2439, longitude: 103.7238, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: container_ship, publish_render: false}
+  Yacht_001:
+    model: motor_yacht
+    position: {latitude: 1.2421, longitude: 103.7208, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: motor_yacht, publish_render: false}
+  Speedboat_001:
+    model: speedboat
+    position: {latitude: 1.2418, longitude: 103.7206, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: speedboat, publish_render: false}
+  Jetski_001:
+    model: jetski
+    position: {latitude: 1.24185, longitude: 103.7202, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: jetski, publish_render: false}
+  Ferry_001:
+    model: ferry
+    position: {latitude: 1.2426, longitude: 103.7218, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: ferry, publish_render: false}
+  Sailboat_001:
+    model: sailboat
+    position: {latitude: 1.2422, longitude: 103.7211, altitude: 0}
+    heading: 0
+    render_interface: {enabled: true, renderer_type: sailboat, publish_render: false}

@@ -1,0 +1,86 @@
+name: AerialLibraryDemo
+description: Visual-only aircraft and seabird library demonstration; no flight dynamics.
+version: v0.0.1
+author: ""
+tags:
+  - dataset
+  - aerial-library
+time_of_day: "12:00"
+date: "13/10/2026"
+reference_position:
+  latitude: 1.2421
+  longitude: 103.7198
+  altitude: 0
+environment:
+  atmosphere:
+    windSpeed: 0
+    windDirection: 0
+    temperature: 15
+    pressure: 1013.25
+    humidity: 0.5
+  ocean:
+    seaState: 0
+    waveHeight: 0
+    waveDirection: 0
+    wavePeriod: 0
+    waveSpectrum: PM
+    currentSpeed: 0
+    currentDirection: 0
+    waterTemperature: 20
+    salinity: 35
+  visibility:
+    horizontal: 10000
+    vertical: 10000
+  weather: CLEAR
+agents:
+  Drone_001:
+    model: small_drone
+    position:
+      latitude: 1.24219
+      longitude: 103.7198
+      altitude: 6
+    heading: 0
+    render_interface:
+      enabled: true
+      renderer_type: small_drone
+  Helicopter_001:
+    model: helicopter
+    position:
+      latitude: 1.2423
+      longitude: 103.71995
+      altitude: 12
+    heading: 30
+    render_interface:
+      enabled: true
+      renderer_type: helicopter
+  Airplane_001:
+    model: airplane
+    position:
+      latitude: 1.24235
+      longitude: 103.7196
+      altitude: 22
+    heading: 90
+    render_interface:
+      enabled: true
+      renderer_type: airplane
+  Seagull_001:
+    model: seagull
+    position:
+      latitude: 1.24217
+      longitude: 103.71972
+      altitude: 7
+    heading: 45
+    render_interface:
+      enabled: true
+      renderer_type: seagull
+  buoy:
+    model: buoy
+    position:
+      latitude: 1.2422950924699228
+      longitude: 103.71974855661394
+      altitude: 0
+    heading: 0
+    render_interface:
+      enabled: true
+      renderer_type: buoy
+      publish_render: false

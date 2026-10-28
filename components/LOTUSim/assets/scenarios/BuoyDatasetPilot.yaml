@@ -1,0 +1,43 @@
+name: BuoyDatasetPilot
+description: Static single-buoy RGB campaign. Unity controls camera, visual sea and lighting; no hydrodynamics or annotations.
+version: v0.0.1
+author: ""
+tags: [dataset, rgb-pilot]
+time_of_day: "12:00"
+date: "13/10/2026"
+reference_position:
+  latitude: 1.2421
+  longitude: 103.7198
+  altitude: 0
+environment:
+  atmosphere:
+    windSpeed: 0
+    windDirection: 0
+    temperature: 15
+    pressure: 1013.25
+    humidity: 0.5
+  ocean:
+    seaState: 0
+    waveHeight: 0
+    waveDirection: 0
+    wavePeriod: 0
+    waveSpectrum: PM
+    currentSpeed: 0
+    currentDirection: 0
+    waterTemperature: 20
+    salinity: 35
+  visibility:
+    horizontal: 10000
+    vertical: 10000
+  weather: CLEAR
+agents:
+  Buoy_001:
+    model: buoy
+    position:
+      latitude: 1.2421
+      longitude: 103.7198
+      altitude: 0
+    heading: 0
+    render_interface:
+      enabled: true
+      renderer_type: buoy

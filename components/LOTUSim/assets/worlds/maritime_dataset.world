@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<sdf version="1.10"><world name="lotusim">
+  <!-- Dedicated static/kinematic timeline. Do not run alongside lotusim.world
+       in the same ROS domain: both deliberately use the /lotusim namespace. -->
+  <physics type="ode"><max_step_size>0.02</max_step_size><real_time_factor>1</real_time_factor></physics>
+  <gravity>0 0 0</gravity>
+  <scene><ambient>0.8 0.8 0.8 1</ambient><background>0.5 0.7 0.9 1</background></scene>
+  <spherical_coordinates><surface_model>EARTH_WGS84</surface_model><world_frame_orientation>ENU</world_frame_orientation>
+    <latitude_deg>1.2421</latitude_deg><longitude_deg>103.7198</longitude_deg><elevation>0</elevation><heading_deg>0</heading_deg>
+  </spherical_coordinates>
+  <plugin filename="multi_agent_system_plugin" name="lotusim::gazebo::MultiAgentSystem"/>
+  <plugin filename="render_plugin" name="lotusim::gazebo::RenderPlugin"><connection_protocol>ROS2</connection_protocol></plugin>
+  <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+  <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+</world></sdf>
