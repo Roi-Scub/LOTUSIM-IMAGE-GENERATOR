@@ -59,9 +59,14 @@
   const svg=(tag,attributes={})=>{const result=document.createElementNS(NS,tag);for(const [key,value]of Object.entries(attributes))result.setAttribute(key,String(value));return result;};
   let plan=null,selected=null,time=0,loaded=false,loading=false,saving=false,playing=false,lastTick=0,animationHandle=null,dirty=false,saved=null;
   let selectedPlanId='source',library=[],libraryLoading=false,generating=false,revalidating=false,pendingPlanId=null;
+  let auditDetailsKey=null,warningsDetailsKey=null;
   const changes=new Map();
   const colors={air:'#baa8ed',sea:'#6bd8c5',moored:'#efbd79',observer:'#e6f2fb'};
-  function notice(message,kind=''){const target=$('trafficNotice');target.textContent=message;target.className='notice traffic-notice'+(kind?' '+kind:'');target.hidden=!message;}
+  function notice(message,kind=''){
+    const target=$('trafficNotice');target.className='notice traffic-notice'+(kind?' '+kind:'');
+    if(typeof window.LotusimAlerts?.notify==='function')return window.LotusimAlerts.notify(target,message,kind,{source:'Trafic',route:'traffic',label:'Plan coopératif'});
+    target.textContent=message;target.hidden=!message;
+  }
   const uuid=value=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(value);
   function errorText(result,fallback){return result?.message||result?.error||list(result?.errors).slice(0,5).map(issue=>[issue.path,issue.message].filter(value=>typeof value==='string').join(' : ')).join(' ; ')||fallback;}
   function auditLabel(record){const status=record?.auditStatus||record?.status;return record?.ready===true&&(status==='approved'||status==='ready')?'Contrôles limités satisfaits':status==='requires_revalidation'||status==='needs_revalidation'?'Révalidation nécessaire':status==='failed'||status==='refused'?'Refusé par les contrôles':status==='unsupported'?'Contrôles non pris en charge':'État des contrôles non confirmé';}
@@ -88,6 +93,14 @@
     for(const item of separations.filter(item=>item?.safe===false||item?.approved===false).slice(0,8)){const text=['Séparation non satisfaite',item.a,item.b,item.rule||item.id,item.reason||item.message,finite(item.marginM)?'Marge : '+fmt(item.marginM,2)+' m':null].filter(value=>typeof value==='string').join(' · ');reasons.append(node('li',text.slice(0,1500)));}
     for(const item of colreg.filter(item=>item?.passed===false).slice(0,8)){const text=['Contrôle COLREG limité non satisfait',item.rule?'Règle '+item.rule:null,item.a,item.b,item.control,item.detail].filter(value=>typeof value==='string').join(' · ');reasons.append(node('li',text.slice(0,1500)));}
     for(const text of [audit?.reason,...list(audit?.limitations)].filter(value=>typeof value==='string').slice(0,10))reasons.append(node('li',text.slice(0,1500)));
+    const details=$('trafficAuditDetails'),summary=$('trafficAuditSummary');
+    const failed=list(audit?.errors).some(value=>typeof value==='string')||separations.some(item=>item?.safe===false||item?.approved===false)||colreg.some(item=>item?.passed===false)||['failed','refused','unsupported'].includes(record?.auditStatus||record?.status);
+    if(summary)summary.textContent=(failed?'Contrôles à examiner':'Détail des contrôles et limites')+' · '+reasons.children.length+' point'+(reasons.children.length>1?'s':'');
+    if(details){
+      details.hidden=!reasons.children.length;
+      const key=selectedPlanId+'|'+(plan?.baseSha256||'')+'|'+JSON.stringify([audit?.errors,separations.filter(item=>item?.safe===false||item?.approved===false),colreg.filter(item=>item?.passed===false),failed]);
+      if(key!==auditDetailsKey){details.open=failed;auditDetailsKey=key;}
+    }
     const bundle=libraryBundle(selectedPlanId);$('trafficPlanExport').hidden=!bundle;if(bundle){$('trafficPlanExport').href=bundle;$('trafficPlanExport').textContent=record?.ready===true?'Télécharger scénario + audit':'Télécharger JSON + audit (sans YAML validé)';}$('trafficRevalidate').disabled=!known||dirty||saving||revalidating||generating;
   }
   function actorFor(id){return list(plan?.actors).find(actor=>actor.id===id);}
@@ -118,7 +131,11 @@
     $('trafficSourceHash').textContent='SHA-256 '+result.baseSha256.slice(0,16)+'…';$('trafficSourceHash').title=result.baseSha256;
     renderCaptureSchedule(result);
     const auditLimitations=new Set(list(result.audit?.limitations).filter(value=>typeof value==='string'));
-    $('trafficWarnings').replaceChildren(...list(result.warnings).filter(value=>typeof value==='string'&&!auditLimitations.has(value)).slice(0,12).map(message=>node('li',message)));
+    const warnings=list(result.warnings).filter(value=>typeof value==='string'&&!auditLimitations.has(value));
+    $('trafficWarnings').replaceChildren(...warnings.slice(0,12).map(message=>node('li',message)));
+    const warningsDetails=$('trafficWarningsDetails'),warningsSummary=$('trafficWarningsSummary');
+    if(warningsSummary)warningsSummary.textContent='Points de vigilance · '+Math.min(12,warnings.length)+(warnings.length>12?' sur '+warnings.length:'');
+    if(warningsDetails){warningsDetails.hidden=!warnings.length;const key=selectedPlanId+'|'+result.baseSha256;if(key!==warningsDetailsKey){warningsDetails.open=false;warningsDetailsKey=key;}}
     renderList();renderSelection();renderFrame();updateStatus();renderRecord();renderLibrary(selectedPlanId);
   }
   async function load(identifier=selectedPlanId){

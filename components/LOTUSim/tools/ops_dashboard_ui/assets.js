@@ -59,9 +59,9 @@
     } catch (_) {return null;}
   }
   function notice(message, kind = '') {
-    $('assetLibraryNotice').hidden = !message;
-    $('assetLibraryNotice').textContent = message;
-    $('assetLibraryNotice').className = 'notice assets-notice' + (kind ? ' ' + kind : '');
+    const target=$('assetLibraryNotice');target.className='notice assets-notice'+(kind?' '+kind:'');
+    if(typeof window.LotusimAlerts?.notify==='function')return window.LotusimAlerts.notify(target,message,kind,{source:'Modèles',route:'assets',label:'Bibliothèque 3D'});
+    target.hidden=!message;target.textContent=message;
   }
   function glyph(category) {
     const ns = 'http://www.w3.org/2000/svg';
@@ -392,7 +392,7 @@
     $('assetUploadStatus').textContent=files.length ? number(files.length,0)+' fichiers · '+bytes(total)+' à importer' : 'Les fichiers restent sur ce Mac.';
   }
   function openUpload() {
-    const dialog = $('assetUploadDialog'); $('assetUploadNotice').hidden=true;
+    const dialog = $('assetUploadDialog'); uploadNotice('');
     if (!dialog.open) dialog.showModal();
     $('assetUploadName').focus();
   }
@@ -448,24 +448,30 @@
   }
   function openIntegration(asset){
     editingIntegration=asset;$('assetIntegrationTitle').textContent='Intégrer · '+labelFor(asset);
-    $('assetIntegrationNotice').hidden=true;
+    integrationNotice('');
     $('assetIntegrationBody').replaceChildren(buildIntegrationFields('assetIntegration',asset.category,asset.preview?.upAxis||'Y',asset.integration?.options));
     $('assetIntegrationDialog').showModal();
   }
   async function submitIntegration(event){
     event.preventDefault();if(integrating||!editingIntegration)return;
-    integrating=true;$('assetIntegrationSubmit').disabled=true;$('assetIntegrationClose').disabled=true;$('assetIntegrationNotice').hidden=true;
+    integrating=true;$('assetIntegrationSubmit').disabled=true;$('assetIntegrationClose').disabled=true;integrationNotice('');
     try{
       const id=editingIntegration.id;
       await getJSON('/api/assets/'+encodeURIComponent(id)+'/integrate',{method:'POST',headers:{'X-LOTUSim-Asset-Import':'1','Content-Type':'application/json'},body:JSON.stringify({options:integrationOptions('assetIntegration')})});
       $('assetIntegrationDialog').close();await refresh(id,{preservePreview:true});
       notice('Préparation demandée. Le catalogue des scénarios sera actualisé après confirmation de Unity, hors Play.','success');
-    }catch(error){$('assetIntegrationNotice').textContent=error.message;$('assetIntegrationNotice').hidden=false;$('assetIntegrationNotice').className='notice assets-notice error';}
+    }catch(error){integrationNotice(error.message);}
     finally{integrating=false;$('assetIntegrationSubmit').disabled=false;$('assetIntegrationClose').disabled=false;}
   }
+  function integrationNotice(message,kind='error') {
+    const target=$('assetIntegrationNotice');target.className='notice assets-notice '+kind;
+    if(typeof window.LotusimAlerts?.notify==='function')return window.LotusimAlerts.notify(target,message,kind,{source:'Modèles',route:'assets',label:'Intégration du modèle'});
+    target.textContent=message;target.hidden=!message;
+  }
   function uploadNotice(message,kind='error') {
-    $('assetUploadNotice').textContent=message; $('assetUploadNotice').hidden=!message;
-    $('assetUploadNotice').className='notice assets-notice '+kind;
+    const target=$('assetUploadNotice');target.className='notice assets-notice '+kind;
+    if(typeof window.LotusimAlerts?.notify==='function')return window.LotusimAlerts.notify(target,message,kind,{source:'Modèles',route:'assets',label:'Import du modèle'});
+    target.textContent=message;target.hidden=!message;
   }
   async function submitUpload(event) {
     event.preventDefault(); if(uploading)return;

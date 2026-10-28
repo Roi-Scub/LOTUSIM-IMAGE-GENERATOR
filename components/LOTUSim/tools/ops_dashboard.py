@@ -308,7 +308,8 @@ class DashboardHandler(http.server.BaseHTTPRequestHandler):
         static={'/':'index.html','/index.html':'index.html','/styles.css':'styles.css','/app.js':'app.js',
                 '/settings.js':'settings.js','/settings.css':'settings.css',
                 '/assets.js':'assets.js','/assets.css':'assets.css','/mesh-viewer.js':'mesh-viewer.js',
-                '/traffic.js':'traffic.js','/traffic.css':'traffic.css'}
+                '/traffic.js':'traffic.js','/traffic.css':'traffic.css',
+                '/alerts.js':'alerts.js','/operations-ux.css':'operations-ux.css'}
         if path in static:
             asset=safe_child(self.server.ui_root,static[path])
             return self._file(asset,head) if asset else self._json(404,{'error':'Interface absente'},head)

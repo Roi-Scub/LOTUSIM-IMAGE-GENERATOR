@@ -81,6 +81,7 @@
   let uidCounter = 0;
   const uid = prefix => prefix + '_' + (globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '_' + (++uidCounter));
   const savedDisabled = new Map();
+  const expandedContext = new Map();
   const palette = ['#65d9bf','#8db9ec','#b7a2e6','#efba6e','#62d5e4','#da9cb7'];
   let trafficCountBlock=null,trafficCountEdited=false;
 
@@ -95,6 +96,13 @@
     result.addEventListener('click', callback); return result;
   }
   function choice(value, text) { const result = element('option', text); result.value = value; return result; }
+  function contextDetails(key, label, count) {
+    const details=element('details',null,'context-details');
+    details.open=expandedContext.get(key)===true;
+    details.addEventListener('toggle',()=>expandedContext.set(key,details.open));
+    details.append(element('summary',label+' · '+count+' point'+(count>1?'s':'')));
+    return details;
+  }
   function assetFor(model) { return array(catalog?.assets).find(asset => asset.model === model); }
   function modelLabel(model) { const asset = assetFor(model); return asset?.label || asset?.model || model || 'Modèle non défini'; }
   function engineFor(id) { return array(catalog?.engines).find(engine => engine.id === id) || array(engineRegistry?.engines).find(engine=>engine.id===id); }
@@ -121,28 +129,37 @@
     const text=typeof engine?.detail==='string'?engine.detail.slice(0,4000):!prepared?'Enregistrement et export possibles ; aucun adaptateur de préparation actif pour ce moteur.' :
       contractOnly(engine)?'Export d’un contrat de scène indépendant du moteur. Aucun SDK, importeur natif, capture ou intégration temps réel n’est fourni par ce profil.' :
       'La préparation produit les fichiers de campagne pour le moteur choisi ; leur présence ne garantit pas un rendu natif valide.';
-    target.append(element('p',text+' Aucun moteur, Play ou scénario ne démarre automatiquement.'));
-    if(!prepared)target.append(element('p','Enregistrement et export JSON possibles ; aucun adaptateur de préparation actif pour ce moteur.'));
-    renderCapabilities(engine,target);
-    if(contractOnly(engine))target.append(element('p','Tous les paramètres ci-dessous sont conservés dans le contrat, pas appliqués dans un moteur. Un adaptateur natif reste à développer et à valider avant toute image ou annotation.','settings-engine-warning'));
-    else if(engine?.capabilities){
-      const unsupported=[];
+    const unsupported=[];
+    if(!contractOnly(engine)&&engine?.capabilities){
       if(engine.capabilities.waves!==true)unsupported.push('houle');
       if(engine.capabilities.livePoses!==true)unsupported.push('poses temps réel, trajectoires et vitesses');
       if(engine.capabilities.annotations!==true)unsupported.push('annotations');
-      if(unsupported.length)target.append(element('p','Paramètres conservés, non appliqués par cet adaptateur : '+unsupported.join(' ; ')+'. Les autres limites sont indiquées dans le bundle préparé.','settings-engine-warning'));
     }
+    const details=contextDetails('campaign-engine-'+(draft?.engine||'unknown'),'Capacités et limites du moteur',
+      1+(engine?.capabilities&&typeof engine.capabilities==='object'?6:0)+(!prepared?1:0)+(contractOnly(engine)||unsupported.length?1:0));
+    details.append(element('p',text+' Aucun moteur, Play ou scénario ne démarre automatiquement.'));
+    if(!prepared)details.append(element('p','Enregistrement et export JSON possibles ; aucun adaptateur de préparation actif pour ce moteur.'));
+    renderCapabilities(engine,details,false);
+    if(contractOnly(engine))details.append(element('p','Tous les paramètres ci-dessous sont conservés dans le contrat, pas appliqués dans un moteur. Un adaptateur natif reste à développer et à valider avant toute image ou annotation.','settings-engine-warning'));
+    else if(engine?.capabilities){
+      if(unsupported.length)details.append(element('p','Paramètres conservés, non appliqués par cet adaptateur : '+unsupported.join(' ; ')+'. Les autres limites sont indiquées dans le bundle préparé.','settings-engine-warning'));
+    }
+    target.append(details);
   }
-  function renderCapabilities(engine,target){
+  function renderCapabilities(engine,target,fold=true){
     const capabilities=engine?.capabilities;if(!capabilities||typeof capabilities!=='object')return;
     const grid=element('dl',null,'settings-engine-capabilities');
     for(const [key,label] of [['scenePreparation','Préparation de scène'],['neutralExport','Contrat neutre'],['rgbCapture','Capture RGB'],['annotations','Annotations'],['livePoses','Poses temps réel'],['waves','Houle']]){
       const available=capabilities[key]===true;
       grid.append(element('dt',label),element('dd',available?'Capacité déclarée':capabilities[key]===false?'Non implémenté':'Non renseigné',available?'available':'unavailable'));
-    }target.append(grid);
+    }
+    if(fold){const details=contextDetails('profile-capabilities-'+(engine.id||'unknown'),'Capacités déclarées',6);details.append(grid);target.append(details);}
+    else target.append(grid);
   }
   function profileNotice(message,kind=''){
-    const target=$('engineProfileNotice');if(!target)return;target.textContent=message;target.hidden=!message;target.className='notice settings-notice'+(kind?' '+kind:'');
+    const target=$('engineProfileNotice');if(!target)return;target.className='notice settings-notice'+(kind?' '+kind:'');
+    if(typeof window.LotusimAlerts?.notify==='function')return window.LotusimAlerts.notify(target,message,kind,{source:'Paramétrage',route:'settings',label:'Profil moteur'});
+    target.textContent=message;target.hidden=!message;
   }
   function updateProfileChoice(){
     const select=$('engineProfileChoice'),custom=select?.value==='custom';
@@ -202,9 +219,9 @@
     catch (_) { return null; }
   }
   function notice(text, kind = '') {
-    $('settingsNotice').textContent = text;
-    $('settingsNotice').className = 'notice settings-notice' + (kind ? ' ' + kind : '');
-    $('settingsNotice').hidden = !text;
+    const target=$('settingsNotice');target.className='notice settings-notice'+(kind?' '+kind:'');
+    if(typeof window.LotusimAlerts?.notify==='function')return window.LotusimAlerts.notify(target,text,kind,{source:'Paramétrage',route:'settings',label:'Configuration de campagne'});
+    target.textContent=text;target.hidden=!text;
   }
   function markDirty() {
     dirty = true; revision++; lastValidation = null;
@@ -539,12 +556,18 @@
     const target=$('settingsValidation');target.replaceChildren(element('h3',result.valid?'Configuration valide':'Configuration à corriger'));
     const rows=element('ul');
     if(result.valid)rows.append(element('li','Les paramètres ont été acceptés par le validateur local. La visibilité effective dépendra du rendu.','success'));
-    for(const [values,className] of [[result.errors,'error'],[result.warnings,'warning']])for(const issue of array(values)){
-      const row=element('li',null,className);
+    for(const issue of array(result.errors)){
+      const row=element('li',null,'error');
       if(issue.path)row.append(element('strong',issue.path));
       row.append(document.createTextNode(issue.message||'Paramètre non validé.'));rows.append(row);
     }
     target.append(rows);
+    const warnings=array(result.warnings);
+    if(warnings.length){
+      const details=contextDetails('validation-warnings','Points de vigilance',warnings.length),items=element('ul');
+      for(const issue of warnings){const row=element('li',null,'warning');if(issue.path)row.append(element('strong',issue.path));row.append(document.createTextNode(issue.message||'Paramètre à vérifier.'));items.append(row);}
+      details.append(items);target.append(details);
+    }
   }
   function renderPrepared(result) {
     const actions=result.engineActions||{}, engine=actions.engine||draft.engine, title=engineLabel(engine);
@@ -588,7 +611,7 @@
       if(text)rows.append(element('li',text));
     }panel.append(rows);}
     const limitations=array(agent.limitations).filter(value=>typeof value==='string').slice(0,20);
-    if(limitations.length){const rows=element('ul',null,'settings-engine-limits');panel.append(element('h4','Limites de cet adaptateur'));for(const text of limitations)rows.append(element('li',text.slice(0,4000)));panel.append(rows);}
+    if(limitations.length){const details=contextDetails('prepared-agent-limitations-'+(draft?.engine||'unknown'),'Limites de cet adaptateur',limitations.length),rows=element('ul',null,'settings-engine-limits');for(const text of limitations)rows.append(element('li',text.slice(0,4000)));details.append(rows);panel.append(details);}
     panel.append(element('small','Trace d’orchestration déterministe, pas une preuve d’exécution du moteur.'));target.append(panel);
   }
   function validFields() {

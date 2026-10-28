@@ -204,6 +204,8 @@
       lastSuccess ? 'Connecté à ce Mac' : 'Connexion en attente';
     setDot('sideDot', mode);
     $('offlineNotice').hidden = !disconnected;
+    window.LotusimAlerts?.setTransport(disconnected ? {level: 'error', message: 'Liaison avec le collecteur interrompue. Les dernières données restent visibles, mais ne sont plus actualisées.'} :
+      delayed ? {level: 'warning', message: 'Le collecteur répond avec un état ancien. Les positions et indicateurs ne prouvent pas une exécution actuelle.'} : null);
     if (current) $('lastSync').textContent = 'Synchronisé à ' + time(current.generatedAt);
   }
 
@@ -564,10 +566,15 @@
     document.body.classList.remove('loading');
     renderEngineProfile(data);renderKpis(data); renderPreview(data); renderServices(data); renderAgents(data);
     renderActivity(data); renderJournal(data); renderMap(data); renderReports(data);
-    const messages = list(data.health?.warnings).filter(value => typeof value === 'string');
-    if (data.health?.error) messages.unshift(String(data.health.error));
-    $('globalNotice').hidden = !messages.length;
-    $('globalNotice').textContent = messages.slice(0, 3).join(' · ');
+    if (window.LotusimAlerts) {
+      window.LotusimAlerts.update(data);
+      $('globalNotice').hidden = true;
+    } else {
+      const messages = list(data.health?.warnings).filter(value => typeof value === 'string');
+      if (data.health?.error) messages.unshift(String(data.health.error));
+      $('globalNotice').hidden = !messages.length;
+      $('globalNotice').textContent = messages.join(' · ');
+    }
     $('footerSource').textContent = data.generatedAt ? 'État reçu à ' + time(data.generatedAt) + ' · sources locales' : 'Sources locales · heure non mesurée';
     updateConnection();
   }

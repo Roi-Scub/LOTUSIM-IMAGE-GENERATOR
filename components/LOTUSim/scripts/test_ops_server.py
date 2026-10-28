@@ -34,7 +34,8 @@ class ServerTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name)
         self.ui=self.root/'ui';self.ui.mkdir()
-        for name,text in [('index.html','<!doctype html><title>Local ops</title>'),('app.js','console.log(1)'),('styles.css','body{}')]:
+        for name,text in [('index.html','<!doctype html><title>Local ops</title>'),('app.js','console.log(1)'),('styles.css','body{}'),
+                          ('alerts.js','console.log("local alerts")'),('operations-ux.css','.alerts-center{}')]:
             (self.ui/name).write_text(text)
         self.data=self.root/'artifacts';(self.data/'report/input').mkdir(parents=True)
         (self.data/'report/index.html').write_text('<img src="input/frame.png">')
@@ -107,6 +108,12 @@ class ServerTests(unittest.TestCase):
     def test_head_has_no_body(self):
         status,headers,body=self.request('/app.js','HEAD')
         self.assertEqual(status,200);self.assertEqual(body,b'');self.assertTrue(int(headers['Content-Length'])>0)
+    def test_local_diagnostics_resources_are_explicitly_served(self):
+        for path,expected in [('/alerts.js',b'local alerts'),('/operations-ux.css',b'alerts-center')]:
+            status,headers,body=self.request(path)
+            self.assertEqual(status,200);self.assertIn(expected,body)
+            self.assertEqual(headers['X-Content-Type-Options'],'nosniff')
+        self.assertEqual(self.request('/anything-else.js')[0],404)
     def test_sse_stream_matches_cached_state(self):
         client=http.client.HTTPConnection('127.0.0.1',self.port,timeout=2);client.request('GET','/api/events')
         response=client.getresponse();self.assertEqual(response.status,200)
