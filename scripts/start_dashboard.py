@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Start the loopback dashboard, preferring the complete local runtime if installed."""
+
 import argparse
 import os
 from pathlib import Path
@@ -10,9 +11,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def default_roots():
     runtime = ROOT / 'runtime'
-    complete = ((runtime / 'LOTUSim/tools/ops_dashboard.py').is_file() or
-                ((runtime / 'LOTUSim/flake.nix').is_file() and
-                 (runtime / 'LOTUSim-Unity-modules/ProjectSettings/ProjectVersion.txt').is_file()))
+    complete = (runtime / 'LOTUSim/tools/ops_dashboard.py').is_file() or (
+        (runtime / 'LOTUSim/flake.nix').is_file()
+        and (runtime / 'LOTUSim-Unity-modules/ProjectSettings/ProjectVersion.txt').is_file()
+    )
     base = runtime if complete else ROOT / 'components'
     return base / 'LOTUSim', base / 'LOTUSim-Unity-modules'
 
@@ -30,8 +32,16 @@ def main():
     server = core / 'tools/ops_dashboard.py'
     if not server.is_file():
         parser.error('Dashboard source not found in the selected LOTUSim root')
-    command = [sys.executable, str(server), '--core', str(core), '--unity', str(unity),
-               '--port', str(args.port)]
+    command = [
+        sys.executable,
+        str(server),
+        '--core',
+        str(core),
+        '--unity',
+        str(unity),
+        '--port',
+        str(args.port),
+    ]
     if args.no_docker:
         command.append('--no-docker')
     print('LOTUSim data: ' + str(core), flush=True)

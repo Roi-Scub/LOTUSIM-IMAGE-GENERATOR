@@ -7,14 +7,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-
 // --------------------------------------------------------------------------------------------------------------------
 //  ROSConnectionConfigurator.cs
 //
 //  Description:
 //  Reads ROS IP and port from PlayerPrefs and configures the ROSConnection singleton.
 // --------------------------------------------------------------------------------------------------------------------
-
 using UnityEngine;
 using Unity.Robotics.ROSTCPConnector;
 
@@ -27,21 +25,17 @@ namespace Lotusim
     public class ROSConnectionConfigurator : MonoBehaviour
     {
         #region Unity Callbacks
-
         private void Awake()
         {
             ConfigureROSConnection();
         }
 
         #endregion
-
         #region Configuration
-
         private void ConfigureROSConnection()
         {
             string ip = PlayerPrefs.GetString("ROS_IP", "127.0.0.1");
             string portStr = PlayerPrefs.GetString("ROS_Port", "10000");
-
             if (!int.TryParse(portStr, out int port))
             {
                 Debug.LogError($"[ROSConnectionConfigurator] Invalid ROS port: {portStr}");
@@ -49,19 +43,16 @@ namespace Lotusim
             }
 
             ROSConnection rosConnection = ROSConnection.GetOrCreateInstance();
-
             // Keep the connector alive while Photon/Unity reloads the scenario
             // scene. Otherwise the old TCP worker can outlive its GameObject,
             // then GetOrCreateInstance creates a second connection on reload.
             DontDestroyOnLoad(rosConnection.gameObject);
-
             // Configure before the connector's Start runs, then open exactly
             // one connection explicitly. The package's ConnectOnStart path
             // does not guard against a second Connect() call.
             rosConnection.ConnectOnStart = false;
             rosConnection.RosIPAddress = ip;
             rosConnection.RosPort = port;
-
             if (!rosConnection.HasConnectionThread)
             {
                 rosConnection.Connect();
@@ -74,7 +65,6 @@ namespace Lotusim
 
             Debug.Log($"[ROSConnectionConfigurator] Applied ROS IP: {ip}, Port: {port}");
         }
-
         #endregion
     }
 }

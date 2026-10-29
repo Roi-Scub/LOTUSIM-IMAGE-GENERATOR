@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Refresh the portable inventory only; runtime, private state and results stay excluded."""
+
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -7,35 +8,80 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GENERATED_QA_ROOTS = ('qa/', 'components/LOTUSim/qa/', 'components/LOTUSim-Unity-modules/qa/')
+GENERATED_OUTPUT_ROOTS = (
+    'artifacts/',
+    'components/LOTUSim/artifacts/',
+    'components/LOTUSim-Unity-modules/artifacts/',
+    'qa/',
+    'components/LOTUSim/qa/',
+    'components/LOTUSim-Unity-modules/qa/',
+)
 
 
-def generated_qa(name):
-    return Path(name).as_posix().startswith(GENERATED_QA_ROOTS)
+def generated_output(name):
+    return Path(name).as_posix().startswith(GENERATED_OUTPUT_ROOTS)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--write', action='store_true', help='Otherwise print summary without writing')
+    parser.add_argument(
+        '--write', action='store_true', help='Otherwise print summary without writing'
+    )
+    parser.add_argument(
+        '--prune-missing',
+        action='store_true',
+        help='Explicitly drop absent old entries after deliberate source moves or deletions',
+    )
     args = parser.parse_args()
     manifest = json.loads((ROOT / 'manifest.json').read_text(encoding='utf-8'))
     paths = {record['path'] for record in manifest['files']}
     paths.update(('AGENTS.md', 'README.md', '.gitignore'))
-    for filename in ('LICENSE', '.gitattributes', 'VERSION', 'CHANGELOG.md'):
+    for filename in (
+        'LICENSE',
+        '.gitattributes',
+        'VERSION',
+        'CHANGELOG.md',
+        '.editorconfig',
+        '.prettierrc.json',
+        '.prettierignore',
+        '.clang-format',
+        'pyproject.toml',
+        'requirements-dev.txt',
+        'requirements-test.txt',
+        'package.json',
+        'package-lock.json',
+        '.git-blame-ignore-revs',
+    ):
         if (ROOT / filename).is_file():
             paths.add(filename)
-    for folder in ('scripts', 'docs', 'components', 'examples', 'patches', 'references'):
-        paths.update(str(path.relative_to(ROOT)) for path in (ROOT / folder).rglob('*')
-                     if path.is_file() and not path.is_symlink() and
-                     not any(part.startswith('.') or part == '__pycache__' for part in path.relative_to(ROOT).parts))
+    for folder in ('scripts', 'tests', 'docs', 'components', 'examples', 'patches', 'references'):
+        paths.update(
+            str(path.relative_to(ROOT))
+            for path in (ROOT / folder).rglob('*')
+            if path.is_file()
+            and not path.is_symlink()
+            and not any(
+                part.startswith('.') or part == '__pycache__'
+                for part in path.relative_to(ROOT).parts
+            )
+        )
     records = []
     for name in sorted(paths):
-        if generated_qa(name):
-            continue
         relative = Path(name)
-        if relative.is_absolute() or '..' in relative.parts or relative.parts[0] in ('runtime', '.local'):
+        if (
+            relative.is_absolute()
+            or '..' in relative.parts
+            or relative.parts[0] in ('runtime', '.local')
+        ):
             raise ValueError('Unsafe portable path: ' + name)
+        if generated_output(name):
+            continue
         path = ROOT / relative
+        path.resolve().relative_to(ROOT)
+        if path.is_symlink():
+            raise ValueError('Not a regular portable file: ' + name)
+        if not path.exists() and args.prune_missing:
+            continue
         path.resolve(strict=True).relative_to(ROOT)
         if not path.is_file() or path.is_symlink():
             raise ValueError('Not a regular portable file: ' + name)
@@ -49,9 +95,17 @@ def main():
     manifest['updatedAt'] = datetime.now(timezone.utc).isoformat()
     manifest['scope'] = 'portable source snapshot; runtime and .local are not included'
     if args.write:
-        (ROOT / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(('Updated' if args.write else 'Preview') + ': ' + str(len(records)) + ' portable files, ' +
-          str(manifest['totalBytes']) + ' bytes. Runtime is unchanged.')
+        (ROOT / 'manifest.json').write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+        )
+    print(
+        ('Updated' if args.write else 'Preview')
+        + ': '
+        + str(len(records))
+        + ' portable files, '
+        + str(manifest['totalBytes'])
+        + ' bytes. Runtime is unchanged.'
+    )
 
 
 if __name__ == '__main__':

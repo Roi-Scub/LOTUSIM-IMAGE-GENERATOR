@@ -1,0 +1,4 @@
+# Development tools only. The application still supports Python 3.9.
+# These pinned formatter releases require Python 3.10 or newer.
+black==26.10.1
+clang-format==21.1.8

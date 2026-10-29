@@ -126,7 +126,7 @@ Ne pas lancer `lotusim.world` et `maritime_dataset.world` simultanément dans le
 
 La scène Unity `defenseScenario` n'est pas le monde Gazebo à choisir. Le fichier `assets/worlds/defenseScenario.world` du noyau charge `AerialMAS`, pas `MultiAgentSystem`, et n'expose donc pas les services de scénario attendus ici.
 
-Le ROS TCP Endpoint est un paquet/workspace séparé du noyau : `mise run build` ne l'installe pas. Le client Unity connecté utilise un seul `ROSConnection` vers le port TCP 10000 usuel et les services ci-dessus ; il n'a pas besoin d'un deuxième socket ou de démarrer les bancs de test. `scripts/test_dataset_bridge_server.py` est un outil de test isolé, pas le serveur de production.
+Le ROS TCP Endpoint est un paquet/workspace séparé du noyau : `mise run build` ne l'installe pas. Le client Unity connecté utilise un seul `ROSConnection` vers le port TCP 10000 usuel et les services ci-dessus ; il n'a pas besoin d'un deuxième socket ou de démarrer les bancs de test. `tests/python/integration/test_dataset_bridge_server.py` est un outil de test isolé, pas le serveur de production.
 
 ## 6. Changements optionnels d'installation : 3 fichiers modifiés
 
@@ -179,19 +179,19 @@ Tests fournis à rejouer dans un environnement adapté :
 ```bash
 # Test C++ autonome ; produit son exécutable hors des sources.
 clang++ -std=c++17 -I systems/lotusim_mas/include \
-  scripts/test_dataset_motion.cpp -o /tmp/test_dataset_motion
+  tests/native/test_dataset_motion.cpp -o /tmp/test_dataset_motion
 /tmp/test_dataset_motion
 
 # Tests natifs ROS/Gazebo ; démarrent leur propre monde isolé.
-python3 scripts/test_dataset_scenario_lifecycle.py \
+PYTHONPATH=tools:. python3 tests/python/integration/test_dataset_scenario_lifecycle.py \
   --plugin-dir "$PWD/install/lib" --cycles 8
-python3 scripts/test_dataset_connected.py \
+PYTHONPATH=tools:. python3 tests/python/integration/test_dataset_connected.py \
   --plugin-dir "$PWD/install/lib" --world assets/worlds/maritime_dataset.world
 ```
 
 Les tests natifs utilisent le domaine ROS 96 et une partition Gazebo propre ; réserver ce domaine aux tests. Ils vérifient notamment CREATE/DELETE, propriété de la campagne, trajectoires ECM réelles, étapes idempotentes et redémarrage. Le test bridge Unity isolé utilise séparément le domaine 97 et le port 10001.
 
-Vérification effectivement exécutée pour cet audit : compilation avec Clang C++17 de `scripts/test_dataset_motion.cpp` dans un dossier temporaire et succès des assertions de continuité position/vitesse aux raccords, conversion 400 km/h et trajectoire rectiligne historique. Les services live, le build complet Nix/colcon et les captures Unity n'ont pas été relancés lors de cet audit. Les comptes de captures et validations rapportés dans d'anciens guides sont des résultats historiques, pas une nouvelle validation de l'export.
+Vérification effectivement exécutée pour cet audit : compilation avec Clang C++17 de `tests/native/test_dataset_motion.cpp` dans un dossier temporaire et succès des assertions de continuité position/vitesse aux raccords, conversion 400 km/h et trajectoire rectiligne historique. Les services live, le build complet Nix/colcon et les captures Unity n'ont pas été relancés lors de cet audit. Les comptes de captures et validations rapportés dans d'anciens guides sont des résultats historiques, pas une nouvelle validation de l'export.
 
 ## 8. Hors périmètre et limites importantes
 

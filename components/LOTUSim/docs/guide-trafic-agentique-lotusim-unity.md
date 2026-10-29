@@ -277,8 +277,8 @@ aussi dans les métadonnées des frames de ce mode.
   Ce test antérieur précède l’ajout des six passages rapides ; la campagne
   complète de 1 512 images n’a pas été générée pendant cette validation.
 
-Commande des tests de planification : `python3 scripts/test_traffic_agents.py`.
-Passages rapides : `python3 scripts/test_fast_drone_traffic.py`.
+Commande des tests de planification : `PYTHONPATH=tools:. python3 tests/python/traffic/test_traffic_agents.py`.
+Passages rapides : `PYTHONPATH=tools:. python3 tests/python/traffic/test_fast_drone_traffic.py`.
 Tests Unity : menu `Cooperative traffic → Validate compiled plan and runtime guard`.
 Les processus de test ont été arrêtés, sans arrêter le simulateur ou le serveur
 ROS TCP habituels. Aucune génération de capteur d’image Gazebo n’est ajoutée ici.

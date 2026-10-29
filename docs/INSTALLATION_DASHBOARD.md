@@ -219,7 +219,7 @@ Les tests du serveur ouvrent des ports locaux temporaires. Les tests de frontend
 | Port indisponible | Choisir `--port 8767` ; ne pas fermer un processus inconnu. |
 | Interface vide par `file://` | Lancer le serveur et ouvrir son adresse `http://127.0.0.1:...`. |
 | Unity « non mesuré » | Intégrer l’overlay dans le projet complet ; vérifier `artifacts/operations/unity.json`. Ne pas interpréter la seule présence d’un dossier Unity comme un heartbeat. |
-| Préparation Unity désactivée | Vérifier la présence de `Assets/Editor/DatasetManualCampaignBuilder.cs` dans le projet `--unity`. |
+| Préparation Unity désactivée | Vérifier `Assets/Editor/Dataset/Campaigns/DatasetManualCampaignBuilder.cs` dans le projet `--unity`. L’ancien emplacement `Assets/Editor/DatasetManualCampaignBuilder.cs` reste également reconnu. |
 | Docker non observé | Normal avec `--no-docker` ; sinon vérifier Docker et le nom `lotusim-dev`. |
 | Analyse refusée ou poids absents | Créer l’environnement Python 3.12, préparer tous les fichiers du modèle et contrôler le SHA-256. |
 | Ancien rapport introuvable | L’export de code ne contient pas nécessairement les anciens corpus ; copier volontairement les résultats autorisés sous une racine `artifacts/` reconnue. |

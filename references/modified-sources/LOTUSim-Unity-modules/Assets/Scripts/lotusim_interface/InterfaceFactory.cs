@@ -7,14 +7,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-
 // --------------------------------------------------------------------------------------------------------------------
 //  InterfaceFactory.cs
 //
 //  Description:
 //  Factory and driver for creating and updating Lotusim interfaces (ROS2, TCPIP, etc.)
 // --------------------------------------------------------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,18 +25,22 @@ namespace Lotusim
     public static class LotusimInterfaceFactory
     {
         // Maps interface type names to their constructors
-        private static readonly Dictionary<string, Func<LotusimBaseInterface>> s_interfaceMap =
-            new Dictionary<string, Func<LotusimBaseInterface>>()
+        private static readonly Dictionary<string, Func<LotusimBaseInterface>> s_interfaceMap = new Dictionary<string, Func<LotusimBaseInterface>>()
+        {
             {
-                { "ROS2", () => RosInterface.Instance },  // ROS2 uses singleton
-                { "TCPIP", () => new TCPIPInterface() }   // TCPIP can be constructed normally
-            };
-
+                "ROS2",
+                () => RosInterface.Instance
+            }, // ROS2 uses singleton
+            {
+                "TCPIP",
+                () => new TCPIPInterface()
+            } // TCPIP can be constructed normally
+        };
         /// <summary>
         /// Creates a Lotusim interface of the specified type. The caller owns
         /// initialization so it can provide the configured namespace exactly once.
         /// </summary>
-        /// <param name="type">Interface type ("ROS2", "TCPIP", etc.)</param>
+        /// <param name = "type">Interface type ("ROS2", "TCPIP", etc.)</param>
         /// <returns>The interface instance, or null if type is not found.</returns>
         public static LotusimBaseInterface CreateInterface(string type)
         {
@@ -67,11 +69,10 @@ namespace Lotusim
     public class InterfaceDriver : MonoBehaviour
     {
         private LotusimBaseInterface _iface;
-
         /// <summary>
         /// Assigns the interface to be updated by this driver.
         /// </summary>
-        /// <param name="iface">Interface instance to drive.</param>
+        /// <param name = "iface">Interface instance to drive.</param>
         public void Init(LotusimBaseInterface iface)
         {
             _iface = iface;

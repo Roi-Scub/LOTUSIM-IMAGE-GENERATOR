@@ -33,7 +33,8 @@ Copier les dossiers complets suivants **avec leurs `.meta`**, y compris les
 | Chemin Unity | Rôle |
 | --- | --- |
 | `Assets/Scripts/Dataset/` | Captures, annotations visibles/amodales, reconnaissance géométrique, réponse aux vagues, capteurs synthétiques, protocole LOTUSim, campagnes manuelles |
-| `Assets/Editor/` | Constructeurs/importeurs, tests, outils de validation RGB, télémétrie locale |
+| `Assets/Editor/Dataset/` | Constructeurs de scènes et modèles, importeurs, outils de validation RGB et télémétrie locale |
+| `Assets/Tests/Editor/Dataset/` | Vérifications regroupées par domaine, avec commandes de menus et test NUnit conditionnel |
 | `Assets/Resources/Dataset/` | Shaders de masques et de capteurs chargés via `Resources.Load` |
 | `Assets/Dataset/` | Configurations, plans compilés, matériaux du bateau observateur |
 | `Assets/Scenes/Dataset/` | Scènes dédiées de génération et de validation |
@@ -53,6 +54,10 @@ modifiés + leurs métadonnées » représente environ **428 Mio** hors `ThirdPa
 Les assets importés sont déjà présents : il n’est pas nécessaire de relancer les
 constructeurs de bibliothèque pour ouvrir les scènes. Les constructeurs restent
 utiles pour les reproduire ou modifier les modèles.
+
+## Organisation des sources sur refactor
+
+Les 84 scripts ajoutés sont regroupés par responsabilité : 41 scripts d’exécution, 29 outils de l’éditeur et 14 fichiers de vérification. Leur contenu et leurs métadonnées d’origine restent identiques. Les anciens chemins et GUID sont conservés dans `references/unity-code-layout.json` ; les contrôles refusent les identifiants modifiés, doublons et changements d’assemblage. Voir le [guide d’architecture](ARCHITECTURE_CODE.md#organisation-des-modules-unity) pour l’arborescence et les commandes de vérification. Le projet ouvert sous `runtime/` n’est pas modifié par cette réorganisation.
 
 ## Fichiers déjà présents : appliquer par groupes cohérents
 
@@ -126,8 +131,10 @@ recopiées dans une bibliothèque d’assets « CC BY » par simple association.
 Leurs dépendances transitives et les paquets Unity restent à la charge du socle.
 Les appels `AssetDatabase.LoadAssetAtPath`, `Shader.Find("HDRP/Lit")`,
 `Shader.Find("HDRP/Unlit")` et `Resources.Load` ajoutent des dépendances textuelles
-qui ne sont pas, elles, un lien GUID. Conserver les chemins des dossiers et les
-shaders ; vérifier aussi l’inclusion de shaders lors d’un futur build joueur.
+qui ne sont pas, elles, un lien GUID. Conserver les chemins des assets chargés
+textuellement, notamment ceux de `Resources`, et les noms des shaders. Les
+déplacements des scripts sont suivis séparément par la table de correspondance
+de cette branche. Vérifier aussi l’inclusion des shaders lors d’un futur build joueur.
 
 ## Cache du connecteur : vérification ciblée
 

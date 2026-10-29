@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 //  Launcher.cs (Hybrid Online/Offline)
 //
 //  Description:
@@ -15,7 +15,6 @@
 //  - Falls back to Photon OfflineMode if no internet or if connection fails
 //  - Preserves your original UI, spectator, ROS, and loader logic
 // --------------------------------------------------------------------------------------------------------------------
-
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Realtime;
@@ -26,8 +25,7 @@ using System;
 
 namespace Com.MyCompany.MyGame
 {
-    #pragma warning disable 649
-
+#pragma warning disable 649
     /// <summary>
     /// Launch manager. Connect, join or create room automatically on player or spectator mode.
     /// Hybrid: uses Photon when available, falls back to offline mode otherwise.
@@ -36,68 +34,55 @@ namespace Com.MyCompany.MyGame
     {
         // Keep exactly one Launcher alive to own Photon callbacks and auto-connect.
         private static Launcher s_instance;
-
         #region Public Fields
-
         public static bool IsSpectator = false;
-
         #endregion
-
         #region Private Serializable Fields
-
         [Tooltip("The Ui Panel to let the user enter name, connect and play")]
-        [SerializeField] private GameObject controlPanel;
-
+        [SerializeField]
+        private GameObject controlPanel;
         [Tooltip("The Ui Text to inform the user about the connection progress")]
-        [SerializeField] private TMP_Text feedbackText;
-
+        [SerializeField]
+        private TMP_Text feedbackText;
         [Tooltip("The maximum number of players per room")]
-        [SerializeField] private byte maxPlayersPerRoom = 20;
-
-        [SerializeField] private Toggle spectatorToggle;
-
-        [SerializeField] private TMP_InputField rosIpInputField;
-        [SerializeField] private TMP_InputField rosPortInputField;
-
+        [SerializeField]
+        private byte maxPlayersPerRoom = 20;
+        [SerializeField]
+        private Toggle spectatorToggle;
+        [SerializeField]
+        private TMP_InputField rosIpInputField;
+        [SerializeField]
+        private TMP_InputField rosPortInputField;
         [Tooltip("Name of the room to join/create (used both online and offline)")]
-        [SerializeField] private string roomName = "defenseScenario";
-
+        [SerializeField]
+        private string roomName = "defenseScenario";
         [Tooltip("Automatically connect as a spectator when the Launcher scene starts.")]
-        [SerializeField] private bool autoConnectAsSpectatorOnStart = true;
-
+        [SerializeField]
+        private bool autoConnectAsSpectatorOnStart = true;
         #endregion
-
         #region Private Fields
-
         /// <summary>
         /// Keep track of the current process. Since connection is asynchronous and is based on several callbacks from Photon,
         /// we need to keep track of this to properly adjust the behavior when we receive call back by Photon.
         /// Typically this is used for the OnConnectedToMaster() callback.
         /// </summary>
         private bool isConnecting;
-
         /// <summary>
         /// This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
         /// </summary>
-        [SerializeField] private string gameVersion = "1";
-
+        [SerializeField]
+        private string gameVersion = "1";
         /// <summary>
         /// True when we intentionally started offline mode (so we don't try to fallback repeatedly).
         /// </summary>
         private bool startedOfflineMode = false;
-
         #endregion
-
         #region MonoBehaviour CallBacks
-
         void Awake()
         {
             if (s_instance != null && s_instance != this)
             {
-                Debug.LogWarning(
-                    $"[Launcher] Duplicate Launcher on '{gameObject.scene.name}' was disabled; " +
-                    $"'{s_instance.gameObject.scene.name}' owns the Photon connection."
-                );
+                Debug.LogWarning($"[Launcher] Duplicate Launcher on '{gameObject.scene.name}' was disabled; " + $"'{s_instance.gameObject.scene.name}' owns the Photon connection.");
                 enabled = false;
                 return;
             }
@@ -117,10 +102,7 @@ namespace Com.MyCompany.MyGame
 
         private void Start()
         {
-            Debug.Log(
-                $"[Launcher] Start: autoConnectAsSpectatorOnStart={autoConnectAsSpectatorOnStart}."
-            );
-
+            Debug.Log($"[Launcher] Start: autoConnectAsSpectatorOnStart={autoConnectAsSpectatorOnStart}.");
             if (!autoConnectAsSpectatorOnStart)
             {
                 Debug.LogWarning("[Launcher] Automatic spectator connection is disabled; showing the landing page.");
@@ -131,22 +113,17 @@ namespace Com.MyCompany.MyGame
             // over PlayerPrefs when connecting without interacting with the Launcher.
             if (rosIpInputField != null && string.IsNullOrWhiteSpace(rosIpInputField.text))
                 rosIpInputField.text = PlayerPrefs.GetString("ROS_IP", "127.0.0.1");
-
             if (rosPortInputField != null && string.IsNullOrWhiteSpace(rosPortInputField.text))
                 rosPortInputField.text = PlayerPrefs.GetString("ROS_Port", "10000");
-
             IsSpectator = true;
             if (spectatorToggle != null)
                 spectatorToggle.isOn = true;
-
             Debug.Log("Launcher: auto-connecting as spectator.");
             Connect();
         }
 
         #endregion
-
         #region Public Methods
-
         /// <summary>
         /// Start the connection process.
         /// - If internet available: attempt to connect to Photon Cloud and join/create the room
@@ -155,15 +132,13 @@ namespace Com.MyCompany.MyGame
         public void Connect()
         {
             // clear feedback UI
-            if (feedbackText != null) feedbackText.text = "";
-
+            if (feedbackText != null)
+                feedbackText.text = "";
             isConnecting = true;
             startedOfflineMode = false;
-
             // hide control panel while connecting
             if (controlPanel != null)
                 controlPanel.SetActive(false);
-
             // Determine spectator mode from toggle
             if (spectatorToggle != null)
             {
@@ -177,7 +152,6 @@ namespace Com.MyCompany.MyGame
             // Player nickname: try saved name, else random with prefix
             string rolePrefix = IsSpectator ? "Spectator_" : "Player_";
             string savedName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : null;
-
             if (!string.IsNullOrEmpty(savedName))
             {
                 PhotonNetwork.NickName = savedName;
@@ -186,18 +160,16 @@ namespace Com.MyCompany.MyGame
             {
                 PhotonNetwork.NickName = rolePrefix + UnityEngine.Random.Range(1000, 9999);
             }
-            Debug.Log("Connecting as: " + PhotonNetwork.NickName);
 
+            Debug.Log("Connecting as: " + PhotonNetwork.NickName);
             // Save ROS Settings
             if (rosIpInputField != null && rosPortInputField != null)
             {
                 string rosIp = rosIpInputField.text.Trim();
                 string rosPort = rosPortInputField.text.Trim();
-
                 PlayerPrefs.SetString("ROS_IP", rosIp);
                 PlayerPrefs.SetString("ROS_Port", rosPort);
                 PlayerPrefs.Save();
-
                 Debug.Log($"Saved ROS IP: {rosIp}, Port: {rosPort}");
             }
             else
@@ -207,7 +179,6 @@ namespace Com.MyCompany.MyGame
 
             // Decide: try Photon (online) or fallback to offline
             bool hasInternet = HasInternetConnection();
-
             if (hasInternet)
             {
                 LogFeedback("Internet detected. Trying Photon...");
@@ -230,13 +201,12 @@ namespace Com.MyCompany.MyGame
                 Debug.Log(message);
                 return;
             }
+
             feedbackText.text += Environment.NewLine + message;
         }
 
         #endregion
-
         #region Photon / Internet Helpers
-
         /// <summary>
         /// Try to connect to Photon using settings. Photon callbacks will be used after.
         /// </summary>
@@ -281,7 +251,6 @@ namespace Com.MyCompany.MyGame
                 // Quick check: any network interface up?
                 if (!NetworkInterface.GetIsNetworkAvailable())
                     return false;
-
                 try
                 {
                     using (var p = new System.Net.NetworkInformation.Ping())
@@ -306,9 +275,7 @@ namespace Com.MyCompany.MyGame
         }
 
         #endregion
-
         #region MonoBehaviourPunCallbacks CallBacks
-
         /// <summary>
         /// Called after the connection to the master is established and authenticated
         /// </summary>
@@ -340,12 +307,9 @@ namespace Com.MyCompany.MyGame
         {
             LogFeedback("<Color=Green>OnJoinedRoom</Color> with " + PhotonNetwork.CurrentRoom.PlayerCount + " Player(s)");
             Debug.Log("[Launcher] OnJoinedRoom received; loading gameplay scene 'defenseScenario'.");
-
             isConnecting = false;
             controlPanel?.SetActive(true);
-
             Debug.Log("Loading the 'defenseScenario' level (or your configured level).");
-
             // Load the Room Level (this will work both online and offline with Photon)
             PhotonNetwork.LoadLevel("defenseScenario");
         }
@@ -357,10 +321,8 @@ namespace Com.MyCompany.MyGame
         {
             LogFeedback("<Color=Red>OnDisconnected</Color> " + cause);
             Debug.LogError("Launcher:Disconnected -> " + cause);
-
             isConnecting = false;
             controlPanel?.SetActive(true);
-
             // If we lost connection but we didn't intentionally start offline mode, fallback to offline mode
             if (!startedOfflineMode)
             {
@@ -382,14 +344,12 @@ namespace Com.MyCompany.MyGame
         {
             LogFeedback("<Color=Red>OnJoinRoomFailed</Color>: " + message);
             Debug.LogWarning($"OnJoinRoomFailed: {message}");
-
             if (!startedOfflineMode)
             {
                 LogFeedback("Switching to offline mode due to join room failure.");
                 StartOfflineMode();
             }
         }
-
         #endregion
     }
 }

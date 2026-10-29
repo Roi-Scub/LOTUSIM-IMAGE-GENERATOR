@@ -1,0 +1,15 @@
+{
+  "/": "index.html",
+  "/index.html": "index.html",
+  "/styles.css": "shell/styles.css",
+  "/app.js": "shell/app.js",
+  "/alerts.js": "shell/alerts.js",
+  "/operations-ux.css": "shell/operations-ux.css",
+  "/settings.js": "features/settings/settings.js",
+  "/settings.css": "features/settings/settings.css",
+  "/assets.js": "features/assets/assets.js",
+  "/assets.css": "features/assets/assets.css",
+  "/mesh-viewer.js": "features/assets/mesh-viewer.js",
+  "/traffic.js": "features/traffic/traffic.js",
+  "/traffic.css": "features/traffic/traffic.css"
+}

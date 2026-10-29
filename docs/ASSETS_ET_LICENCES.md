@@ -8,7 +8,7 @@ modèles et ne remplace pas les conditions de leurs auteurs.
 
 1. **Créations procédurales et code d’intégration** : bouée, bibliothèque aérienne,
    sept familles de navires, matériaux/textures générés et scripts de réponse
-   visuelle. Les constructeurs correspondants restent dans `Assets/Editor/`.
+   visuelle. Les constructeurs correspondants restent dans `Assets/Editor/Dataset/Models/`.
 2. **Adaptations de modèles externes** : six bateaux et huit autres variantes,
    importés dans `Assets/models/open_boats/` et `open_objects/` puis assemblés en
    prefabs. Les manifestes les déclarent `CC-BY-4.0` et enregistrent leurs auteurs,

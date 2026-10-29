@@ -1,5 +1,19 @@
 # Journal des versions
 
+## Refactorisation en revue
+
+- Conventions et formateurs épinglés pour Python, JavaScript, HTML/CSS, C#, C++ et HLSL.
+- Sources dépliées et indentées, sans renommage des contrats applicatifs ou Unity.
+- Tests d’inspection des sources rendus indépendants des espaces et retours à la ligne.
+- Sources de référence et correctifs d’installation synchronisés avec le code formaté.
+- Paquet Python structuré en sept domaines ; état de supervision et sécurité des rapports séparés du serveur HTTP.
+- Frontend rangé par fonctionnalités, avec URL publiques conservées et liste de ressources explicite.
+- Tests Python, Web, C++ et QA sortis de `scripts/` ; lanceur commun et contrôles des dépendances entre domaines.
+- Équations de trajectoire partagées par planificateur et éditeur ; provenance couvrant les deux sources.
+- Modules Unity regroupés par domaine : 84 sources et leurs `.meta` déplacées ensemble, sans changement des types ni des assemblages.
+- Vérification des GUID, des dossiers Editor et des chemins Resources ; compilation hors éditeur adaptée aux déplacements et compatibilité des deux emplacements de l’importeur.
+- Aucun rechargement du runtime, aucune fusion dans `main` et aucune nouvelle version publiée.
+
 ## 0.3.0 du 28 octobre 2026
 
 - Centre d’alertes local avec regroupement par source, déduplication et filtre de

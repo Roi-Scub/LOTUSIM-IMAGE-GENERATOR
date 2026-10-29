@@ -39,25 +39,23 @@ namespace lotusim::scenario {
  * plain helper owned by MAS.
  */
 class ScenarioManager {
-public:
+  public:
     /**
      * @param node        Shared ROS node (owned by MAS).
      * @param spawner     Reference to the EntitySpawner (must outlive this).
      * @param logger      Shared spdlog logger.
      * @param ecm         Pointer to the Gazebo ECM (must outlive this).
      */
-    ScenarioManager(
-        rclcpp::Node::SharedPtr node,
-        std::shared_ptr<lotusim::mas::EntitySpawner> spawner,
-        std::shared_ptr<spdlog::logger> logger,
-        gz::sim::EntityComponentManager* ecm);
+    ScenarioManager(rclcpp::Node::SharedPtr node,
+                    std::shared_ptr<lotusim::mas::EntitySpawner> spawner,
+                    std::shared_ptr<spdlog::logger> logger, gz::sim::EntityComponentManager *ecm);
 
     ~ScenarioManager() = default;
 
     // Owns a synchronized queue; never copy or move it while callbacks exist.
-    ScenarioManager(const ScenarioManager&) = delete;
-    ScenarioManager& operator=(const ScenarioManager&) = delete;
-    ScenarioManager(ScenarioManager&&) = delete;
+    ScenarioManager(const ScenarioManager &) = delete;
+    ScenarioManager &operator=(const ScenarioManager &) = delete;
+    ScenarioManager(ScenarioManager &&) = delete;
 
     /** Execute deferred ROS operations on the Gazebo PreUpdate thread only. */
     void processPendingRequests(double world_seconds = 0);
@@ -65,44 +63,40 @@ public:
     /**
      * @brief Currently active scenario, if any.
      */
-    const std::optional<ScenarioConfig>& currentScenario() const
-    {
+    const std::optional<ScenarioConfig> &currentScenario() const {
         return m_current_scenario;
     }
 
     /**
      * @brief True when a scenario is running.
      */
-    bool isRunning() const
-    {
+    bool isRunning() const {
         return m_current_scenario.has_value();
     }
 
-private:
+  private:
     /**
      * @brief Handler for `launch_scenario` service.
      *
      * Expects request.data = absolute or relative path to the YAML file.
      * Spawns all agents defined in the scenario.
      */
-    void handleLaunch(
-        const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
-        std::shared_ptr<lotusim_msgs::srv::String::Response> response);
+    void handleLaunch(const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
+                      std::shared_ptr<lotusim_msgs::srv::String::Response> response);
 
     /**
      * @brief Handler for `stop_scenario` service.
      *
      * Despawns all agents that were created by the active scenario.
      */
-    void handleStop(
-        const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
-        std::shared_ptr<std_srvs::srv::Trigger::Response> response);
+    void handleStop(const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
+                    std::shared_ptr<std_srvs::srv::Trigger::Response> response);
 
     /**
      * @brief Spawns every agent in cfg using m_spawner->
      * @return Number of agents successfully spawned.
      */
-    int spawnAgents(const ScenarioConfig& cfg);
+    int spawnAgents(const ScenarioConfig &cfg);
 
     /**
      * @brief Removes all agents that were recorded in m_spawned_names.
@@ -112,14 +106,14 @@ private:
     /**
      * @brief Build a MASCmd message from a parsed Agent struct.
      */
-    lotusim_msgs::msg::MASCmd agentToMASCmd(const lotusim::Agent& agent) const;
+    lotusim_msgs::msg::MASCmd agentToMASCmd(const lotusim::Agent &agent) const;
 
     /**
      * @brief Update the world's SphericalCoordinates reference point from cfg.
      */
-    void applyReferencePosition(const GeoPoint& ref);
+    void applyReferencePosition(const GeoPoint &ref);
 
-private:
+  private:
     void enqueueRequest(std::function<void()> operation);
     void handleDataset(const std::shared_ptr<lotusim_msgs::srv::String::Request> request,
                        std::shared_ptr<lotusim_msgs::srv::String::Response> response);
@@ -136,7 +130,7 @@ private:
 
     std::shared_ptr<lotusim::mas::EntitySpawner> m_spawner;
 
-    gz::sim::EntityComponentManager* m_ecm{nullptr};
+    gz::sim::EntityComponentManager *m_ecm{nullptr};
 
     std::optional<ScenarioConfig> m_current_scenario;
 
@@ -146,5 +140,5 @@ private:
     rclcpp::Service<lotusim_msgs::srv::String>::SharedPtr m_dataset_srv;
 };
 
-}  // namespace lotusim::scenario
-#endif  // LOTUSIM_SCENARIO_MANAGER_HH_
+} // namespace lotusim::scenario
+#endif // LOTUSIM_SCENARIO_MANAGER_HH_

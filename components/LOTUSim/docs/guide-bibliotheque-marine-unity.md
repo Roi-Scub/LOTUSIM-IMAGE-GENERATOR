@@ -134,7 +134,7 @@ livré. Commencer avec un seul cargo et mesurer le temps de rendu avant d'en
 multiplier les instances. Le photoréalisme dépend aussi de la lumière, de la
 caméra et de l'échelle dans l'image ; le nombre de polygones ne le garantit pas.
 
-Les sources de génération sont `Assets/Editor/MarineLibrary*.cs`.
+Les sources de génération sont `Assets/Editor/Dataset/Models/Marine/MarineLibrary*.cs`.
 **LOTUSim > Models > Build detailed marine library (7 vessels)** régénère les
 visuels appartenant à cette bibliothèque et les exports LOTUSim. Les GUID des
 assets existants sont conservés et les prefabs étrangers ne sont pas écrasés.

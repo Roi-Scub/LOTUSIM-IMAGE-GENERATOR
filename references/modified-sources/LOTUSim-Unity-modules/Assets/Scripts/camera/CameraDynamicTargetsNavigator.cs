@@ -7,7 +7,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-
 // --------------------------------------------------------------------------------------------------------------------
 //  CameraDynamicTargetsNavigator.cs
 //  
@@ -15,7 +14,6 @@
 //  Dynamically navigates the camera between scene objects by smoothly moving, rotating, and zooming.
 //  Supports arrow key navigation (← →) to cycle through targets.
 // --------------------------------------------------------------------------------------------------------------------
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,7 +22,6 @@ using UnityEngine.SceneManagement;
 /// Dynamically navigates between scene objects by smoothly moving, rotating, and zooming the camera.
 /// Navigation is controlled using arrow keys (← →).
 /// </summary>
-
 [RequireComponent(typeof(Transform))]
 public class CameraDynamicTargetsNavigator : MonoBehaviour
 {
@@ -34,7 +31,6 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
         public Transform target;
         public Vector3 offset;
         public float zoom;
-
         public TargetData(Transform target, Vector3 offset, float zoom)
         {
             this.target = target;
@@ -46,38 +42,33 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
     [Header("Smoothness Settings")]
     [Tooltip("How quickly the camera moves toward the target.")]
     public float moveSmoothTime = 0.3f;
-
     [Tooltip("How quickly the camera zooms to the target.")]
     public float zoomSmoothTime = 0.5f;
-
     [Tooltip("How quickly the camera rotates to face the target.")]
     public float rotationSmoothTime = 0.3f;
-
     [Header("Automatic Target Discovery")]
     [Tooltip("How often to look for scene objects spawned after the camera starts.")]
     public float targetRefreshInterval = 0.5f;
-
     [Header("Ignored Scene Roots")]
     [Tooltip("Root objects to ignore when scanning for camera targets.")]
-    public string[] ignoredRootNames = { "Environment", "Canvas", "World Script" };
-
+    public string[] ignoredRootNames =
+    {
+        "Environment",
+        "Canvas",
+        "World Script"
+    };
     private readonly List<TargetData> targets = new();
     private int currentTargetIndex;
     private float targetRefreshTimer;
-
     private Vector3 moveVelocity;
     private float zoomVelocity;
     private Vector3 currentLookDirection;
     private Vector3 lookDirectionVelocity;
-
     private Camera cam;
-
     // -------------------------------------------------------------------------------------
-
     private void Start()
     {
         cam = GetComponentInChildren<Camera>();
-
         if (cam == null)
         {
             Debug.LogError("[CameraDynamicTargetsNavigator] No camera found in children!");
@@ -98,14 +89,13 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
             targetRefreshTimer = Mathf.Max(0.1f, targetRefreshInterval);
         }
 
-        if (targets.Count == 0) return;
-
+        if (targets.Count == 0)
+            return;
         HandleInput();
-        if (targets.Count == 0) return;
-
+        if (targets.Count == 0)
+            return;
         TargetData targetData = targets[currentTargetIndex];
         Vector3 targetPosition = targetData.target.TransformPoint(targetData.offset);
-
         // Keep following even after the camera has settled; the target may move at any time.
         MoveTowardsTarget(targetPosition);
         AdjustZoom(targetData.zoom);
@@ -114,18 +104,12 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
 
     // -------------------------------------------------------------------------------------
     #region Core Behavior
-
     /// <summary>
     /// Smoothly moves the camera toward a target position.
     /// </summary>
     private void MoveTowardsTarget(Vector3 targetPosition)
     {
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            targetPosition,
-            ref moveVelocity,
-            moveSmoothTime
-        );
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref moveVelocity, moveSmoothTime);
     }
 
     /// <summary>
@@ -133,14 +117,9 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
     /// </summary>
     private void AdjustZoom(float targetZoom)
     {
-        if (cam == null) return;
-
-        cam.fieldOfView = Mathf.SmoothDamp(
-            cam.fieldOfView,
-            targetZoom,
-            ref zoomVelocity,
-            zoomSmoothTime
-        );
+        if (cam == null)
+            return;
+        cam.fieldOfView = Mathf.SmoothDamp(cam.fieldOfView, targetZoom, ref zoomVelocity, zoomSmoothTime);
     }
 
     /// <summary>
@@ -148,17 +127,10 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
     /// </summary>
     private void RotateTowardsTarget(Transform target)
     {
-        if (target == null) return;
-
+        if (target == null)
+            return;
         Vector3 desiredDirection = (target.position - transform.position).normalized;
-
-        currentLookDirection = Vector3.SmoothDamp(
-            currentLookDirection,
-            desiredDirection,
-            ref lookDirectionVelocity,
-            rotationSmoothTime
-        );
-
+        currentLookDirection = Vector3.SmoothDamp(currentLookDirection, desiredDirection, ref lookDirectionVelocity, rotationSmoothTime);
         if (currentLookDirection.sqrMagnitude > 0.001f)
         {
             transform.rotation = Quaternion.LookRotation(currentLookDirection, Vector3.up);
@@ -167,17 +139,13 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
 
     #endregion
     // -------------------------------------------------------------------------------------
-
     #region Target Management
-
     /// <summary>
     /// Refreshes the list of valid scene root targets for the camera to navigate between.
     /// </summary>
     public void RefreshTargets(bool selectNewTarget = false)
     {
-        Transform previousTarget = targets.Count > 0 && currentTargetIndex < targets.Count
-            ? targets[currentTargetIndex].target
-            : null;
+        Transform previousTarget = targets.Count > 0 && currentTargetIndex < targets.Count ? targets[currentTargetIndex].target : null;
         HashSet<Transform> previousTargets = new();
         foreach (TargetData existingTarget in targets)
         {
@@ -187,15 +155,13 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
 
         List<TargetData> refreshedTargets = new();
         Transform newlySpawnedTarget = null;
-
         foreach (GameObject rootObj in SceneManager.GetActiveScene().GetRootGameObjects())
         {
             if (!rootObj.activeInHierarchy || IsIgnored(rootObj.name))
                 continue;
-
             Renderer[] renderers = rootObj.GetComponentsInChildren<Renderer>();
-            if (renderers.Length == 0) continue;
-
+            if (renderers.Length == 0)
+                continue;
             // Calculate combined bounds for the entire object
             Bounds combinedBounds = new(renderers[0].bounds.center, Vector3.zero);
             foreach (Renderer renderer in renderers)
@@ -205,11 +171,9 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
 
             float maxDimension = Mathf.Max(combinedBounds.size.x, combinedBounds.size.y, combinedBounds.size.z);
             float scaleFactor = Mathf.Max(maxDimension, 0.5f);
-
             // Local-space offset: stay above and behind the target as it turns and moves.
             Vector3 offset = new(0, scaleFactor * 0.5f, -scaleFactor * 1.5f);
             float zoom = 60f; // Could be dynamic later if needed
-
             refreshedTargets.Add(new TargetData(rootObj.transform, offset, zoom));
             if (selectNewTarget && newlySpawnedTarget == null && !previousTargets.Contains(rootObj.transform))
                 newlySpawnedTarget = rootObj.transform;
@@ -217,7 +181,6 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
 
         targets.Clear();
         targets.AddRange(refreshedTargets);
-
         if (newlySpawnedTarget != null)
         {
             currentTargetIndex = targets.FindIndex(target => target.target == newlySpawnedTarget);
@@ -225,28 +188,24 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
             return;
         }
 
-        int previousTargetIndex = previousTarget == null
-            ? -1
-            : targets.FindIndex(target => target.target == previousTarget);
-        currentTargetIndex = previousTargetIndex >= 0
-            ? previousTargetIndex
-            : Mathf.Clamp(currentTargetIndex, 0, Mathf.Max(0, targets.Count - 1));
+        int previousTargetIndex = previousTarget == null ? -1 : targets.FindIndex(target => target.target == previousTarget);
+        currentTargetIndex = previousTargetIndex >= 0 ? previousTargetIndex : Mathf.Clamp(currentTargetIndex, 0, Mathf.Max(0, targets.Count - 1));
     }
 
     private bool IsIgnored(string name)
     {
         foreach (string ignored in ignoredRootNames)
         {
-            if (ignored == name) return true;
+            if (ignored == name)
+                return true;
         }
+
         return false;
     }
 
     #endregion
     // -------------------------------------------------------------------------------------
-
     #region Input
-
     private void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -262,7 +221,8 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
     private void NextTarget()
     {
         RefreshTargets();
-        if (targets.Count == 0) return;
+        if (targets.Count == 0)
+            return;
         currentTargetIndex = (currentTargetIndex + 1) % targets.Count;
         ResetFollowSmoothing();
     }
@@ -270,7 +230,8 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
     private void PreviousTarget()
     {
         RefreshTargets();
-        if (targets.Count == 0) return;
+        if (targets.Count == 0)
+            return;
         currentTargetIndex = (currentTargetIndex - 1 + targets.Count) % targets.Count;
         ResetFollowSmoothing();
     }
@@ -281,6 +242,5 @@ public class CameraDynamicTargetsNavigator : MonoBehaviour
         zoomVelocity = 0f;
         lookDirectionVelocity = Vector3.zero;
     }
-
     #endregion
 }
