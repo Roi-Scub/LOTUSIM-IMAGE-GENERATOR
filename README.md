@@ -108,7 +108,7 @@ et [OpenObjects](components/LOTUSim-Unity-modules/ThirdParty/OpenObjects/manifes
 La FREMM et les autres modèles historiques, notamment LRAUV et x500, viennent du
 socle LOTUSim et de ses fournisseurs : leurs notices restent applicables.
 `fremm_observer` / `DatasetObserverFremm` sont des adaptations, pas une nouvelle
-géométrie de Gabriel.
+géométrie de GR.
 Le goéland Dayvable porte une mention **NoAI** à clarifier avant usage pour
 l’entraînement ou diffusion d’un corpus. Voir les [licences et réserves](docs/ASSETS_ET_LICENCES.md).
 
