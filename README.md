@@ -86,7 +86,7 @@ Aucun paquet Python tiers, compte, Unity actif, ROS ou Docker n’est requis pou
 
 ## Organisation du code
 
-Le paquet Python est regroupé par domaines, le frontend par fonctionnalités, et les tests sont séparés des commandes. Voir le [guide d’architecture et de contribution](docs/ARCHITECTURE_CODE.md), notamment la différence entre tests automatisés et QA (assurance qualité). La réorganisation de `refactor` ne déploie pas les sources dans le runtime ouvert.
+Le paquet Python est regroupé par domaines, le frontend par fonctionnalités, et les tests sont séparés des commandes. Les ajouts Unity séparent aussi scripts d’exécution, outils de l’éditeur et tests, en préservant leurs GUID. Voir le [guide d’architecture et de contribution](docs/ARCHITECTURE_CODE.md), notamment la différence entre tests automatisés et QA (assurance qualité). La réorganisation de `refactor` ne déploie pas les sources dans le runtime ouvert.
 
 ## Contenu
 

@@ -26,6 +26,7 @@ from lotusim_image_generator.engines.preparation import (
 )
 from lotusim_image_generator.engines.status import PreparationStatus, ScenePreparationStorageError
 from lotusim_image_generator.engines.registry import (
+    UNITY_ADAPTER as ADAPTER_PATH,
     EngineRegistry,
     EngineRegistryError,
     expected_artifacts,
@@ -40,7 +41,7 @@ MAX_ROWS = 40
 MAX_ACTORS = 40
 MAX_CATEGORY_ACTORS = 12
 SCENE_PATH = 'Assets/Scenes/Dataset/ManualCampaign_<id>.unity'
-ADAPTER_PATH = 'Assets/Editor/DatasetManualCampaignBuilder.cs'
+
 _IDENTIFIER = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$')
 _UUID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
 LIMITATIONS = [

@@ -19,7 +19,8 @@ SCHEMA = 'lotusim-engine-catalog-1'
 PROFILE_SCHEMA = 'lotusim-engine-profile-1'
 MAX_PROFILE = 32768
 MAX_CUSTOM = 32
-UNITY_ADAPTER = 'Assets/Editor/DatasetManualCampaignBuilder.cs'
+UNITY_ADAPTER = 'Assets/Editor/Dataset/Campaigns/DatasetManualCampaignBuilder.cs'
+LEGACY_UNITY_ADAPTER = 'Assets/Editor/DatasetManualCampaignBuilder.cs'
 UNITY_SCENE = 'Assets/Scenes/Dataset/ManualCampaign_<id>.unity'
 UNREAL_SCENE = '/Game/LOTUSim/Campaigns/<id>/Scene'
 CUSTOM_ID = re.compile(r'^custom-[0-9a-f]{16}$')
@@ -99,6 +100,22 @@ def _regular(path):
         return path.is_file()
     except OSError:
         return False
+
+
+def find_unity_adapter(unity_root):
+    """Find only the two trusted layouts, without running or importing a script."""
+    if unity_root is None:
+        return None
+    root = Path(unity_root).resolve()
+    for relative in (UNITY_ADAPTER, LEGACY_UNITY_ADAPTER):
+        path = root / relative
+        try:
+            path.resolve().relative_to(root)
+            if _regular(path):
+                return relative
+        except (OSError, ValueError):
+            continue
+    return None
 
 
 def _runtime_candidates(engine, unity_root):
@@ -245,17 +262,12 @@ class EngineRegistry:
 
     def _descriptor(self, identifier, label, adapter):
         if adapter == 'unity':
-            available = False
-            if self.unity_root is not None:
-                path = self.unity_root / UNITY_ADAPTER
-                try:
-                    path.resolve().relative_to(self.unity_root)
-                    available = _regular(path)
-                except (OSError, ValueError):
-                    pass
+            found = find_unity_adapter(self.unity_root)
+            available = found is not None
+            adapter_path = found or UNITY_ADAPTER
             mode = 'native_adapter_installed' if available else 'native_adapter_unavailable'
             detail = 'Adaptateur Unity existant. La préparation des fichiers ne valide ni ne déclenche leur exécution dans le moteur.'
-            scene_path, adapter_path = UNITY_SCENE, UNITY_ADAPTER
+            scene_path = UNITY_SCENE
         elif adapter == 'unreal':
             available = all(
                 _regular(Path(__file__).parent / name)

@@ -10,6 +10,8 @@
 - Frontend rangé par fonctionnalités, avec URL publiques conservées et liste de ressources explicite.
 - Tests Python, Web, C++ et QA sortis de `scripts/` ; lanceur commun et contrôles des dépendances entre domaines.
 - Équations de trajectoire partagées par planificateur et éditeur ; provenance couvrant les deux sources.
+- Modules Unity regroupés par domaine : 84 sources et leurs `.meta` déplacées ensemble, sans changement des types ni des assemblages.
+- Vérification des GUID, des dossiers Editor et des chemins Resources ; compilation hors éditeur adaptée aux déplacements et compatibilité des deux emplacements de l’importeur.
 - Aucun rechargement du runtime, aucune fusion dans `main` et aucune nouvelle version publiée.
 
 ## 0.3.0 du 28 octobre 2026

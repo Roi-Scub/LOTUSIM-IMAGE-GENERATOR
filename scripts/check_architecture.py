@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 import re
 
+import check_unity_layout
+
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_PREFIX = 'lotusim_image_generator'
 ALLOWED_DEPENDENCIES = {
@@ -130,7 +132,9 @@ def check(root=ROOT):
                 errors.append(str(path.relative_to(root)) + ': test belongs under tests/')
     if errors:
         raise ValueError('\n'.join(errors))
+    unity = check_unity_layout.check(root)
     return {
+        'unityScripts': unity['scripts'],
         'domains': len(ALLOWED_DEPENDENCIES),
         'modules': len(list(package.rglob('*.py'))),
         'routes': len(routes),

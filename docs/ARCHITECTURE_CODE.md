@@ -88,6 +88,100 @@ Les fichiers C# conservent leurs noms de types, champs sérialisés et `.meta` U
 Les scènes, prefabs, interfaces ROS et noms d’objets ne sont pas renommés pour
 faire correspondre le rendu à une convention Python.
 
+## Organisation des modules Unity
+
+Les ajouts Unity sont séparés en **41 scripts d’exécution**, **29 scripts
+d’outillage de l’éditeur** et **14 fichiers de vérification**. Les fichiers C# et
+leurs `.meta` sont déplacés ensemble, sans changement de contenu, de type, de
+namespace, de menu ou de champ sérialisé.
+
+```text
+Assets/
+  Scripts/Dataset/
+    Annotations/           masques, visibilité, reconnaissance et annotations
+    Campaigns/             configurations et exécution des campagnes
+    Capture/               export PNG, séquences, galeries et capteurs
+    Environment/           houle, mouvements, météo et éclairages
+    Integration/           protocole et source de positions LOTUSim
+    Models/                catalogues, modèles importés et animations
+    Sensors/               caméra embarquée et passes spectrales
+    Traffic/               plans coopératifs et contrôle de la trajectoire
+  Editor/Dataset/
+    Campaigns/             création des scènes et configurations de génération
+    Import/                importeurs du dashboard et de la bibliothèque de plans
+    Models/Aerial/         constructeurs et géométrie des objets aériens
+    Models/Marine/         constructeurs et géométrie des objets maritimes
+    Monitoring/            suivi local et outils de validation RGB
+  Tests/Editor/Dataset/
+    Annotations/ Campaigns/ Capture/ Environment/ Integration/ Models/ Sensors/
+  Resources/Dataset/       shaders InstanceMask et SpectralCapture inchangés
+```
+
+Les fichiers partiels d’un même constructeur restent regroupés : par exemple
+`AerialLibraryBuilder`, sa géométrie, ses modèles, ses exports et ses contrôles.
+Les vérifications de géométrie associées à ces constructeurs restent avec eux.
+Les autres fichiers `*Tests.cs` sont désormais sous `Tests/Editor/Dataset/`.
+
+Le nom spécial `Editor` reste présent dans les chemins des outils et des tests.
+Les scripts d’exécution restent dans `Assembly-CSharp` et les outils dans
+`Assembly-CSharp-Editor`. Aucun `.asmdef` ou `.asmref` n’est ajouté : les ajouts
+référencent encore des types du projet officiel dans ses assemblages prédéfinis.
+Cette réorganisation n’est donc pas une extraction en package UPM.
+
+Les identifiants des scripts et leurs paramètres d’import restent dans leurs
+`.meta` d’origine. Seuls les nouveaux dossiers reçoivent de nouveaux identifiants.
+Les scènes, prefabs, configurations, shaders, modèles et messages ROS ne changent
+pas. Cette précaution suit les règles Unity sur les
+[métadonnées des assets](https://docs.unity3d.com/2022.3/Documentation/Manual/AssetMetadata.html)
+et les [dossiers de compilation](https://docs.unity3d.com/2022.3/Documentation/Manual/ScriptCompileOrderFolders.html).
+
+### Contrôler les déplacements
+
+`references/unity-code-layout.json` conserve l’ancien chemin, le nouveau chemin,
+le GUID et l’assemblage de chaque script déplacé. Le contrôle refuse un GUID
+modifié ou dupliqué, une copie obsolète, des métadonnées manquantes, un changement
+d’assemblage ou des scripts hors des groupes déclarés. Il fait partie du contrôle
+général d’architecture :
+
+```bash
+python scripts/check_unity_layout.py
+python scripts/check_architecture.py
+```
+
+Le compilateur hors éditeur utilise cette table pour rapprocher les anciens
+chemins présents dans les caches des nouveaux fichiers, après vérification des
+GUID. Il ne remplace pas un fichier simplement parce que son nom ressemble à un
+autre. Les réponses de compilation du projet ouvert restent en lecture seule.
+
+```bash
+python scripts/check_unity_refactor.py \
+  --unity runtime/LOTUSim-Unity-modules \
+  --editor /Applications/Unity/Hub/Editor/2022.3.18f1/Unity.app/Contents
+```
+
+Cette commande compile les sources d’exécution et de l’éditeur avec les
+références déjà installées. Elle ne lance pas Unity, n’importe aucune scène et
+ne valide pas le rendu GPU. Les vérifications exposées par les menus restent des
+actions manuelles ; le fichier NUnit conditionnel n’est pas exécuté par ce
+contrôle de compilation.
+
+### Conserver la compatibilité du dashboard
+
+L’importeur principal est désormais
+`Assets/Editor/Dataset/Campaigns/DatasetManualCampaignBuilder.cs`. Le registre
+moteur accepte aussi son ancien emplacement
+`Assets/Editor/DatasetManualCampaignBuilder.cs`, pour ne pas désactiver une
+installation encore organisée comme avant. Les nouveaux paquets de préparation
+indiquent le chemin réellement détecté. Les noms des classes et menus d’import
+restent identiques.
+
+Cette branche ne déplace rien sous `runtime/`. Après revue, utiliser des clones
+propres et l’installateur contrôlé. Ne pas recopier les nouveaux dossiers sur
+une ancienne installation en conservant les anciennes sources : cela créerait
+des classes et des GUID en double. Les projets modifiés de l’utilisateur doivent
+faire l’objet d’une migration explicite, pas d’un écrasement récursif.
+
+
 ## Dépendances entre domaines
 
 Le dashboard assemble les domaines. Les paramètres de campagne utilisent les

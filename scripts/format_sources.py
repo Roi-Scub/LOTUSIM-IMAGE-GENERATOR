@@ -19,6 +19,7 @@ PREFIXES = (
     'components/LOTUSim/tools/',
     'components/LOTUSim/systems/',
     'components/LOTUSim-Unity-modules/Assets/Editor/',
+    'components/LOTUSim-Unity-modules/Assets/Tests/',
     'components/LOTUSim-Unity-modules/Assets/Scripts/Dataset/',
     'components/LOTUSim-Unity-modules/Assets/Resources/Dataset/',
     'references/modified-sources/LOTUSim/systems/',

@@ -1,0 +1,631 @@
+{
+  "schema": "lotusim-unity-code-layout-1",
+  "baselineCommit": "314003a02b69d977bd37782c24c290ca4897df2a",
+  "groups": {
+    "Assets/Scripts/Dataset": [
+      "Annotations",
+      "Campaigns",
+      "Capture",
+      "Integration",
+      "Models",
+      "Environment",
+      "Sensors",
+      "Traffic"
+    ],
+    "Assets/Editor/Dataset": [
+      "Campaigns",
+      "Import",
+      "Models",
+      "Monitoring"
+    ],
+    "Assets/Tests/Editor/Dataset": [
+      "Annotations",
+      "Models",
+      "Environment",
+      "Integration",
+      "Campaigns",
+      "Capture",
+      "Sensors"
+    ]
+  },
+  "moves": [
+    {
+      "from": "Assets/Scripts/Dataset/DatasetAnnotationExport.cs",
+      "to": "Assets/Scripts/Dataset/Annotations/DatasetAnnotationExport.cs",
+      "role": "runtime",
+      "guid": "7172107feaf34b7a9cb5930b646efee0",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetInstanceMaskPass.cs",
+      "to": "Assets/Scripts/Dataset/Annotations/DatasetInstanceMaskPass.cs",
+      "role": "runtime",
+      "guid": "497ddaa1c0ea4529b569f43743c244f2",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetMultiInstanceMaskPass.cs",
+      "to": "Assets/Scripts/Dataset/Annotations/DatasetMultiInstanceMaskPass.cs",
+      "role": "runtime",
+      "guid": "0a4758ba239941c4a1e625b4f132be66",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetOverlayLabel.cs",
+      "to": "Assets/Scripts/Dataset/Annotations/DatasetOverlayLabel.cs",
+      "role": "runtime",
+      "guid": "c346792a812341668c9f372cd3b4b1ec",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetRecognition.cs",
+      "to": "Assets/Scripts/Dataset/Annotations/DatasetRecognition.cs",
+      "role": "runtime",
+      "guid": "e39c4d6011a249398816dbc6a5dfe9b2",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetCampaignConfig.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetCampaignConfig.cs",
+      "role": "runtime",
+      "guid": "4ec948215207e437ab9e9565b8c7a36f",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetCampaignRunner.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetCampaignRunner.cs",
+      "role": "runtime",
+      "guid": "86e4af56d77374b8ea16189612048aa8",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetManualCampaign.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetManualCampaign.cs",
+      "role": "runtime",
+      "guid": "82240e761f6c45fe81bca9821bbcfd87",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetManualCampaignAsset.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetManualCampaignAsset.cs",
+      "role": "runtime",
+      "guid": "ae27b157cfd141d3ae1ee7d59fe9b117",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetManualCampaignRunner.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetManualCampaignRunner.cs",
+      "role": "runtime",
+      "guid": "38b8593e6b8d40e1bd43541792c21ae7",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetManualPlanBundle.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetManualPlanBundle.cs",
+      "role": "runtime",
+      "guid": "74abf36b4f4f4442b520bc61bf5c3129",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSequenceConfig.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetSequenceConfig.cs",
+      "role": "runtime",
+      "guid": "2c7fab225b1c4a31bd15a65deba7a31a",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSequenceRunner.cs",
+      "to": "Assets/Scripts/Dataset/Campaigns/DatasetSequenceRunner.cs",
+      "role": "runtime",
+      "guid": "d018a9c25db64ac594b2eab788571fb9",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetRgbPng.cs",
+      "to": "Assets/Scripts/Dataset/Capture/DatasetRgbPng.cs",
+      "role": "runtime",
+      "guid": "fd5c48479069f4dfaa24078edaeea901",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSequenceExport.cs",
+      "to": "Assets/Scripts/Dataset/Capture/DatasetSequenceExport.cs",
+      "role": "runtime",
+      "guid": "6e3dab4577ca4f138c975ba1a413de69",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSequenceGallery.cs",
+      "to": "Assets/Scripts/Dataset/Capture/DatasetSequenceGallery.cs",
+      "role": "runtime",
+      "guid": "b5d06c007e38345a39127ba8542e2ff4",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSequenceSensorsExport.cs",
+      "to": "Assets/Scripts/Dataset/Capture/DatasetSequenceSensorsExport.cs",
+      "role": "runtime",
+      "guid": "61433951d645448b1a6ef459fc1f3bb9",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetLotusimScenario.cs",
+      "to": "Assets/Scripts/Dataset/Integration/DatasetLotusimScenario.cs",
+      "role": "runtime",
+      "guid": "296767bc0aac4642a829f1be276ce3bc",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetLotusimSource.cs",
+      "to": "Assets/Scripts/Dataset/Integration/DatasetLotusimSource.cs",
+      "role": "runtime",
+      "guid": "75862b2576ae496ca98eb6ee19dd1a81",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetScenarioService.cs",
+      "to": "Assets/Scripts/Dataset/Integration/DatasetScenarioService.cs",
+      "role": "runtime",
+      "guid": "e7ca67c81f27b4b6c9dc75ae2a289d43",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetImportedAsset.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetImportedAsset.cs",
+      "role": "runtime",
+      "guid": "e78a4c3b59dc4d058bdfcba9ae2a7823",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetBoatVariants.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetBoatVariants.cs",
+      "role": "runtime",
+      "guid": "95bf0db5b17714d74b3a485244e525e8",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetExternalAssetCatalog.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetExternalAssetCatalog.cs",
+      "role": "runtime",
+      "guid": "2011e71192adb48cca0ea01d420e2a11",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetBuoyAutoSetup.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetBuoyAutoSetup.cs",
+      "role": "runtime",
+      "guid": "e545b23fb4d454982a5eb90636186210",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetMeshAnimation.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetMeshAnimation.cs",
+      "role": "runtime",
+      "guid": "a8ceacb67c0f844218097291f0aca248",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetMeshAnimationClip.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetMeshAnimationClip.cs",
+      "role": "runtime",
+      "guid": "91eea521dd8f343129d8d8ac342f882d",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetAssetShowcase.cs",
+      "to": "Assets/Scripts/Dataset/Models/DatasetAssetShowcase.cs",
+      "role": "runtime",
+      "guid": "6327ca1f1da4c4c528a15e5d4bc27130",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/MarineLibraryShowcase.cs",
+      "to": "Assets/Scripts/Dataset/Models/MarineLibraryShowcase.cs",
+      "role": "runtime",
+      "guid": "b1d57eeb1e4764486b7067a478584650",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/OpenBoatAssetCredit.cs",
+      "to": "Assets/Scripts/Dataset/Models/OpenBoatAssetCredit.cs",
+      "role": "runtime",
+      "guid": "23a5ddcc3f6654cf0aa3fb13a5f53e50",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/MarineVesselWaveMotion.cs",
+      "to": "Assets/Scripts/Dataset/Environment/MarineVesselWaveMotion.cs",
+      "role": "runtime",
+      "guid": "99a90c1d6ef204691b43a8f884f7f36f",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/BuoyWaveMotion.cs",
+      "to": "Assets/Scripts/Dataset/Environment/BuoyWaveMotion.cs",
+      "role": "runtime",
+      "guid": "b25ea949da5f4a73a1a3cc1283e1f5a7",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetAerialResponse.cs",
+      "to": "Assets/Scripts/Dataset/Environment/DatasetAerialResponse.cs",
+      "role": "runtime",
+      "guid": "844e999f5031a4196b2797fa8934ad58",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetManualWeather.cs",
+      "to": "Assets/Scripts/Dataset/Environment/DatasetManualWeather.cs",
+      "role": "runtime",
+      "guid": "992f319014514c6ba05b885c644bc147",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/BuoyLanternFlash.cs",
+      "to": "Assets/Scripts/Dataset/Environment/BuoyLanternFlash.cs",
+      "role": "runtime",
+      "guid": "dcf9cda387b74e059b14dba852364313",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetAircraftLights.cs",
+      "to": "Assets/Scripts/Dataset/Environment/DatasetAircraftLights.cs",
+      "role": "runtime",
+      "guid": "7bb9a45ff31c4e97a9fb5b452c1b18dc",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetAssetLights.cs",
+      "to": "Assets/Scripts/Dataset/Environment/DatasetAssetLights.cs",
+      "role": "runtime",
+      "guid": "b07cf0bacaa854eccadc5cb73b8cf51f",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSensorSettings.cs",
+      "to": "Assets/Scripts/Dataset/Sensors/DatasetSensorSettings.cs",
+      "role": "runtime",
+      "guid": "b1a9512be400149aeb6012e21e7b9f19",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetSpectralPass.cs",
+      "to": "Assets/Scripts/Dataset/Sensors/DatasetSpectralPass.cs",
+      "role": "runtime",
+      "guid": "8def53516f99940a4a9de9aae29eddeb",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetVesselCameraMount.cs",
+      "to": "Assets/Scripts/Dataset/Sensors/DatasetVesselCameraMount.cs",
+      "role": "runtime",
+      "guid": "214331be24a364063bc20a4eaf060fe5",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetTrafficPlanBundle.cs",
+      "to": "Assets/Scripts/Dataset/Traffic/DatasetTrafficPlanBundle.cs",
+      "role": "runtime",
+      "guid": "faf4816a6d82a45a09f228e34552f73b",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Scripts/Dataset/DatasetTrafficRuntimeGuard.cs",
+      "to": "Assets/Scripts/Dataset/Traffic/DatasetTrafficRuntimeGuard.cs",
+      "role": "runtime",
+      "guid": "3f800f92ff3bb4439a729df247f65752",
+      "assembly": "Assembly-CSharp"
+    },
+    {
+      "from": "Assets/Editor/AerialLibraryBuilder.cs",
+      "to": "Assets/Editor/Dataset/Models/Aerial/AerialLibraryBuilder.cs",
+      "role": "editor",
+      "guid": "ad05d34a9d5e74a9e80add4925d1ed34",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/AerialLibraryExport.cs",
+      "to": "Assets/Editor/Dataset/Models/Aerial/AerialLibraryExport.cs",
+      "role": "editor",
+      "guid": "a3a92a1a24ed14ab388a87d264872d99",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/AerialLibraryGeometry.cs",
+      "to": "Assets/Editor/Dataset/Models/Aerial/AerialLibraryGeometry.cs",
+      "role": "editor",
+      "guid": "55e3119d023b04d60afbb473ccf5e122",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/AerialLibraryGeometryChecks.cs",
+      "to": "Assets/Editor/Dataset/Models/Aerial/AerialLibraryGeometryChecks.cs",
+      "role": "editor",
+      "guid": "2d4400de713034862b50d2fd4a555f40",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/AerialLibraryModels.cs",
+      "to": "Assets/Editor/Dataset/Models/Aerial/AerialLibraryModels.cs",
+      "role": "editor",
+      "guid": "e20bcadceab0146758ed46ebe04b2628",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineBuoyBuilder.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineBuoyBuilder.cs",
+      "role": "editor",
+      "guid": "1bae217de06f1459687ca77a2f4a62f8",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineLibraryBuilder.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineLibraryBuilder.cs",
+      "role": "editor",
+      "guid": "d9de2f0d27a4f4451ada9f2cb0d789b6",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineLibraryChecks.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineLibraryChecks.cs",
+      "role": "editor",
+      "guid": "6fc7ef6e4c03040e2b505f323096db6e",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineLibraryGeometry.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineLibraryGeometry.cs",
+      "role": "editor",
+      "guid": "dcd93b968758c4cc098be67d9bff0b45",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineLibraryModels.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineLibraryModels.cs",
+      "role": "editor",
+      "guid": "00ac2219661944a34a734093d4d3d615",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineLibraryScene.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineLibraryScene.cs",
+      "role": "editor",
+      "guid": "570f1e360964e40d9829656201658293",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineOpenBoatsBuilder.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineOpenBoatsBuilder.cs",
+      "role": "editor",
+      "guid": "416c3566b54974ded9e597886abbaef8",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/MarineOpenObjectsBuilder.cs",
+      "to": "Assets/Editor/Dataset/Models/Marine/MarineOpenObjectsBuilder.cs",
+      "role": "editor",
+      "guid": "0d89b41dbdccb4c22a121377303e036b",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetManualCampaignBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetManualCampaignBuilder.cs",
+      "role": "editor",
+      "guid": "a50ec5554696497095fa9cb4b5d61bc3",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetFastDroneBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetFastDroneBuilder.cs",
+      "role": "editor",
+      "guid": "de36b2789df874db69cdf09b2971fa0f",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetLotusimBridgeBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetLotusimBridgeBuilder.cs",
+      "role": "editor",
+      "guid": "4a95826059ad745a3be81d38963a541b",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetLotusimSceneBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetLotusimSceneBuilder.cs",
+      "role": "editor",
+      "guid": "d940e3df7f25473d85c4c62294a417fa",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetLotusimSensorsBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetLotusimSensorsBuilder.cs",
+      "role": "editor",
+      "guid": "46171b7e718bf42afaaac74c0f1c8e89",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetLotusimVoyageBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetLotusimVoyageBuilder.cs",
+      "role": "editor",
+      "guid": "2577473399fce45b4b91bbec1ccd3149",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetPilotSceneBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetPilotSceneBuilder.cs",
+      "role": "editor",
+      "guid": "e35f90d86a8b7454da5faae816ef64d1",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetSequenceSceneBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetSequenceSceneBuilder.cs",
+      "role": "editor",
+      "guid": "b85a7ef2d20d4bcba3b5b4e1341dd116",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetTrafficAgentsBuilder.cs",
+      "to": "Assets/Editor/Dataset/Campaigns/DatasetTrafficAgentsBuilder.cs",
+      "role": "editor",
+      "guid": "2f0ceae2a517742a58cd4655a349d870",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetDashboardImportContract.cs",
+      "to": "Assets/Editor/Dataset/Import/DatasetDashboardImportContract.cs",
+      "role": "editor",
+      "guid": "29f36f91dfc84272a095b07af630bdb7",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetDashboardImportWatcher.cs",
+      "to": "Assets/Editor/Dataset/Import/DatasetDashboardImportWatcher.cs",
+      "role": "editor",
+      "guid": "38f25e9160a64385b87c921ec72c9672",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetDashboardMeshBuilder.cs",
+      "to": "Assets/Editor/Dataset/Import/DatasetDashboardMeshBuilder.cs",
+      "role": "editor",
+      "guid": "1c1ea8a7916e4516bd544cffdf9e39c0",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetTrafficLibraryBuilder.cs",
+      "to": "Assets/Editor/Dataset/Import/DatasetTrafficLibraryBuilder.cs",
+      "role": "editor",
+      "guid": "a60f5e88f1f142469d075b0a362a6e87",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetTrafficLibraryImportContract.cs",
+      "to": "Assets/Editor/Dataset/Import/DatasetTrafficLibraryImportContract.cs",
+      "role": "editor",
+      "guid": "a6fc6790f43c45da9d251b7e5e4f6c10",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetOpsTelemetry.cs",
+      "to": "Assets/Editor/Dataset/Monitoring/DatasetOpsTelemetry.cs",
+      "role": "editor",
+      "guid": "7286ee4cb7ca412b87338d8e275af27c",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetRgbObserverTools.cs",
+      "to": "Assets/Editor/Dataset/Monitoring/DatasetRgbObserverTools.cs",
+      "role": "editor",
+      "guid": "b73f1299cd7447f38c3a4a019e81204f",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetAnnotationTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Annotations/DatasetAnnotationTests.cs",
+      "role": "test",
+      "guid": "75f281abc4a54c7a850b380691e9df5b",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetRecognitionTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Annotations/DatasetRecognitionTests.cs",
+      "role": "test",
+      "guid": "e762e748218f40ee92da101724fc259b",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetBoatVariantTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Models/DatasetBoatVariantTests.cs",
+      "role": "test",
+      "guid": "9d900aa14741640d99981039356e2f48",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetExternalAssetTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Models/DatasetExternalAssetTests.cs",
+      "role": "test",
+      "guid": "c9f304f6b42ed4c8591a04b27ba4eec9",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetLanternLifecycleTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Environment/DatasetLanternLifecycleTests.cs",
+      "role": "test",
+      "guid": "b26bd857518f467294952182a9063f34",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetDashboardImportTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Integration/DatasetDashboardImportTests.cs",
+      "role": "test",
+      "guid": "f57eb70320734ce7a2ecc85ef1461224",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetLotusimTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Integration/DatasetLotusimTests.cs",
+      "role": "test",
+      "guid": "06c7a083bde74c04ab95f5732714101a",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetTrafficLibraryTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Integration/DatasetTrafficLibraryTests.cs",
+      "role": "test",
+      "guid": "6d6b309493cd45fbb84ffdf20db461ef",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetManualCampaignTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Campaigns/DatasetManualCampaignTests.cs",
+      "role": "test",
+      "guid": "463eaad676ec4e809a9532fa8787e09f",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetPilotTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Campaigns/DatasetPilotTests.cs",
+      "role": "test",
+      "guid": "90502784c2ddf4cc6851dd07e631584e",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetSequenceTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Campaigns/DatasetSequenceTests.cs",
+      "role": "test",
+      "guid": "f24b946ca8b64a3fab8b053197413f95",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetTrafficAgentsTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Campaigns/DatasetTrafficAgentsTests.cs",
+      "role": "test",
+      "guid": "e873ff2a3f19d41379b43eb63376fe10",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetPngTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Capture/DatasetPngTests.cs",
+      "role": "test",
+      "guid": "aaa551edf6de943e9b398fb6da5961e5",
+      "assembly": "Assembly-CSharp-Editor"
+    },
+    {
+      "from": "Assets/Editor/DatasetSensorsTests.cs",
+      "to": "Assets/Tests/Editor/Dataset/Sensors/DatasetSensorsTests.cs",
+      "role": "test",
+      "guid": "8f6bd2252a3b44d318515f8cb00ddbfd",
+      "assembly": "Assembly-CSharp-Editor"
+    }
+  ],
+  "resources": [
+    {
+      "path": "Assets/Resources/Dataset/InstanceMask.shader",
+      "guid": "8ebf426bef914ef19e98803631f80905"
+    },
+    {
+      "path": "Assets/Resources/Dataset/SpectralCapture.shader",
+      "guid": "584b4a7b1d5be400c9695938ce60f02d"
+    }
+  ]
+}

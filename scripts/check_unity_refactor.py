@@ -13,6 +13,8 @@ import re
 import subprocess
 import tempfile
 
+from check_unity_layout import source_aliases
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOTS = (
     Path("components/LOTUSim-Unity-modules"),
@@ -23,7 +25,11 @@ OUTPUT_OPTIONS = {"out", "refout", "pdb", "doc", "errorlog", "generatedfilesout"
 
 def source_map(root):
     tracked = (
-        subprocess.check_output(["git", "ls-files", "-z", "--", "*.cs"], cwd=root)
+        subprocess.check_output(
+            ["git", "ls-files", "-z", "--", "*.cs"],
+            cwd=root,
+            env={key: value for key, value in os.environ.items() if not key.startswith('GIT_')},
+        )
         .decode("utf-8")
         .split("\0")
     )
@@ -50,8 +56,9 @@ def source_map(root):
     return result
 
 
-def compile_response(original, target, unity, temporary, sources, seen):
+def compile_response(original, target, unity, temporary, sources, seen, aliases=None):
     lines = []
+    aliases = aliases or {}
     for line in original.read_text(encoding="utf-8").splitlines():
         option = re.match(r"^[-/]([a-z]+):(.*)$", line, flags=re.IGNORECASE)
         if option and option.group(1).lower() in OUTPUT_OPTIONS:
@@ -74,10 +81,11 @@ def compile_response(original, target, unity, temporary, sources, seen):
                     relative = relative.relative_to(unity)
                 except ValueError:
                     pass
-            source = sources.get(relative.as_posix())
+            canonical = aliases.get(relative.as_posix(), relative.as_posix())
+            source = sources.get(canonical)
             if source is not None:
                 lines.append('"' + str(source) + '"')
-                seen.add(relative.as_posix())
+                seen.add(canonical)
                 continue
         lines.append(line)
     response = temporary / (target + ".rsp")
@@ -101,6 +109,7 @@ def main():
             "The existing Unity compiler/runtime is unavailable; no native compile claimed"
         )
     sources = source_map(root)
+    aliases = source_aliases(root)
     responses = {}
     for target in ("Assembly-CSharp", "Assembly-CSharp-Editor"):
         candidates = list((unity / "Library/Bee/artifacts").glob("*.dag/" + target + ".rsp"))
@@ -122,7 +131,7 @@ def main():
         )
         seen = set()
         for target, original in responses.items():
-            response = compile_response(original, target, unity, temporary, sources, seen)
+            response = compile_response(original, target, unity, temporary, sources, seen, aliases)
             compiled = subprocess.run(
                 [str(runtime), str(compiler), "@" + str(response)],
                 cwd=unity,

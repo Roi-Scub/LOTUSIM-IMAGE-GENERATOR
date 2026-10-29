@@ -2,10 +2,11 @@
 
 import json
 from pathlib import Path
-from lotusim_image_generator.engines.registry import UNITY_ADAPTER, UNITY_SCENE
+from lotusim_image_generator.engines.registry import UNITY_ADAPTER, UNITY_SCENE, find_unity_adapter
 
 
 def prepare_unity(campaign, identifier, campaign_sha, core_root, unity_root=None, catalogue=None):
+    adapter_path = find_unity_adapter(unity_root) or UNITY_ADAPTER
     compact = identifier.replace('-', '')
     path = Path(core_root) / 'artifacts/campaign-settings/prepared' / identifier / 'manifest.json'
     literal = json.dumps(str(path), ensure_ascii=True)
@@ -46,7 +47,7 @@ public static class LOTUSimPrepared_%s
         'id': identifier,
         'campaignSha256': campaign_sha,
         'scenePath': UNITY_SCENE.replace('<id>', identifier),
-        'adapterPath': UNITY_ADAPTER,
+        'adapterPath': adapter_path,
         'entryPoint': 'DatasetManualCampaignBuilder.ImportManifest',
         'sampleCount': campaign['totalImages'],
         'imageSemantics': 'independent_seeded_samples',
@@ -65,7 +66,7 @@ public static class LOTUSimPrepared_%s
         },
         'manifest': {
             'scenePath': plan['scenePath'],
-            'adapterPath': UNITY_ADAPTER,
+            'adapterPath': adapter_path,
             'instructions': instructions,
             'runtimeRequirements': [
                 'Existing LOTUSim Unity project and manual campaign adapter',

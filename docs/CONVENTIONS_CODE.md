@@ -78,7 +78,7 @@ elle vérifie les correctifs au lieu de les remplacer.
 
 ## Organisation des sources
 
-Le [guide d’architecture](ARCHITECTURE_CODE.md) décrit les domaines Python, les fonctionnalités Web, les entrées de compatibilité et les dossiers de tests. `scripts/` ne contient plus les suites de tests. Les contrôles QA sont des sources versionnées sous `tests/qa/`, tandis que leurs résultats restent sous `artifacts/qa/`.
+Le [guide d’architecture](ARCHITECTURE_CODE.md) décrit les domaines Python, les fonctionnalités Web, les modules Unity, les entrées de compatibilité et les dossiers de tests. Les scripts Unity sont déplacés avec leur `.meta`, sans renommer les classes sérialisées ni changer les assemblages. `scripts/` ne contient plus les suites de tests. Les contrôles QA sont des sources versionnées sous `tests/qa/`, tandis que leurs résultats restent sous `artifacts/qa/`.
 
 ## Valider les changements
 
