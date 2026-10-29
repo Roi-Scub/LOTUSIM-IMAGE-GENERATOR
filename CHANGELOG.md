@@ -1,6 +1,22 @@
 # Journal des versions
 
-## Refactorisation en revue
+## 1.0.0 du 29 octobre 2026 — Official Release
+
+Première version majeure officielle du projet **LOTUSIM Image Generator**.
+Il s’agit de la livraison de ce projet d’intégration, pas d’une version officielle
+du simulateur LOTUSim publiée par Naval Group.
+
+### Fonctionnalités livrées
+
+- Dashboard local de supervision, journal, alertes regroupées et paramétrage des campagnes.
+- Intégration LOTUSim/ROS2 et rendu Unity, capture RGB et annotations géométriques avec visibilité, occultation et statuts NR/PR/R.
+- Bibliothèques d’objets maritimes et aériens, import de modèles depuis le dashboard et réponses visuelles à la houle.
+- Scénarios coopératifs, bibliothèque de plans SQLite, édition de trajectoires et captures à cadence configurable.
+- Analyse RGB indépendante, exclusion du bateau observateur et rapports de comparaison.
+- Registre multi-moteur, contrats de scène et préparation de fichiers Unity/Unreal, avec capacités et limites explicites.
+- Installation contrôlée sur des dépendances épinglées, documentation et inventaire SHA-256.
+
+### Architecture et maintenabilité
 
 - Conventions et formateurs épinglés pour Python, JavaScript, HTML/CSS, C#, C++ et HLSL.
 - Sources dépliées et indentées, sans renommage des contrats applicatifs ou Unity.
@@ -12,7 +28,28 @@
 - Équations de trajectoire partagées par planificateur et éditeur ; provenance couvrant les deux sources.
 - Modules Unity regroupés par domaine : 84 sources et leurs `.meta` déplacées ensemble, sans changement des types ni des assemblages.
 - Vérification des GUID, des dossiers Editor et des chemins Resources ; compilation hors éditeur adaptée aux déplacements et compatibilité des deux emplacements de l’importeur.
-- Aucun rechargement du runtime, aucune fusion dans `main` et aucune nouvelle version publiée.
+- Sources figées par le tag annoté `v1.0.0` depuis `refactor`, sans fusion supplémentaire dans `main` ni déploiement du runtime.
+
+### Vérifications
+
+- 725 tests applicatifs Python et 52 tests d’outillage réussis ; 14 suites Web exécutées.
+- Compilation hors éditeur des 90 sources C# portables avec les références Unity installées.
+- Conservation du contenu des 1 850 fichiers d’assets Unity d’origine ; 84 paires source/`.meta` réorganisées et 985 GUID uniques contrôlés.
+- Pré-vérification de l’installateur sur deux clones temporaires propres aux commits de base épinglés.
+
+### Périmètre et limites
+
+Cette livraison contient les sources portables, correctifs, modèles sélectionnés
+et notices. Elle n’inclut pas les projets complets sous `runtime/`, les poids IA,
+conteneurs, images générées, bases de travail ou exécutables compilés. Les
+licences et attributions des composants restent distinctes.
+
+Unity conserve la chaîne de génération existante. Unreal reste un prototype
+d’aperçu RGB statique, sans parité ROS, houle ou annotations ; les autres profils
+nécessitent leur adaptateur natif. Les contrôles COLREG restent partiels et non
+certifiants. La houle, la météo et les modes spectraux sont des approximations,
+pas des capteurs physiques calibrés. La compilation hors éditeur ne constitue
+pas une validation de rendu GPU ou une exécution des tests Play.
 
 ## 0.3.0 du 28 octobre 2026
 

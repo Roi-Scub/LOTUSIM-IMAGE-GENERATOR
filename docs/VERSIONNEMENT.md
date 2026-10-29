@@ -1,8 +1,9 @@
 # Versionnement du projet
 
 Le dépôt privé `Roi-Scub/LOTUSIM-IMAGE-GENERATOR` versionne l'export portable des
-développements, des modèles sélectionnés et des correctifs. La version initiale
-est `0.1.0`. Les sources exécutées sur ce poste restent sous `runtime/`, qui est
+développements, des modèles sélectionnés et des correctifs. La version majeure
+actuelle est **1.0.0 — Official Release** ; la version initiale était `0.1.0`.
+Les sources exécutées sur ce poste restent sous `runtime/`, qui est
 exclu de Git : reporter chaque évolution réutilisable dans `components/` ou dans
 son correctif avant de la committer.
 
@@ -15,6 +16,18 @@ captures, validation RGB, dashboard, moteurs, imports et trafic coopératif.
 
 Les commits d'import constituent ensemble le premier snapshot complet ; chacun
 n'est pas une livraison autonome. Le tag annoté `v0.1.0` désigne ce snapshot.
+
+## Version majeure officielle
+
+Le tag annoté `v1.0.0` désigne la livraison de **LOTUSIM Image Generator** publiée
+sous le titre **v1.0.0 — Official Release** dans le dépôt privé. Il ne désigne
+pas une version officielle du simulateur LOTUSim de Naval Group.
+
+Cette livraison est préparée depuis `refactor`, dont le code a déjà été fusionné
+dans `main` avant la publication. Le commit de version et le tag n’effectuent
+aucune fusion supplémentaire et ne déploient pas les sources sous `runtime/`.
+Pour obtenir exactement cette livraison, cloner ou sélectionner le tag `v1.0.0`
+plutôt que supposer que la branche par défaut pointe dessus.
 
 ## Enregistrer une évolution
 
@@ -35,10 +48,10 @@ n'est pas une livraison autonome. Le tag annoté `v0.1.0` désigne ce snapshot.
    un commit avec un sujet explicite :
 
    ```bash
-   git add components/LOTUSim/tools/traffic_plan_library.py manifest.json
+   git add components/LOTUSim/tools/lotusim_image_generator/traffic/library.py manifest.json
    git diff --cached --stat
    git commit -m "fix(traffic): corriger la validation des revisions"
-   git push origin main
+   git push origin refactor
    ```
 
 Pour une évolution conséquente, utiliser une branche `feature/...` ou `fix/...`
@@ -46,21 +59,34 @@ et une pull request. Ne pas forcer l'envoi sur `main` et ne pas antidater les co
 
 ## Marquer une version
 
-`VERSION` et `CHANGELOG.md` identifient le contenu livré. Pendant la série `0.x`,
-incrémenter le correctif pour une correction compatible et la version mineure pour
-une nouvelle fonctionnalité ou un changement d'intégration important. Documenter
-toute rupture de format ou d'API dans le journal.
+`VERSION`, la version racine de `package.json` et les deux versions racines de
+`package-lock.json` doivent être identiques. `README.md` et `CHANGELOG.md`
+présentent le contenu livré. Les versions des dépendances ne changent pas lors
+d’une simple publication du projet.
 
-Après les tests, mettre à jour le manifeste et committer les trois fichiers, puis
-créer un tag annoté. Par exemple, pour une future correction `0.1.1` :
+À partir de `1.0.0`, incrémenter le correctif pour une correction compatible, la
+version mineure pour une fonctionnalité compatible et la version majeure pour
+une rupture du périmètre public documenté. Les prototypes et limites de validation
+restent explicités ; un numéro majeur ne certifie pas les moteurs ou les images.
+
+Après les tests, mettre à jour le manifeste et committer les fichiers de version,
+puis créer un tag annoté et le pousser avec la branche autorisée. Par exemple,
+pour une future correction `1.0.1` préparée sur `refactor` :
 
 ```bash
-git tag -a v0.1.1 -m "LOTUSIM Image Generator 0.1.1"
-git push --atomic origin main refs/tags/v0.1.1
+git tag -a v1.0.1 -m "LOTUSIM Image Generator 1.0.1"
+git -c http.version=HTTP/1.1 -c http.postBuffer=8388608 \
+  push --atomic origin refactor refs/tags/v1.0.1
 ```
 
 Ne jamais déplacer un tag déjà partagé vers un autre commit. Un tag Git n'est ni
 un binaire compilé ni une validation de rendu ou de conformité réglementaire.
+
+Créer ensuite la release GitHub sur ce tag avec ses notes, sans la marquer comme
+brouillon ni préversion lorsqu’il s’agit d’une livraison officielle. Vérifier le
+commit visé, la confidentialité du dépôt et le statut de dernière version. La
+publication d’une release ne change pas la branche par défaut ni les sources
+actuellement exécutées sur un poste.
 
 ## Données exclues et fichiers volumineux
 
