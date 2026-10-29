@@ -6,6 +6,10 @@
 - Sources dépliées et indentées, sans renommage des contrats applicatifs ou Unity.
 - Tests d’inspection des sources rendus indépendants des espaces et retours à la ligne.
 - Sources de référence et correctifs d’installation synchronisés avec le code formaté.
+- Paquet Python structuré en sept domaines ; état de supervision et sécurité des rapports séparés du serveur HTTP.
+- Frontend rangé par fonctionnalités, avec URL publiques conservées et liste de ressources explicite.
+- Tests Python, Web, C++ et QA sortis de `scripts/` ; lanceur commun et contrôles des dépendances entre domaines.
+- Équations de trajectoire partagées par planificateur et éditeur ; provenance couvrant les deux sources.
 - Aucun rechargement du runtime, aucune fusion dans `main` et aucune nouvelle version publiée.
 
 ## 0.3.0 du 28 octobre 2026

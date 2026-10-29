@@ -179,6 +179,6 @@ Omettre `--via-gazebo` pour l'entrée directe RGB. `--limit 3` permet un essai
 court. L'agent peut analyser un jeu sans vérité Unity en omettant `--compare`.
 Ne pas lui fournir les aperçus annotés comme images d'entrée.
 
-Tests : `.venv-vision/bin/python scripts/test_rgb_observer.py` et menu Unity
+Tests : `PYTHONPATH=tools:. python3 tests/python/vision/test_rgb_observer.py` et menu Unity
 `Validate visibility and NR PR R rules`. Les tests de superposition GPU sont
 effectués dans un projet isolé, pas sur une simulation de travail.

@@ -84,6 +84,10 @@ python3 scripts/start_dashboard.py --no-docker --port 8767
 
 Aucun paquet Python tiers, compte, Unity actif, ROS ou Docker n’est requis pour le dashboard et son éditeur de configurations. Si les projets complets sont présents sous `runtime/`, le lanceur les sélectionne ; sinon il utilise `components/`. Sans télémétrie ni captures, il affiche des états non mesurés. Il ne lance aucune simulation. [Installation et utilisation du dashboard](docs/INSTALLATION_DASHBOARD.md).
 
+## Organisation du code
+
+Le paquet Python est regroupé par domaines, le frontend par fonctionnalités, et les tests sont séparés des commandes. Voir le [guide d’architecture et de contribution](docs/ARCHITECTURE_CODE.md), notamment la différence entre tests automatisés et QA (assurance qualité). La réorganisation de `refactor` ne déploie pas les sources dans le runtime ouvert.
+
 ## Contenu
 
 | Dossier | Contenu et rôle |
@@ -92,7 +96,8 @@ Aucun paquet Python tiers, compte, Unity actif, ROS ou Docker n’est requis pou
 | `components/LOTUSim-Unity-modules/` | Nouveaux scripts, shaders, scènes, prefabs, maillages, matériaux, textures et preuves de provenance ; fichiers `.meta` conservés |
 | `patches/` | Modifications des fichiers déjà présents dans les dépôts de base, réparties en sept groupes |
 | `references/` | Sources modifiées complètes, verrous de dépendances et versions de référence, pour inspection |
-| `scripts/` | Lanceur du dashboard, vérification des empreintes et installateur avec simulation par défaut |
+| `scripts/` | Commandes de lancement, installation, formatage et vérification |
+| `tests/tooling/` | Tests des commandes et de l’inventaire du dépôt portable |
 | `examples/` | Configuration JSON d’un petit pilote de deux images |
 | `docs/` | Synthèse, installation, inventaires techniques, dépendances, crédits et limites |
 | `manifest.json` | Inventaire des fichiers exportés avec taille et SHA-256 |

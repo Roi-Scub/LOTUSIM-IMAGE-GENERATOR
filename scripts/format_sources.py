@@ -13,6 +13,8 @@ import textwrap
 ROOT = Path(__file__).resolve().parents[1]
 PREFIXES = (
     'scripts/',
+    'tests/',
+    'components/LOTUSim/tests/',
     'components/LOTUSim/scripts/',
     'components/LOTUSim/tools/',
     'components/LOTUSim/systems/',
@@ -39,7 +41,9 @@ def source_paths(root):
             and '/vendor/' not in name
             and '/RosMessages/' not in name
             and '/artifacts/' not in name
-            and '/qa/' not in name
+            and not name.startswith(
+                ('qa/', 'components/LOTUSim/qa/', 'components/LOTUSim-Unity-modules/qa/')
+            )
         )
     )
 

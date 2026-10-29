@@ -1,0 +1,4 @@
+# Regression tests only; no Torch weights, engine installation or runtime dependency change.
+# Use a development Python >= 3.10; application syntax remains compatible with Python 3.9.
+numpy==2.2.6
+Pillow==11.3.0

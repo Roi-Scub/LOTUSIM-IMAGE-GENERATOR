@@ -310,6 +310,6 @@ poses et la séparation entre racine simulée et annotation rendent cette
 extension possible sans réintroduire un deuxième pilote de déplacements.
 
 Tests reproductibles côté devShell (domaines isolés, sans arrêt du simulateur
-de l'utilisateur) : `scripts/test_dataset_connected.py --plugin-dir <libdir>`.
+de l'utilisateur) : `tests/python/integration/test_dataset_connected.py --plugin-dir <libdir>`.
 Le script de serveur `test_dataset_bridge_server.py` est réservé au banc de test
 Unity isolé (domaine 97, port 10001), pas au lancement de production.

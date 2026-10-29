@@ -40,7 +40,7 @@ Depuis la racine du dépôt, avec un Python de développement compatible :
 ```bash
 python3 -m venv .venv-format
 source .venv-format/bin/activate
-python -m pip install -r requirements-dev.txt
+python -m pip install -r requirements-dev.txt -r requirements-test.txt
 npm ci --ignore-scripts
 ```
 
@@ -76,11 +76,15 @@ Cette commande lit les historiques des deux dépôts, mais travaille dans des
 répertoires temporaires et n’y applique aucun changement de source. Sans `--write`,
 elle vérifie les correctifs au lieu de les remplacer.
 
+## Organisation des sources
+
+Le [guide d’architecture](ARCHITECTURE_CODE.md) décrit les domaines Python, les fonctionnalités Web, les entrées de compatibilité et les dossiers de tests. `scripts/` ne contient plus les suites de tests. Les contrôles QA sont des sources versionnées sous `tests/qa/`, tandis que leurs résultats restent sous `artifacts/qa/`.
+
 ## Valider les changements
 
 ```bash
-python -m unittest discover -s scripts -p 'test_*.py'
-python -m unittest discover -s components/LOTUSim/scripts -p 'test_*.py'
+python scripts/check_architecture.py
+python scripts/run_tests.py
 python scripts/refresh_manifest.py --write
 python scripts/verify_export.py
 ```

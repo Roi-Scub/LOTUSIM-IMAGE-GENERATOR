@@ -5,7 +5,9 @@ references/
 patches/
 **/vendor/
 **/RosMessages/
-**/qa/
+/qa/
+/components/LOTUSim/qa/
+/components/LOTUSim-Unity-modules/qa/
 **/artifacts/
 **/Library/
 **/Temp/

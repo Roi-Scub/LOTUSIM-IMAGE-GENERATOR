@@ -190,7 +190,7 @@ mise run sim lotusim.world
 
 Ne pas utiliser `mise run clean` ou `rebuild` pour ce correctif : les deux modules suffisent, sans supprimer l'installation. Garder le serveur ROS TCP du terminal 4. Dans Unity, quitter Play, faire **Assets → Refresh**, puis rouvrir le pilote et cliquer Play, sans lancer manuellement son scénario.
 
-Test natif automatisé disponible : `scripts/test_dataset_scenario_lifecycle.py --plugin-dir <dossier-des-bibliotheques> --cycles 8`. Il démarre et arrête son propre monde, utilise le domaine ROS 96 et une partition Gazebo unique, et vérifie pour chaque cycle CREATE, pose, refus d'un lancement concurrent et DELETE. Il ne contrôle pas la session ROS habituelle.
+Test natif automatisé disponible : `tests/python/integration/test_dataset_scenario_lifecycle.py --plugin-dir <dossier-des-bibliotheques> --cycles 8`. Il démarre et arrête son propre monde, utilise le domaine ROS 96 et une partition Gazebo unique, et vérifie pour chaque cycle CREATE, pose, refus d'un lancement concurrent et DELETE. Il ne contrôle pas la session ROS habituelle.
 
 Gazebo précise que la détection `EachNew` doit se faire après les créations de
 `PreUpdate`, dans `Update` ou une lecture const en `PostUpdate`.
