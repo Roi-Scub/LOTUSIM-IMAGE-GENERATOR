@@ -54,8 +54,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 7953,
-      "sha256": "b01953ddf10d1bdc54b728ba081f0307d868a5f5c03a2551f1d2fea031c5dddd"
+      "bytes": 10027,
+      "sha256": "141bda3d76de9fafa8c3dc68cb745e74b571e8a6c00fe8674c009a66560201e9"
     },
     {
       "path": "VERSION",
@@ -12498,7 +12498,7 @@
       "sha256": "74f164a2b7ad73b30cb6e8ac2af416f4caaf6b8ca1aa60ce5630aa5c043554a6"
     }
   ],
-  "totalBytes": 890915180,
+  "totalBytes": 890917254,
   "dynamicOutputsExcluded": [
     "**/artifacts/**",
     "**/__pycache__/**"
@@ -12506,6 +12506,6 @@
   "selfExcluded": [
     "manifest.json"
   ],
-  "updatedAt": "2026-10-29T09:53:40.934569+00:00",
+  "updatedAt": "2026-10-29T10:08:59.773345+00:00",
   "scope": "portable source snapshot; runtime and .local are not included"
 }

@@ -1,9 +1,9 @@
 # LOTUSIM Image Generator
 
 Génération d’images maritimes annotées avec LOTUSim, ROS 2 et Unity HDRP.
-Un dashboard local permet de préparer les scènes, régler les captures et consulter
-les résultats. Le projet développe aussi une revue des images RGB indépendante
-des annotations du simulateur.
+Une orchestration d’agents logiciels prépare les scénarios, coordonne les objets
+et contrôle les trajectoires. Le dashboard local regroupe leur suivi, les réglages
+de capture et la revue des images RGB, indépendante des annotations du simulateur.
 
 Ce dépôt est une extension de [LOTUSim](https://github.com/naval-group/LOTUSim),
 pas une distribution officielle de Naval Group.
@@ -11,6 +11,36 @@ pas une distribution officielle de Naval Group.
 [Version 1.0.0](https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR/releases/tag/v1.0.0)
 · [Documentation](docs/README.md) · [Contribuer](docs/CONTRIBUTION.md)
 · [Changelog](CHANGELOG.md)
+
+## Orchestration agentique
+
+Le système répartit le travail entre des agents spécialisés. Pour les campagnes
+coopératives, l’orchestrateur part d’une configuration, d’un catalogue de modèles
+et d’une graine pour construire un plan de scène contrôlé avant son exécution.
+
+| Agent ou étape | Rôle |
+| --- | --- |
+| `CatalogueAgent` | Valide les effectifs, capacités, vitesses et contraintes météo |
+| `ObserverAgent` | Réserve la trajectoire du bateau observateur |
+| `BuoyAgent`, `SeaTrafficAgent`, `AirTrafficAgent`, `FastDroneAgent` | Proposent les placements et trajectoires de chaque objet |
+| `SafetyAgent` | Contrôle les séparations et les priorités ; les agents révisent les propositions conflictuelles |
+| `DirectorAgent` | Vérifie le passage nominal des objets dans le champ de la caméra |
+| Préparateur du moteur | Planifie le paquet, sélectionne le constructeur Unity/Unreal ou l’export neutre, puis vérifie les fichiers et leurs empreintes |
+| Observateur RGB | Analyse les images sans annotations en entrée de détection et produit les rapports de comparaison |
+
+Dans la chaîne connectée Unity, LOTUSim exécute le plan et transmet les poses via
+ROS 2 après import et lancement de la scène. Les agents de préparation respectent
+les capacités de l’adaptateur choisi :
+préparer un bundle Unreal ne lance pas une simulation connectée.
+
+Les états sont suivis dans **Agents & chaîne**. Plans, messages de négociation,
+rapports de contrôle et empreintes permettent de relire les décisions et de
+reproduire un scénario à configuration, catalogue et version de code identiques.
+Ces agents sont déterministes, sans LLM ni service distant ; les trajectoires sont
+planifiées avant lancement, pas renégociées face à un nouvel obstacle en cours de rendu.
+
+Voir le [fonctionnement des agents de trafic](components/LOTUSim/docs/guide-trafic-agentique-lotusim-unity.md#réseau-dagents--fonctionnement-réel-de-cette-v1)
+et les [plans coopératifs](docs/PLANS_COOPERATIFS.md).
 
 ## Démarrage rapide
 
@@ -108,7 +138,7 @@ et [OpenObjects](components/LOTUSim-Unity-modules/ThirdParty/OpenObjects/manifes
 La FREMM et les autres modèles historiques, notamment LRAUV et x500, viennent du
 socle LOTUSim et de ses fournisseurs : leurs notices restent applicables.
 `fremm_observer` / `DatasetObserverFremm` sont des adaptations, pas une nouvelle
-géométrie de Gabriel.
+géométrie.
 Le goéland Dayvable porte une mention **NoAI** à clarifier avant usage pour
 l’entraînement ou diffusion d’un corpus. Voir les [licences et réserves](docs/ASSETS_ET_LICENCES.md).
 
