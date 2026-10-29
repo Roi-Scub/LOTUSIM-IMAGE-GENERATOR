@@ -6,9 +6,10 @@ dans `components/LOTUSim/tools/lotusim_image_generator/`, le frontend dans
 distincts. Les anciens noms de lancement restent utilisables par Unity et les
 installations existantes.
 
-Cette organisation est préparée sur `refactor`. Elle ne recharge pas les projets
-sous `runtime/` : le dashboard déjà ouvert continue donc d’utiliser ses sources
-installées tant qu’un déploiement explicite n’a pas été validé.
+Le tag `v1.0.0` fige cette organisation depuis `refactor`, sans fusion supplémentaire
+dans `main`. Il ne recharge pas les projets sous `runtime/` : le dashboard déjà
+ouvert continue d’utiliser ses sources installées tant qu’un déploiement explicite
+n’a pas été validé.
 
 ## Repères dans le dépôt
 

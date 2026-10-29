@@ -44,8 +44,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4863,
-      "sha256": "9e4f5439756179862a3ac0b293dbcad25e63abbd3f208bfd2ef4f204cddf24a0"
+      "bytes": 7277,
+      "sha256": "faa0995b37d70483bff9f954c3934606db4cefabfb7b285a15582c3889351d55"
     },
     {
       "path": "LICENSE",
@@ -54,13 +54,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 8131,
-      "sha256": "44763b8192857d2edd4936a754446e8b7a7365e59c52947ae57a72905ba1a5c6"
+      "bytes": 8328,
+      "sha256": "a665316550e2ec36250b67e7f685eddf9c3a1365f3021fa31e6654f8ff70032d"
     },
     {
       "path": "VERSION",
       "bytes": 6,
-      "sha256": "d915cc95d6ca8f47ae297713ed46d4e5c5d99ddd29fc3c61e263bdf305f2b5b0"
+      "sha256": "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/Dataset.meta",
@@ -12034,8 +12034,8 @@
     },
     {
       "path": "docs/ARCHITECTURE_CODE.md",
-      "bytes": 15349,
-      "sha256": "003dbb71634a3e62f24cd2ecbebe56779ead126a395699e260980f62ac3b85b0"
+      "bytes": 15392,
+      "sha256": "30ce30e2d26024da8fde806564098ef90020d6a6a3255fc89bd7d4c7b42d159e"
     },
     {
       "path": "docs/ARCHITECTURE_MULTI_MOTEURS.md",
@@ -12114,8 +12114,8 @@
     },
     {
       "path": "docs/VERSIONNEMENT.md",
-      "bytes": 3472,
-      "sha256": "b1a8e654c49b414a7965f206b8b74306f5eaf5842ede0ee24ae1d2810a17ee35"
+      "bytes": 5036,
+      "sha256": "00a5b3cd1f32c260773420473b326af6af6798839c50c3ec657ea3d141727bcc"
     },
     {
       "path": "examples/campagne-2-images.json",
@@ -12125,12 +12125,12 @@
     {
       "path": "package-lock.json",
       "bytes": 5741,
-      "sha256": "ec2ff4f327854a272828e22ed27440551338bc8c165b26f25c19bcbe0d1d3d22"
+      "sha256": "bf6eb96c3b7ab9e3d468b7c1320ab232d7918349237126e8e551c5ada5fd7d61"
     },
     {
       "path": "package.json",
       "bytes": 333,
-      "sha256": "880c7cbf629ed376fc2cef8e68ebd39d1c3af429dc7a2a435ea489565cb5af67"
+      "sha256": "2577353028c91d1c0dbf8cbaf356cb9e2be226a9d6b7e2656826fc5d8fc1421e"
     },
     {
       "path": "patches/lotusim-environment.patch",
@@ -12493,7 +12493,7 @@
       "sha256": "74f164a2b7ad73b30cb6e8ac2af416f4caaf6b8ca1aa60ce5630aa5c043554a6"
     }
   ],
-  "totalBytes": 890943522,
+  "totalBytes": 890947740,
   "dynamicOutputsExcluded": [
     "**/artifacts/**",
     "**/__pycache__/**"
@@ -12501,6 +12501,6 @@
   "selfExcluded": [
     "manifest.json"
   ],
-  "updatedAt": "2026-10-29T08:47:16.923468+00:00",
+  "updatedAt": "2026-10-29T09:11:22.770784+00:00",
   "scope": "portable source snapshot; runtime and .local are not included"
 }

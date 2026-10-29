@@ -2,19 +2,21 @@
 
 Ce dossier contient les développements locaux ajoutés autour de LOTUSim et Unity, leurs assets, leurs correctifs et les instructions pour les réinstaller. Il peut être copié dans un dépôt séparé. Ce n’est ni un nouveau simulateur autonome ni une version officielle de LOTUSim : les moteurs de base restent des dépendances identifiées.
 
-Version portable actuelle : **0.3.0**. Voir le [journal des versions](CHANGELOG.md)
-et le [guide de versionnement](docs/VERSIONNEMENT.md).
+Version portable actuelle : **1.0.0 — Official Release**.
+Voir la [release v1.0.0](https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR/releases/tag/v1.0.0),
+le [journal des versions](CHANGELOG.md) et le [guide de versionnement](docs/VERSIONNEMENT.md).
 
 Les conventions par langage et les commandes de vérification sont décrites dans
-[le guide de style](docs/CONVENTIONS_CODE.md). La branche `refactor` est destinée à
-la revue ; elle ne modifie pas les projets en cours d’exécution sous `runtime/`.
+[le guide de style](docs/CONVENTIONS_CODE.md). Le tag `v1.0.0` fige les sources de
+`refactor`. Sa publication n’effectue aucune fusion supplémentaire dans `main`
+et ne modifie pas les projets en cours d’exécution sous `runtime/`.
 
 ## Démarrer depuis le dépôt privé
 
 Avec un compte autorisé sur le dépôt :
 
 ```bash
-git clone https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR.git
+git clone --branch v1.0.0 https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR.git
 cd LOTUSIM-IMAGE-GENERATOR
 python3 scripts/verify_export.py
 python3 scripts/start_dashboard.py --no-docker
