@@ -5,6 +5,17 @@ observations sans imposer Unity. Les particularités de génération et de rendu
 dans des adaptateurs. Déclarer un nom ajoute un profil et un export neutre, pas un
 moteur installé ni une chaîne native fonctionnelle.
 
+| Profil | État de notre intégration |
+| --- | --- |
+| Unity | Chaîne LOTUSim, rendu et annotations existants |
+| Unreal | Préparation et aperçu RGB statique ; exécution native à valider |
+| Godot, Blender, O3DE, nom personnalisé | Export du contrat neutre, adaptateur natif à développer |
+
+Unity reste le chemin pour les campagnes actuelles. Pour évaluer Unreal, commencer
+par le [prototype de préparation](PREPARATION_UNITY_UNREAL.md#unreal). Les licences
+des moteurs, leur version et le matériel doivent être vérifiés séparément ; choisir
+un nom dans le registre n’installe pas le moteur et ne donne pas de droits d’usage.
+
 ## Choisir un moteur
 
 Dans [Paramétrage](http://127.0.0.1:8766/#settings), choisir le moteur du projet et
@@ -121,32 +132,7 @@ python3 scripts/start_dashboard.py --no-docker
 Le lanceur complet conserve les services LOTUSim habituels ; il n'ouvre plus Unity
 si un autre profil est choisi et ne devine pas une commande d'exécution pour ce moteur.
 
-## Trafic coopératif
+## Scénarios continus
 
-La section **Trafic coopératif** lit le plan MaritimeTrafficAgents historique et
-les scénarios enregistrés dans la bibliothèque SQLite locale. Elle permet de générer
-des trajectoires, de parcourir leur chronologie et de conserver les modifications
-manuelles dans des révisions distinctes. Aucun choix de plan ne change une session
-en cours.
-
-Ouvrir [Trafic coopératif](http://127.0.0.1:8766/#traffic), puis :
-
-1. Déplacer le curseur de temps ou lancer la lecture de la prévisualisation. La carte
-   montre les trajectoires prévues, les créneaux de présence et le bateau observateur,
-   pas les positions mesurées en direct dans la simulation.
-2. Sélectionner un objet dans la liste ou sur la carte. Régler son centre Est/Nord,
-   son altitude pour un aéronef, sa vitesse et son cap. Le centre est défini à l'instant
-   central indiqué ; ce n'est pas forcément la position initiale de l'objet.
-3. Cliquer **Prévisualiser** pour comparer la version originale et le brouillon.
-   Les limites du catalogue et de la zone sont contrôlées, mais aucun calcul d'évitement
-   ni contrôle COLREG ne certifie la nouvelle trajectoire.
-4. Nommer puis enregistrer le brouillon dans la bibliothèque. Son parent reste
-   intact et sa validation est révoquée. Lancer un nouveau contrôle avant de
-   télécharger un scénario YAML ; une version refusée reste consultable en JSON.
-
-Le bateau observateur reste en lecture seule. La base
-`artifacts/traffic-library/library.sqlite3` conserve le contexte, les empreintes et
-les rapports. Les contrôles portent sur un modèle cinématique et des règles de
-rencontre partielles, sans certification COLREG complète. L'éditeur n'applique
-aucun plan à une session active. Voir le
-[guide des plans coopératifs](PLANS_COOPERATIFS.md).
+Le registre de moteurs ne lance pas les plans de trafic. Les trajectoires, leur
+édition et leur calendrier sont décrits dans le [guide des plans coopératifs](PLANS_COOPERATIFS.md).

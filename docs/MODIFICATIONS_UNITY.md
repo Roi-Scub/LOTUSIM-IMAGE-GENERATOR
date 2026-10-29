@@ -1,8 +1,7 @@
-# Modifications Unity à réutiliser
+# Intégration Unity
 
-Audit local du 27 octobre 2026. Les chemins ci-dessous sont relatifs au projet
-Unity cible. L’export est un **overlay sur le projet LOTUSim Unity**, pas un
-projet Unity autonome et pas encore un package UPM indépendant.
+Les chemins sont relatifs au projet Unity cible. L’intégration est un overlay
+sur le projet LOTUSim Unity, pas un projet autonome ni un package UPM.
 
 ## Socle et versions constatés
 
@@ -47,7 +46,7 @@ Inclure également les **29 nouveaux prefabs** de `Assets/Prefabs/` et leurs
 navires. Inclure les nouveaux messages `LogMsg.cs`, `PowerStatusMsg.cs` et
 `WaypointFollowerStatusMsg.cs` de `Assets/RosMessages/Lotusim/msg/`, avec leurs
 `.meta`. Les modèles et les preuves de provenance restent associés : voir
-`ASSETS_ET_LICENCES.md`.
+[les licences des modèles](ASSETS_ET_LICENCES.md).
 
 À la date de l’audit, la sélection « nouveaux Assets + 15 fichiers suivis
 modifiés + leurs métadonnées » représente environ **428 Mio** hors `ThirdParty`.
@@ -55,7 +54,7 @@ Les assets importés sont déjà présents : il n’est pas nécessaire de relan
 constructeurs de bibliothèque pour ouvrir les scènes. Les constructeurs restent
 utiles pour les reproduire ou modifier les modèles.
 
-## Organisation des sources sur refactor
+## Organisation des sources
 
 Les 84 scripts ajoutés sont regroupés par responsabilité : 41 scripts d’exécution, 29 outils de l’éditeur et 14 fichiers de vérification. Leur contenu et leurs métadonnées d’origine restent identiques. Les anciens chemins et GUID sont conservés dans `references/unity-code-layout.json` ; les contrôles refusent les identifiants modifiés, doublons et changements d’assemblage. Voir le [guide d’architecture](ARCHITECTURE_CODE.md#organisation-des-modules-unity) pour l’arborescence et les commandes de vérification. Le projet ouvert sous `runtime/` n’est pas modifié par cette réorganisation.
 
@@ -134,7 +133,7 @@ Les appels `AssetDatabase.LoadAssetAtPath`, `Shader.Find("HDRP/Lit")`,
 qui ne sont pas, elles, un lien GUID. Conserver les chemins des assets chargés
 textuellement, notamment ceux de `Resources`, et les noms des shaders. Les
 déplacements des scripts sont suivis séparément par la table de correspondance
-de cette branche. Vérifier aussi l’inclusion des shaders lors d’un futur build joueur.
+des sources. Vérifier aussi l’inclusion des shaders lors d’un futur build joueur.
 
 ## Cache du connecteur : vérification ciblée
 

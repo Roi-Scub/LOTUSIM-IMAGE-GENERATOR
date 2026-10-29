@@ -2,6 +2,9 @@
 
 Asset original construit pour ce projet, sans modèle ni texture tiers.
 
+Crédit : **Gabriel Ricardon (Roi-Scub)**. Géométrie, textures et matériaux originaux
+sous [CC BY 4.0](../../../ORIGINAL_ASSETS_LICENSE.md), avec attribution.
+
 - Prefab : `Assets/Prefabs/buoy.prefab` ; adresse Addressables : `buoy`.
 - Bouée générique orange instrumentée, et non reproduction d'une marque ou d'une signalisation nautique réglementaire.
 - Diamètre du flotteur : 0,76 m ; bande de protection : environ 0,79 m.

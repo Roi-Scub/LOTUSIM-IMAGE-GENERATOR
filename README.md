@@ -1,138 +1,124 @@
 # LOTUSIM Image Generator
 
-Ce dossier contient les développements locaux ajoutés autour de LOTUSim et Unity, leurs assets, leurs correctifs et les instructions pour les réinstaller. Il peut être copié dans un dépôt séparé. Ce n’est ni un nouveau simulateur autonome ni une version officielle de LOTUSim : les moteurs de base restent des dépendances identifiées.
+Génération d’images maritimes annotées avec LOTUSim, ROS 2 et Unity HDRP.
+Un dashboard local permet de préparer les scènes, régler les captures et consulter
+les résultats. Le projet développe aussi une revue des images RGB indépendante
+des annotations du simulateur.
 
-Version portable actuelle : **1.0.0 — Official Release**.
-Voir la [release v1.0.0](https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR/releases/tag/v1.0.0),
-le [journal des versions](CHANGELOG.md) et le [guide de versionnement](docs/VERSIONNEMENT.md).
+Ce dépôt est une extension de [LOTUSim](https://github.com/naval-group/LOTUSim),
+pas une distribution officielle de Naval Group.
 
-Les conventions par langage et les commandes de vérification sont décrites dans
-[le guide de style](docs/CONVENTIONS_CODE.md). Le tag `v1.0.0` fige les sources de
-`refactor`. Sa publication n’effectue aucune fusion supplémentaire dans `main`
-et ne modifie pas les projets en cours d’exécution sous `runtime/`.
+[Version 1.0.0](https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR/releases/tag/v1.0.0)
+· [Documentation](docs/README.md) · [Contribuer](docs/CONTRIBUTION.md)
+· [Changelog](CHANGELOG.md)
 
-## Démarrer depuis le dépôt privé
+## Démarrage rapide
 
-Avec un compte autorisé sur le dépôt :
+Python 3.9+ et un navigateur suffisent pour le dashboard, sous macOS ou Linux :
 
 ```bash
-git clone --branch v1.0.0 https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR.git
+git clone https://github.com/Roi-Scub/LOTUSIM-IMAGE-GENERATOR.git
 cd LOTUSIM-IMAGE-GENERATOR
 python3 scripts/verify_export.py
 python3 scripts/start_dashboard.py --no-docker
 ```
 
-Le dashboard ouvre les sources portables sans lancer de moteur. Pour réinstaller
-la chaîne complète dans des clones LOTUSim et Unity, suivre
-[l'installation complète](docs/INSTALLATION_COMPLETE.md).
+Ouvrir <http://127.0.0.1:8766/>. Le serveur reste sur la machine locale. Cette
+commande ne lance ni simulation ni moteur 3D ; Unity, ROS et Docker ne sont pas
+nécessaires pour préparer une configuration.
 
-## Répertoire de travail actuel sur ce Mac
+Pour produire des images, suivre l’[installation complète](docs/INSTALLATION_COMPLETE.md).
+Il faut les deux projets de base compatibles, leurs dépendances et les correctifs
+de ce dépôt. `components/LOTUSim-Unity-modules/` n’est pas un projet Unity autonome.
+La configuration de référence utilise Unity **2022.3.18f1**, HDRP **14.0.10**,
+ROS 2 **Jazzy** et Gazebo **Harmonic**.
 
-Depuis le déplacement du 27 octobre, ce dossier est aussi la racine de développement.
-Les projets complets utilisés par les services sont maintenant sous `runtime/LOTUSim`
-et `runtime/LOTUSim-Unity-modules`. `components/` reste le snapshot portable des ajouts.
-Les caches, builds et résultats du runtime sont exclus du dépôt et du manifeste portable.
+## Générer une campagne
 
-```bash
-python3 scripts/start_local_stack.py
-```
+1. Dans **Modèles 3D**, consulter la bibliothèque ou importer un mesh statique.
+2. Dans **Paramétrage**, définir objets, distances, caméra, météo et budget d’images.
+   Pour une scène continue, choisir un plan dans **Trafic coopératif** et régler
+   la cadence des photos en secondes simulées.
+3. Préparer le bundle, puis l’importer dans Unity, hors Play. Démarrer ensuite la
+   scène avec LOTUSim et le ROS TCP Endpoint prêts.
+4. Consulter les RGB, annotations et galeries dans **Campagnes & rapports**.
+   La revue RGB optionnelle analyse les images sans cadres dessinés.
 
-Ce lanceur ouvre les terminaux dédiés et, si le profil Unity est choisi, Unity
-**sans lancer Play**. Il ne devine pas de commande de démarrage pour un autre moteur.
-Dashboard : **http://127.0.0.1:8766/#settings**.
-Voir [la session locale et le pilote de deux images](docs/SESSION_LOCALE.md).
+Commencer par deux images avant une campagne longue. Le dashboard prépare et
+observe les sessions ; il ne déclenche pas Play.
 
-La section [Modèles 3D](http://127.0.0.1:8766/#assets) permet de consulter les meshes
-et d'importer des meshes statiques GLB, glTF, OBJ ou STL dans une bibliothèque locale.
-Unity ouvert hors Play, le prefab/Addressable et le modèle LOTUSim sont préparés
-automatiquement ; le modèle apparaît dans Paramétrage après confirmation des deux côtés.
-[Guide de la bibliothèque](docs/BIBLIOTHEQUE_MESHES.md) ·
-[Import automatique](docs/IMPORTS_AUTOMATIQUES_UNITY.md) ·
-[Comparatif des moteurs 3D et licences](docs/ETUDE_MOTEURS_3D.md).
+## Fonctionnement
 
-Le choix Unity / Unreal est disponible dans Paramétrage. L'agent de préparation
-génère les fichiers adaptés au moteur et un bundle vérifié. Unity conserve sa chaîne
-existante ; Unreal dispose d'un préparateur d'aperçu RGB statique, sans parité ROS,
-houle ou annotations pour l'instant. [Préparation des scènes](docs/PREPARATION_UNITY_UNREAL.md).
+- **LOTUSim / Gazebo** : entités et trajectoires, avec poses acquittées par ROS 2.
+- **Unity** : rendu maritime, caméra embarquée, captures et annotations issues du
+  même rendu : masques, boîtes, classes, visibilité et exports JSON/COCO/YOLO selon le pilote.
+- **Python** : configurations, plans coopératifs, bibliothèque SQLite et analyse
+  locale Grounding DINO. Gazebo Transport peut relayer les images ; ce n’est pas
+  lui qui reconnaît leur contenu.
+- **Autres moteurs** : Unreal dispose d’un prototype d’aperçu RGB statique,
+  sans connexion LOTUSim, houle ni annotations. Godot, Blender, O3DE et les profils
+  personnalisés exportent seulement un contrat de scène. Voir les
+  [adaptateurs](docs/ARCHITECTURE_MULTI_MOTEURS.md).
 
-Le cœur utilise un registre de moteurs et un contrat de scène commun : profils Unity,
-Unreal, Godot, Blender, O3DE ou nom personnalisé. Les profils sans adaptateur natif
-exportent un contrat neutre, sans prétendre produire un rendu.
-[Architecture et ajout d'un moteur](docs/ARCHITECTURE_MULTI_MOTEURS.md).
+La houle, la flottabilité et les modes IR/nocturne restent des approximations
+visuelles. Les statuts NR/PR/R sont des heuristiques de reconnaissabilité ; les
+scores du détecteur ne sont pas des probabilités calibrées. Les contrôles de
+trafic ne constituent pas une certification COLREG.
 
-La section [Trafic coopératif](http://127.0.0.1:8766/#traffic) permet de générer des
-scénarios et de choisir leurs plans dans une bibliothèque SQLite locale, puis de
-modifier position, vitesse ou cap dans de nouvelles révisions. Les contrôles de
-séparation et de rencontre COLREG sont partiels et non certifiants. Aucun plan n'est
-appliqué à une simulation active. [Guide des plans](docs/PLANS_COOPERATIFS.md).
+## Modèles 3D et crédits
 
-Les scénarios continus peuvent demander un nombre de photos ou une prise toutes
-les X secondes simulées, avec aperçu du calendrier et import explicite du bundle
-dans Unity. Le mode d'images indépendantes reste disponible.
+**Gabriel Ricardon (Roi-Scub)** : bouée instrumentée (`buoy`), drone
+(`small_drone`, variante `drone_racer_sim`), hélicoptère (`helicopter`), avion léger
+(`airplane`), goéland (`seagull`), chalutier (`fishing_trawler`), porte-conteneurs
+(`container_ship`), yacht (`motor_yacht`), hors-bord (`speedboat`), jetski (`jetski`),
+ferry (`ferry`), voilier (`sailboat`) et bateau observateur simplifié (`dataset_observer`).
+Leurs géométries, textures et matériaux originaux sont proposés sous **CC BY 4.0** :
+réutilisation avec attribution. Le [périmètre de cette licence](docs/LICENCE_ASSETS.md)
+exclut les modèles tiers et les ressources des moteurs.
 
-## Lancer seulement le dashboard
+Les variantes externes conservent leurs auteurs et leur licence **CC BY 4.0** :
 
-Depuis ce dossier, avec Python 3.9 ou plus récent, sous macOS ou Linux :
+| Modèle | Œuvre et auteur | Source |
+| --- | --- | --- |
+| `speedboat_zefiro` | ZEFIRO — angelo raffaele catalano | [Sketchfab](https://sketchfab.com/3d-models/zefiro-5c29921a556346f09684eadfbc51a91d) |
+| `rib_assault` | Assault Boat — tnnv | [Sketchfab](https://sketchfab.com/3d-models/assault-boat-0d4fca4f2e014cd7b6aefd4653b1508c) |
+| `motor_yacht_35` | motoryacht 35 — angelo raffaele catalano | [Sketchfab](https://sketchfab.com/3d-models/motoryacht-35-0bdd7a0de7254426890bb5745bb7da6d) |
+| `jetski_seadoo_gti` | 2012 Sea-Doo GTI SE 130 — BoatUS Foundation | [Sketchfab](https://sketchfab.com/3d-models/2012-sea-doo-gti-se-130-d7b3e903d7dc43a694720bd347f4fadf) |
+| `cabin_cruiser_minnow` | SS Minnow III — gogiart | [Sketchfab](https://sketchfab.com/3d-models/ss-minnow-iii-a2aa3f9dc66446a4b2c275b9380fc41e) |
+| `rib_zodiac` | Zodiac boat — RedC130 | [Sketchfab](https://sketchfab.com/3d-models/zodiac-boat-a10b7997f1514bd7829ece74f68c681c) |
+| `buoy_navigation_ozzy` | Buoy — OzzyDan | [Sketchfab](https://sketchfab.com/3d-models/buoy-8e0584c27c37417f925c6be4ff7c6d13) |
+| `drone_amvlab` | drone amvlab — AMV Lab | [GitHub](https://github.com/amvlab/aircraft-models) |
+| `helicopter_utility_gb` | Helicopter — Gigantic Burger | [Sketchfab](https://sketchfab.com/3d-models/helicopter-ef70283b1dea4ae8b18eec9231ce390e) |
+| `airplane_a320` | airplane a320 — AMV Lab | [GitHub](https://github.com/amvlab/aircraft-models) |
+| `airplane_c172` | Cessna 172 — Nobilis the Palaeovespa, aussi crédité e737 dans le miroir | [Sketchfab](https://sketchfab.com/3d-models/cessna-172-64cddaee5aff470682659a8c08525046) |
+| `seagull_dayvable` | Seagull — Dayvable ; adaptation FBX/rig par viniciusbarros | [Sketchfab](https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174) |
+| `speedboat_smolbot` | Boat — Nicosama, selon la preuve créateur archivée | [Sketchfab](https://sketchfab.com/3d-models/boat-dc676eac5985450a9271f9b31eb47778) |
+| `speedboat_racing` | Boat — milamila | [Sketchfab](https://sketchfab.com/3d-models/boat-bd6166ae8e294bd4a7d4e46be7f80f5d) |
 
-```bash
-python3 scripts/start_dashboard.py --no-docker
-```
+Merci également à [bob6664569 / open-water](https://github.com/bob6664569/open-water),
+[srcejon / sdrangel-3d-models](https://github.com/srcejon/sdrangel-3d-models),
+[AMV Lab](https://github.com/amvlab/aircraft-models),
+[bilawalsidhu / gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) et
+[viniciusbarros](https://github.com/viniciusbarros/msc_game_obstacle_course)
+pour les sources ou conversions intermédiaires. Les fichiers sources, commits,
+empreintes et adaptations sont conservés dans
+[OpenBoats](components/LOTUSim-Unity-modules/ThirdParty/OpenBoats/manifest.json)
+et [OpenObjects](components/LOTUSim-Unity-modules/ThirdParty/OpenObjects/manifest.json).
 
-Ouvrir **http://127.0.0.1:8766/**. Si le dashboard de travail utilise déjà ce port :
+La FREMM et les autres modèles historiques, notamment LRAUV et x500, viennent du
+socle LOTUSim et de ses fournisseurs : leurs notices restent applicables.
+`fremm_observer` / `DatasetObserverFremm` sont des adaptations, pas une nouvelle
+géométrie de Gabriel.
+Le goéland Dayvable porte une mention **NoAI** à clarifier avant usage pour
+l’entraînement ou diffusion d’un corpus. Voir les [licences et réserves](docs/ASSETS_ET_LICENCES.md).
 
-```bash
-python3 scripts/start_dashboard.py --no-docker --port 8767
-```
+## Développement
 
-Aucun paquet Python tiers, compte, Unity actif, ROS ou Docker n’est requis pour le dashboard et son éditeur de configurations. Si les projets complets sont présents sous `runtime/`, le lanceur les sélectionne ; sinon il utilise `components/`. Sans télémétrie ni captures, il affiche des états non mesurés. Il ne lance aucune simulation. [Installation et utilisation du dashboard](docs/INSTALLATION_DASHBOARD.md).
+`main` est la branche de référence. Les sources portables sont dans `components/`,
+les modifications du socle dans `patches/` et leurs copies dans `references/`.
+Les clones complets exécutés sous `runtime/`, résultats, bases locales et poids IA
+ne sont pas versionnés. Une modification ici ne redéploie pas les services ouverts.
 
-## Organisation du code
-
-Le paquet Python est regroupé par domaines, le frontend par fonctionnalités, et les tests sont séparés des commandes. Les ajouts Unity séparent aussi scripts d’exécution, outils de l’éditeur et tests, en préservant leurs GUID. Voir le [guide d’architecture et de contribution](docs/ARCHITECTURE_CODE.md), notamment la différence entre tests automatisés et QA (assurance qualité). La réorganisation de `refactor` ne déploie pas les sources dans le runtime ouvert.
-
-## Contenu
-
-| Dossier | Contenu et rôle |
-| --- | --- |
-| `components/LOTUSim/` | Outils Python/C++, dashboard HTML/JS/CSS, planification, analyse RGB, configurations, scénarios, modèles Gazebo, tests et guides |
-| `components/LOTUSim-Unity-modules/` | Nouveaux scripts, shaders, scènes, prefabs, maillages, matériaux, textures et preuves de provenance ; fichiers `.meta` conservés |
-| `patches/` | Modifications des fichiers déjà présents dans les dépôts de base, réparties en sept groupes |
-| `references/` | Sources modifiées complètes, verrous de dépendances et versions de référence, pour inspection |
-| `scripts/` | Commandes de lancement, installation, formatage et vérification |
-| `tests/tooling/` | Tests des commandes et de l’inventaire du dépôt portable |
-| `examples/` | Configuration JSON d’un petit pilote de deux images |
-| `docs/` | Synthèse, installation, inventaires techniques, dépendances, crédits et limites |
-| `manifest.json` | Inventaire des fichiers exportés avec taille et SHA-256 |
-| `provenance.json` | Commits de base, origines et groupes de correctifs |
-
-`components/` contient des **ajouts à intégrer**, pas deux clones complets des projets officiels. Ne pas ouvrir son sous-dossier Unity comme s’il s’agissait déjà d’un projet complet. Les images générées, rapports historiques, poids IA, environnements virtuels, caches Unity, binaires compilés et conteneurs ne sont pas inclus.
-
-## Réinstaller la chaîne complète
-
-Suivre [INSTALLATION_COMPLETE.md](docs/INSTALLATION_COMPLETE.md). L’installateur exige des clones propres aux commits indiqués et ne télécharge, ne compile et ne démarre rien automatiquement :
-
-```bash
-python3 scripts/install_integration.py \
-  --core "/chemin/projets/LOTUSim" \
-  --unity "/chemin/projets/LOTUSim-Unity-modules"
-```
-
-Cette commande vérifie uniquement. Ajouter `--apply` après avoir contrôlé les chemins et fermé Unity dans ces clones. **Ne pas la pointer vers les projets actuels déjà modifiés** : ils n’ont pas besoin d’une réinstallation et seront refusés.
-
-## Lire les travaux et les modifications
-
-- [Synthèse du projet](docs/SYNTHESE_TRAVAUX.md).
-- [Modifications nécessaires du cœur LOTUSim](docs/MODIFICATIONS_LOTUSIM.md).
-- [Ajouts et modifications Unity](docs/MODIFICATIONS_UNITY.md).
-- [Assets, licences et points à clarifier](docs/ASSETS_ET_LICENCES.md).
-- [Périmètre et exclusions de l’export](docs/PERIMETRE_EXPORT.md).
-
-Les notices existantes sont conservées ; ce dossier n’attribue pas une licence unique à tous les médias. Le modèle d’oiseau `seagull_dayvable` comporte notamment une mention `noai` à clarifier avant un usage destiné à l’entraînement ou une diffusion du corpus. Voir le guide de provenance.
-
-## Vérifier la copie
-
-```bash
-python3 scripts/verify_export.py
-```
-
-Le manifeste porte sur le snapshot de sources et d’assets. Les nouveaux résultats enregistrés ultérieurement dans `artifacts/` ne font pas partie de ses empreintes.
+Les [conventions](docs/CONVENTIONS_CODE.md) et le [guide de contribution](docs/CONTRIBUTION.md)
+donnent les commandes de test, de formatage et de mise à jour de l’inventaire.
+Le code reste sous [EPL-2.0](LICENSE) ; les médias gardent leurs licences propres.

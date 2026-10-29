@@ -44,8 +44,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 7277,
-      "sha256": "faa0995b37d70483bff9f954c3934606db4cefabfb7b285a15582c3889351d55"
+      "bytes": 7597,
+      "sha256": "1d049e7f676b4788c69e0119174de313375c9b7135c25b33a41ee99120594f0d"
     },
     {
       "path": "LICENSE",
@@ -54,8 +54,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 8328,
-      "sha256": "a665316550e2ec36250b67e7f685eddf9c3a1365f3021fa31e6654f8ff70032d"
+      "bytes": 7953,
+      "sha256": "b01953ddf10d1bdc54b728ba081f0307d868a5f5c03a2551f1d2fea031c5dddd"
     },
     {
       "path": "VERSION",
@@ -1874,8 +1874,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/models/aerial_library/README.md",
-      "bytes": 4610,
-      "sha256": "0a793a6bfc43c82d82a2bf629d9fcb773566785fe814818281a652e55837bc13"
+      "bytes": 4774,
+      "sha256": "9c35c162fb26731f94ae0b58b69069e658041593b9718f29d9db96460dc9a98f"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/models/aerial_library/README.md.meta",
@@ -3374,8 +3374,8 @@
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/models/buoy/README.md",
-      "bytes": 2276,
-      "sha256": "4fa93ac61ed3d663749cfaa84cdfd1beac5527bed0e21eea91cabedecf925498"
+      "bytes": 2439,
+      "sha256": "4ca0872ebc5d42e567edc6963acc293ee410665f63b3b9848fb5862053c3a077"
     },
     {
       "path": "components/LOTUSim-Unity-modules/Assets/models/buoy/README.md.meta",
@@ -9443,6 +9443,11 @@
       "sha256": "2d460a969aff423fce2dfda6ff3a1e93a8e61cf08c6022f6e3f56edb3f870c87"
     },
     {
+      "path": "components/LOTUSim-Unity-modules/ORIGINAL_ASSETS_LICENSE.md",
+      "bytes": 1533,
+      "sha256": "b1db6beff418b0131049b69c27967ede4eab369c0af68d4f00cbff8d81a5ce50"
+    },
+    {
       "path": "components/LOTUSim-Unity-modules/ThirdParty/OpenBoats/LICENSE-CC-BY-4.0.txt",
       "bytes": 18657,
       "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
@@ -9781,6 +9786,11 @@
       "path": "components/LOTUSim/LICENSE",
       "bytes": 14197,
       "sha256": "8c349f80764d0648e645f41ef23772a70c995a0924b5235f735f4a3d09df127c"
+    },
+    {
+      "path": "components/LOTUSim/ORIGINAL_ASSETS_LICENSE.md",
+      "bytes": 1506,
+      "sha256": "a2c26c32fd258d1ee2446c27d4fc3cc9b0f5c5a373149825043eb7e97d76160b"
     },
     {
       "path": "components/LOTUSim/assets/models/airplane/aerial-library-origin.txt",
@@ -11009,8 +11019,8 @@
     },
     {
       "path": "components/LOTUSim/docs/guide-objets-libres-externes.md",
-      "bytes": 10206,
-      "sha256": "f521d5efcd12b70e13267d92dcf635a0063da04f0efc818a1b945c3536400c01"
+      "bytes": 10501,
+      "sha256": "6cf142fd6e88f2cd6c812f83d2c8340a118dc8cde0097b56a4616c479b1e07f1"
     },
     {
       "path": "components/LOTUSim/docs/guide-randomizer-lotusim-unity.md",
@@ -12034,63 +12044,58 @@
     },
     {
       "path": "docs/ARCHITECTURE_CODE.md",
-      "bytes": 15392,
-      "sha256": "30ce30e2d26024da8fde806564098ef90020d6a6a3255fc89bd7d4c7b42d159e"
+      "bytes": 15231,
+      "sha256": "9fe2b58699b4aaebd7b28697b6e5ace3eb34f3f20655a47c9000e51cbb6fb1a2"
     },
     {
       "path": "docs/ARCHITECTURE_MULTI_MOTEURS.md",
-      "bytes": 8220,
-      "sha256": "69e4203fe21f9a2176c19c184092919d77d80925055fe8afe07958b523ea7158"
+      "bytes": 7262,
+      "sha256": "cbf546abb6801945e1adc867fea3d533641a4ae6656375c4940a5de1e926a261"
     },
     {
       "path": "docs/ASSETS_ET_LICENCES.md",
-      "bytes": 7267,
-      "sha256": "24094b99c4f86692361505c689f60a04819f1bef82cd11b599b2e1651c4a0683"
+      "bytes": 4189,
+      "sha256": "1bf06ca878deab1bace45141d47c4fbfc0665ed0ffac33a768640f0bd103ed0c"
     },
     {
       "path": "docs/BIBLIOTHEQUE_MESHES.md",
-      "bytes": 5605,
-      "sha256": "77139ff3110cd1d15acbbda8b2a97bb8f8c6f8f9a2d6eedfae1cbeb279e488bf"
+      "bytes": 5233,
+      "sha256": "3968ec4454b07fda2ff9364b231ece65560e03515f3a8347aab7731154fcf5ab"
+    },
+    {
+      "path": "docs/CONTRIBUTION.md",
+      "bytes": 3470,
+      "sha256": "c7a8ce2b1e99acfbbee0f2fefe62ee3474ada1cc1df77189a598c102d34d95b5"
     },
     {
       "path": "docs/CONVENTIONS_CODE.md",
-      "bytes": 6522,
-      "sha256": "8cac539636abe7a2d30bafb98e75f3c6e0ff91539e16676a781c9d43aaf10d94"
-    },
-    {
-      "path": "docs/ETUDE_MOTEURS_3D.md",
-      "bytes": 7681,
-      "sha256": "d0737d44ff858e69be6f4023d180a90d62a436e5b31f06acb26a88eac2148e7b"
-    },
-    {
-      "path": "docs/IMPORTS_AUTOMATIQUES_UNITY.md",
-      "bytes": 7368,
-      "sha256": "d4ae9d1e92248ccfeb815dae77dcacb86e2c99561b46fec838f522f3a8490f14"
+      "bytes": 6118,
+      "sha256": "3356c90ccf5dad59155eca699dc06336e55a7f8ccc5a7e54beb6a3c5552343ee"
     },
     {
       "path": "docs/INSTALLATION_COMPLETE.md",
-      "bytes": 9927,
-      "sha256": "ac79126e97dd19fe1b0c89ea8e339a636a71acca831721e550c1031dd1180e5a"
+      "bytes": 10215,
+      "sha256": "75fbf8bd79ba140e5cdba32b19e6084eb897d927dbd46b73a604291e2ea4bd5f"
     },
     {
       "path": "docs/INSTALLATION_DASHBOARD.md",
-      "bytes": 16859,
-      "sha256": "0d5e3ca72a0f2e86a9434c6f12273585244537c9054bf69205121d9b428820e3"
+      "bytes": 5518,
+      "sha256": "fde939bd9a7637b978584a9e8b11ebdc4f9519c041d79db8e813cc4d1cd9933d"
+    },
+    {
+      "path": "docs/LICENCE_ASSETS.md",
+      "bytes": 3074,
+      "sha256": "c3d090194f8f624e5222364f7c7339e44af4d518d48113c8daf2184319c1287b"
     },
     {
       "path": "docs/MODIFICATIONS_LOTUSIM.md",
-      "bytes": 23572,
-      "sha256": "56a1635cb8a42d87ca54b3db059dafd8506e8228766ee45bb04b6f7e766f105d"
+      "bytes": 23176,
+      "sha256": "53130610c997bc6860f1d330ffdc7c1d1db9b84805de3ceb127052cc5e97c3f0"
     },
     {
       "path": "docs/MODIFICATIONS_UNITY.md",
-      "bytes": 11759,
-      "sha256": "980de988a565c63f52115c3a27a9a0ce4683200616bd7374a7d3fe98b6942460"
-    },
-    {
-      "path": "docs/PERIMETRE_EXPORT.md",
-      "bytes": 3701,
-      "sha256": "3654a6328032badc5dcf2be4efe27a2708d22c4d58f54e2e60c9b05fcff70b14"
+      "bytes": 11681,
+      "sha256": "68e91c40aea63d1454017e6d80369681b522cf965344bd80496605990d027150"
     },
     {
       "path": "docs/PLANS_COOPERATIFS.md",
@@ -12099,23 +12104,18 @@
     },
     {
       "path": "docs/PREPARATION_UNITY_UNREAL.md",
-      "bytes": 5041,
-      "sha256": "c256ec7cc06b40cb4b052716ad608cc565b2147e04d27ca4839cccfb03b7a091"
+      "bytes": 5626,
+      "sha256": "0b53e486e696c51aac754ae915480439bb838adee96fb95142cf1beab5d4b5d2"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 1656,
+      "sha256": "5aaab5a4e6846739fbda12f6e484609b2a475bc39dfceeca011a76d62dad1ebb"
     },
     {
       "path": "docs/SESSION_LOCALE.md",
-      "bytes": 5385,
-      "sha256": "38106914d5b66b0e6482193eb6a580bb761149a2d720cb53805440f1907fd861"
-    },
-    {
-      "path": "docs/SYNTHESE_TRAVAUX.md",
-      "bytes": 4760,
-      "sha256": "5bdf257c71ebd380aef9b908738ede9a290c22a7143c397ae4f55e044b118d11"
-    },
-    {
-      "path": "docs/VERSIONNEMENT.md",
-      "bytes": 5036,
-      "sha256": "00a5b3cd1f32c260773420473b326af6af6798839c50c3ec657ea3d141727bcc"
+      "bytes": 2633,
+      "sha256": "1d9a42c43c1f3c71d43730a46b9e26b221f9934647c31d867d721a6d8b9b0ba9"
     },
     {
       "path": "examples/campagne-2-images.json",
@@ -12468,6 +12468,11 @@
       "sha256": "e06baadec27225def527fba637696430e2ee84367e5dc27509c97d22cc317a7d"
     },
     {
+      "path": "tests/tooling/test_documentation.py",
+      "bytes": 2847,
+      "sha256": "5e2bfd292cce7baaa291d7870bda4b738030f58e2744ca47e2ede9bcff0babe8"
+    },
+    {
       "path": "tests/tooling/test_formatting_tools.py",
       "bytes": 3349,
       "sha256": "2a52fdfff4535a1f34333c640d74cdcd24b27a540eea39e4b4ec3bee09079244"
@@ -12493,7 +12498,7 @@
       "sha256": "74f164a2b7ad73b30cb6e8ac2af416f4caaf6b8ca1aa60ce5630aa5c043554a6"
     }
   ],
-  "totalBytes": 890947740,
+  "totalBytes": 890915180,
   "dynamicOutputsExcluded": [
     "**/artifacts/**",
     "**/__pycache__/**"
@@ -12501,6 +12506,6 @@
   "selfExcluded": [
     "manifest.json"
   ],
-  "updatedAt": "2026-10-29T09:11:22.770784+00:00",
+  "updatedAt": "2026-10-29T09:53:40.934569+00:00",
   "scope": "portable source snapshot; runtime and .local are not included"
 }

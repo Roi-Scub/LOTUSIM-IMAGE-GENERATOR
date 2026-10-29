@@ -1,4 +1,4 @@
-# Organisation du code et guide de contribution
+# Architecture du code
 
 Le code applicatif est organisé par responsabilité. Le paquet Python se trouve
 dans `components/LOTUSim/tools/lotusim_image_generator/`, le frontend dans
@@ -6,10 +6,8 @@ dans `components/LOTUSim/tools/lotusim_image_generator/`, le frontend dans
 distincts. Les anciens noms de lancement restent utilisables par Unity et les
 installations existantes.
 
-Le tag `v1.0.0` fige cette organisation depuis `refactor`, sans fusion supplémentaire
-dans `main`. Il ne recharge pas les projets sous `runtime/` : le dashboard déjà
-ouvert continue d’utiliser ses sources installées tant qu’un déploiement explicite
-n’a pas été validé.
+`main` contient les sources courantes. Les projets sous `runtime/` utilisent leur
+copie installée : modifier le dépôt ne recharge pas le dashboard ou un moteur ouvert.
 
 ## Repères dans le dépôt
 
@@ -176,8 +174,8 @@ installation encore organisée comme avant. Les nouveaux paquets de préparation
 indiquent le chemin réellement détecté. Les noms des classes et menus d’import
 restent identiques.
 
-Cette branche ne déplace rien sous `runtime/`. Après revue, utiliser des clones
-propres et l’installateur contrôlé. Ne pas recopier les nouveaux dossiers sur
+Pour déployer cette organisation, utiliser des clones propres et l’installateur.
+Ne pas recopier les nouveaux dossiers sur
 une ancienne installation en conservant les anciennes sources : cela créerait
 des classes et des GUID en double. Les projets modifiés de l’utilisateur doivent
 faire l’objet d’une migration explicite, pas d’un écrasement récursif.
@@ -290,6 +288,6 @@ Après un renommage ou une suppression volontaire, ajouter `--prune-missing` à
 cette option, un fichier inventorié manquant reste une erreur. Les chemins
 dangereux et les liens symboliques restent refusés même avec cette option.
 
-La revue et la fusion de `refactor` restent distinctes du déploiement. Ne pas
-copier automatiquement cet overlay sur un runtime déjà modifié : l’installateur
-attend des clones propres et préserve les fichiers divergents.
+Pour les commits et les versions, suivre le [guide de contribution](CONTRIBUTION.md).
+Ne pas copier automatiquement l’overlay sur un runtime déjà modifié :
+l’installateur attend des clones propres et préserve les fichiers divergents.

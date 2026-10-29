@@ -1,94 +1,95 @@
-# Bibliothèque locale de modèles 3D
+# Modèles 3D
 
-Ouvrir <http://127.0.0.1:8766/#assets>, ou choisir **Modèles 3D** dans le dashboard.
-Cette section inspecte les fichiers géométriques et conserve les nouveaux imports sur
-ce Mac. Elle ne lance pas de simulation, ne modifie pas une scène et ne publie rien.
+La vue **Modèles 3D** du [dashboard](http://127.0.0.1:8766/#assets) regroupe le
+catalogue, les modèles historiques et les imports locaux. L’aperçu permet de
+tourner, zoomer, recentrer et afficher le fil de fer. Il montre la géométrie,
+pas le rendu final avec l’océan et les éclairages Unity.
 
-## Consulter un modèle
+Les états distinguent un modèle du catalogue, une source historique non intégrée,
+un import en préparation, un échec et un modèle **prêt**. Seul ce dernier état
+confirme le prefab Unity et le modèle LOTUSim d’un nouvel import.
 
-Rechercher un nom, filtrer par catégorie ou par état, puis sélectionner une carte.
-Glisser dans l'aperçu pour tourner, utiliser la molette pour zoomer, **Recentrer** pour
-rétablir le cadrage, et **Maillage** pour le fil de fer.
+## Importer un modèle
 
-La bibliothèque détecte les modèles du catalogue de génération, les meshes historiques
-(par exemple FREMM et LRAUV) et les imports locaux. Les états sont distingués :
+1. Ouvrir le projet Unity complet et garder Play arrêté.
+2. Dans **Ajouter un modèle**, choisir les fichiers, renseigner la catégorie,
+   la source et les droits de réutilisation.
+3. Vérifier l’axe vertical, l’axe avant et les mètres par unité : `0,01` pour
+   un fichier en centimètres. Le mesh seul ne permet pas de déduire l’unité réelle.
+4. Déclarer le tirant d’eau, la vitesse et l’altitude limites si nécessaire.
+   La vitesse maximale vaut zéro par défaut ; ces valeurs ne sont pas mesurées.
+5. Importer et attendre l’état **prêt**. Le modèle devient sélectionnable dans
+   **Paramétrage**, sans effacer le brouillon de campagne.
 
-- **Intégré au pipeline** : modèle déjà connu du catalogue des campagnes existantes.
-- **Source historique** : géométrie disponible ; son intégration actuelle au pipeline reste à vérifier.
-- **Importé / en préparation / attente Unity** : conversion en cours ou prefab non encore confirmé.
-- **Échec** : une étape a refusé le modèle ; ouvrir ses réglages et relancer après correction.
-- **Prêt** : prefab Unity et modèle LOTUSim confirmés ; disponible dans Paramétrage.
+Si Unity est fermé, en Play ou en compilation, l’import attend sa disponibilité.
+Le menu **LOTUSim > Models > Dashboard imports > Process pending imports now**
+permet de traiter manuellement la file. Aucun scénario ni client ROS n’est lancé.
 
-Les nombres de triangles proviennent du fichier chargé. Les dimensions de catalogue,
-lorsqu'elles existent, ne sont pas une certification des unités du fichier importé.
-L'aperçu montre la géométrie et ses matériaux disponibles, pas le rendu de l'océan Unity.
-La bouée `buoy` a un aperçu simplifié reconstruit depuis ses primitives Gazebo ; son
-prefab Unity détaillé est différent. Les meshes lourds nécessitent un chargement explicite.
+## Formats acceptés
 
-## Ajouter un fichier
+Meshes statiques **GLB 2.0**, **glTF 2.0**, **OBJ/MTL** et **STL ASCII/binaire**.
+Joindre les `.bin`, matériaux et textures référencés. Pour garder les sous-dossiers,
+utiliser le sélecteur de dossier. Un GLB non compressé avec textures embarquées
+reste le chemin le plus simple.
 
-Cliquer **Ajouter un modèle**, renseigner nom, catégorie, licence ou droits déclarés,
-et éventuellement la page source. Choisir le mesh et ses fichiers associés, sélectionner
-le fichier principal, confirmer les droits nécessaires, puis **Importer dans la bibliothèque**.
-Si le modèle utilise des sous-dossiers de textures, choisir **Choisir un dossier avec
-ses textures** : les chemins relatifs sont conservés. Utiliser des noms de fichiers
-simples en lettres ASCII, chiffres, espaces, tirets ou underscores.
+Limites d’entrée : **64 Mio**, **100 fichiers**, noms simples. Les références
+externes, chemins absolus et scripts sont refusés. Draco, Meshopt, KTX2, animations,
+squelettes et morph targets ne sont pas pris en charge par ce convertisseur.
+DAE reste consultable pour les anciens modèles, mais n’est pas un format d’import.
+FBX et ZIP ne sont pas acceptés par le formulaire.
 
-Formats d'import : **GLB 2.0**, **glTF 2.0**, **OBJ** et **STL**. Pour un OBJ, joindre
-le `.mtl` et les textures référencées ; pour un glTF séparé, joindre les `.bin` et images.
-Un GLB non compressé avec textures embarquées est généralement le plus simple.
-Les références relatives doivent correspondre aux fichiers joints ; les URI externes
-et chemins absolus sont refusés. Les DAE déjà présents sont consultables, mais ne font
-pas partie des formats d'import de ce premier écran. Les FBX, ZIP et scripts ne sont pas acceptés.
+Les dimensions normalisées doivent rester entre 1 mm et 1 000 m ; le tirant ne
+doit dépasser ni 25 m ni la hauteur du modèle. Des budgets supplémentaires limitent
+géométrie et textures. Un fichier trop lourd doit être réexporté : le convertisseur
+ne le simplifie pas silencieusement.
 
-Limites : **64 Mio au total**, **100 fichiers** par import ; Draco, Meshopt et KTX2
-ne sont pas décodés dans cette version. En cas de référence de texture manquante,
-le formulaire refuse l'import plutôt que de télécharger une ressource externe.
+## Intégration Unity et LOTUSim
 
-Les fichiers sont conservés sous :
+Les originaux et le reçu `asset.json` sont conservés sous :
 
 ```text
 runtime/LOTUSim/artifacts/mesh-library/imports/import-<uuid>/
-  asset.json       # métadonnées et empreintes SHA-256
-  files/          # originaux importés
 ```
 
-Les fichiers et la licence déclarée restent consultables après rechargement du dashboard.
-Un enregistrement ne vaut pas vérification juridique de la licence. La provenance
-`seagull_dayvable` porte une mention NoAI : son usage pour entraînement/dataset reste à clarifier.
+Le worker prépare un bundle et `unity-request.json`. Unity importe les meshes et
+matériaux, crée `Assets/Prefabs/import_<uuid>.prefab`, son Addressable et un reçu
+`unity-result.json`. Le backend vérifie ce reçu avant d’ajouter le SDF dans
+`assets/models/import_<uuid>/` et l’entrée du catalogue `imported_assets.json`.
+Le catalogue de base, les scènes et les sources des autres modèles sont conservés.
 
-## Passer d'un import à un objet simulé
+Les matériaux utilisent une politique HDRP opaque pour les masques. Le verre peut
+donc différer du fichier source. Le collider est simple ; la houle est une réponse
+visuelle approximative, ajoutée uniquement si les dimensions conviennent. Un tirant
+nul peut employer un proxy de 5 cm sans changer la valeur déclarée. Les feux de
+navigation ne sont pas inventés. Les classes existantes gardent leur numéro ;
+la classe générique `other` porte le numéro 13.
 
-L'intégration est maintenant **automatique**, avec le projet Unity ouvert **hors Play**.
-Déclarer la catégorie, l'échelle, l'axe avant et les limites de vitesse/altitude dans le
-formulaire. Le convertisseur prépare le mesh ; Unity crée son prefab et son Addressable ;
-le backend confirme les fichiers et ajoute le modèle LOTUSim au catalogue complémentaire.
-Il apparaît alors dans Paramétrage, sans effacer le brouillon en cours.
+Chaque campagne référence la révision, le prefab et son GUID. Reconstruire un
+modèle exige une nouvelle préparation de campagne ; une ancienne révision n’est
+pas remplacée silencieusement. Pour une application Unity compilée, il faut aussi
+construire les bundles Addressables : cette opération n’est pas automatique.
 
-Les capacités déclarées ne sont pas déduites ni certifiées par le mesh. Le collider est
-simple et la réponse à la houle est visuelle, pas une hydrodynamique validée. Les animations
-et les feux de navigation ne sont pas inventés. Les formats statiques non pris en charge
-sont refusés explicitement. Lire [le guide de l'import automatique](IMPORTS_AUTOMATIQUES_UNITY.md).
+## Dépendances et diagnostic
 
-## Technique et tests
-
-Le serveur du dashboard utilise la bibliothèque standard Python ; le worker de conversion
-utilise le Python `.venv-vision` avec NumPy et Pillow. Le visualiseur emploie
-Three.js 0.180.0, livré localement avec sa licence MIT et un inventaire d'empreintes sous
-`tools/ops_dashboard_ui/vendor/three/`. Il n'y a ni CDN ni appel à un modèle distant.
-
-Les imports sont stockés séparément des modèles existants. Le serveur impose une origine
-locale, un en-tête d'intention, des limites de taille, une liste de formats, des références
-de fichiers locales et un stockage sans suivi de symlink. Les fichiers ne sont jamais exécutés.
-
-Tests Python, depuis `runtime/LOTUSim` :
+Le dashboard utilise Python standard ; le worker de conversion attend NumPy et
+Pillow dans le `.venv-vision` du clone LOTUSim. Sur une nouvelle installation :
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts -p 'test_mesh_*.py'
+python3.12 -m venv runtime/LOTUSim/.venv-vision
+runtime/LOTUSim/.venv-vision/bin/python -m pip install numpy==2.2.6 Pillow==11.3.0
 ```
 
-Les tests d'API ouvrent des ports temporaires sur le loopback. Les tests de navigateur
-interceptent les écritures dans des fixtures isolées. Un cuboïde original CC0, nommé
-« Validation import automatique », est conservé dans la bibliothèque locale pour le
-test réel de création du prefab et de disponibilité au paramétrage ; il ne représente
-pas un navire réaliste. Ce test ne lance ni Play ni génération d'images.
+Si cet environnement sert aussi au détecteur RGB, le créer avec Python 3.12 et
+suivre l’[installation de la vision](INSTALLATION_DASHBOARD.md#validation-rgb-optionnelle).
+Ne pas écraser un environnement existant pour réinstaller le convertisseur.
+
+| Symptôme | À vérifier |
+| --- | --- |
+| Attente Unity | Bon projet ouvert, Play arrêté, compilation terminée, projets frères LOTUSim/LOTUSim-Unity-modules |
+| Conversion refusée | Ressources jointes, format statique, unités, budgets et message du worker |
+| Préparation refusée après reconstruction | Préparer une nouvelle campagne pour la nouvelle révision |
+| Modèle visible dans la bibliothèque mais absent des paramètres | Distinguer source historique et import confirmé prêt |
+
+Three.js est livré localement avec sa licence MIT sous `tools/ops_dashboard_ui/vendor/three/`.
+Le visualiseur n’utilise ni CDN ni modèle distant. Consulter les
+[crédits et restrictions](ASSETS_ET_LICENCES.md) avant d’importer ou diffuser un modèle.

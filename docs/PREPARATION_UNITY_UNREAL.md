@@ -25,13 +25,13 @@ Les badges séparent disponibilité du préparateur, présence détectée de l'e
 et validation native. Une préparation réussie ne prouve ni l'éligibilité de licence
 ni la production d'une image.
 
-## Agent de préparation
+## Préparation des fichiers
 
 L'orchestrateur applique trois rôles déterministes : le **planificateur** lit la
 configuration validée ; le **constructeur de script** choisit le modèle de code du
 moteur ; le **validateur** contrôle les fichiers et leurs empreintes SHA-256.
-La trace `engine-agent.json` est affichée dans le dashboard. Aucun LLM n'invente
-du code ni ne répare seul des scripts dans l'éditeur.
+La trace `engine-agent.json` est affichée dans le dashboard. Ce sont des étapes
+déterministes, pas une génération de code par un LLM.
 
 Chaque préparation est une révision immuable. `manifest.json` référence les fichiers
 et révisions des modèles importés. Les téléchargements vérifient tailles et empreintes ;
@@ -79,6 +79,13 @@ trajectoires continues ou ROS. La coque FREMM est absente. Il ne produit pas de
 masques ni d'annotations de vérité terrain. Les vitesses restent déclaratives,
 sans animation temporelle. La bouée issue des primitives SDF diffère du prefab
 Unity détaillé. Ces limites figurent aussi dans le dashboard et les reçus.
+
+Ces limites sont celles de notre adaptateur, pas du moteur : Unreal fournit
+[Water et les vagues](https://dev.epicgames.com/documentation/en-us/unreal-engine/water-system-in-unreal-engine),
+un [composant de flottabilité](https://dev.epicgames.com/documentation/en-us/unreal-engine/water-buoyancy-component-in-unreal-engine)
+et des composants de ciel, nuages et brouillard. Il reste à les configurer, relier
+nos paramètres et choisir l’autorité des poses pour ne pas opposer la physique
+Unreal à la timeline LOTUSim. Les masques et annotations doivent aussi être portés.
 
 Le Python Unreal automatise l'éditeur ; il ne constitue pas un langage de gameplay
 dans une application packagée. [Documentation Epic](https://dev.epicgames.com/documentation/en-us/unreal-engine/scripting-the-unreal-editor-using-python).

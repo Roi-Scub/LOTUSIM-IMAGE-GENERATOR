@@ -1,9 +1,8 @@
-# Conventions de code et branche de refactorisation
+# Conventions de code
 
-La branche `refactor` améliore la lisibilité des sources sans changer les règles
-de simulation, les contrats ROS, les champs Unity sérialisés ou les formats de
-données. Elle reste séparée de `main` jusqu’à sa revue. Les projets complets sous
-`runtime/` ne sont pas reformatés ni rechargés pendant cette revue.
+Les formateurs harmonisent les sources sans renommer les contrats ROS, les champs
+Unity sérialisés ou les formats de données. Ils ne sélectionnent pas les projets
+complets sous `runtime/` ni les médias tiers.
 
 ## Conventions retenues
 
@@ -44,7 +43,7 @@ python -m pip install -r requirements-dev.txt -r requirements-test.txt
 npm ci --ignore-scripts
 ```
 
-Node.js 24.1.0 a servi aux vérifications de cette branche. Les versions des paquets
+Node.js 24.1.0 est la version de référence des tests. Les versions des paquets
 Node sont figées dans `package-lock.json` ; les dépendances Python de formatage
 sont déclarées dans `requirements-dev.txt`.
 
@@ -99,25 +98,18 @@ Pour tester un clone installé hors de ce dépôt, définir `NODE_PATH` vers le
 de test. Les dépendances de formatage ne sont pas nécessaires pour lancer le
 dashboard ou produire les images.
 
-Les vérifications de la branche couvrent l’équivalence des structures Python et
-JavaScript, des tokens natifs, du DOM et du CSS. La comparaison navigateur porte
-sur quatre vues en deux résolutions. La compilation C# utilise les références
-Unity locales ; elle ne constitue pas un test de rendu GPU.
+Les contrôles comparent les structures Python et JavaScript, les tokens natifs,
+le DOM et le CSS. La compilation C# utilise les références Unity locales ;
+elle ne constitue pas un test de rendu GPU.
 
 Les empreintes des sources changent naturellement avec leur mise en forme : un
 nouveau plan pourra donc porter une nouvelle provenance du planificateur. Les
 plans archivés, catalogues et corpus ne sont pas réécrits pour masquer ce changement.
 
-## Relire la branche avant fusion
+## Revue
 
-```bash
-git diff main...refactor --stat
-git diff --ignore-all-space main...refactor
-```
-
-Relire séparément les nouveaux outils, les adaptations de tests et les correctifs
-d’installation. La fusion et le déploiement vers les projets exécutés restent des
-actions explicites après validation.
+Relire séparément le formatage et les changements de comportement. Le
+[guide de contribution](CONTRIBUTION.md) décrit les commits, l’inventaire et les versions.
 
 Le fichier `.git-blame-ignore-revs` identifie le gros commit de mise en forme.
 Pour remonter à l’auteur des changements fonctionnels sans ce bruit :

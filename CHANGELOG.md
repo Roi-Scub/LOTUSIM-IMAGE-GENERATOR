@@ -1,5 +1,11 @@
 # Journal des versions
 
+## Non publié
+
+- README et navigation documentaire recentrés sur l’installation et l’utilisation depuis `main`.
+- Guides d’import regroupés ; notes d’export et de migration devenues redondantes retirées.
+- Crédits des 14 modèles externes ; médias originaux de Gabriel Ricardon proposés sous CC BY 4.0, sans changement des licences tierces ni du code EPL-2.0.
+
 ## 1.0.0 du 29 octobre 2026 — Official Release
 
 Première version majeure officielle du projet **LOTUSIM Image Generator**.
@@ -28,7 +34,7 @@ du simulateur LOTUSim publiée par Naval Group.
 - Équations de trajectoire partagées par planificateur et éditeur ; provenance couvrant les deux sources.
 - Modules Unity regroupés par domaine : 84 sources et leurs `.meta` déplacées ensemble, sans changement des types ni des assemblages.
 - Vérification des GUID, des dossiers Editor et des chemins Resources ; compilation hors éditeur adaptée aux déplacements et compatibilité des deux emplacements de l’importeur.
-- Sources figées par le tag annoté `v1.0.0` depuis `refactor`, sans fusion supplémentaire dans `main` ni déploiement du runtime.
+- Sources figées par le tag annoté `v1.0.0`, sans déploiement du runtime.
 
 ### Vérifications
 

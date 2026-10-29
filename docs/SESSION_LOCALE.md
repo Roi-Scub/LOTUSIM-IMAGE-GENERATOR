@@ -1,104 +1,67 @@
-# Session locale après déplacement — 27 octobre 2026
+# Session locale
 
-Répertoire actif : `/Users/gabrielricardon/Desktop/Perso/export`.
-Les deux projets complets se trouvent sous `runtime/`, contrairement aux surcouches
-portables sous `components/`. Le dashboard et Unity lisent désormais ces projets complets.
+Les projets complets sont sous `runtime/LOTUSim` et
+`runtime/LOTUSim-Unity-modules`. Les dossiers `components/` sont les sources à
+intégrer, pas les projets exécutés. Pour un nouveau poste, suivre d’abord
+l’[installation](INSTALLATION_COMPLETE.md).
 
-## Ouvrir la chaîne
+## Démarrer
 
-Docker Desktop doit être lancé. Depuis ce dossier :
+Avec Docker Desktop lancé, depuis la racine :
 
 ```bash
 python3 scripts/start_local_stack.py
 ```
 
-Quatre onglets Terminal sont ouverts : `dashboard`, `ros`, `sim`, `web`.
-Si Unity n'est pas ouvert, le lanceur ouvre Unity Hub. Dans Hub, utiliser **Add >
-Add project from disk**, choisir `runtime/LOTUSim-Unity-modules`, puis ouvrir cette
-entrée précise. Le lancement direct de l'éditeur ne récupère pas la licence sur ce Mac.
-Ne pas ouvrir l'ancienne entrée pointant sous `STAGE - CEMIS - LOTUSIM`.
-Le lanceur vérifie le montage du conteneur et refuse les doublons connus.
-Il ne reconstruit ni ne recrée les conteneurs.
+Le lanceur ouvre les onglets `dashboard`, `ros`, `sim` et `web`, vérifie les
+montages et évite les doublons connus. Il ne construit ni ne recrée le conteneur
+`lotusim-dev`. Pour Unity, ouvrir dans Hub le projet complet sous `runtime/`,
+pas une ancienne copie. Le lanceur ne passe pas en Play.
 
-- Dashboard : <http://127.0.0.1:8766/#settings>.
-- Interface officielle LOTUSim : <http://127.0.0.1:8080/>.
-- ROS TCP : port local 10000 ; API de l'interface officielle : port local 5001.
-- Logs Unity lancé par Hub : `~/Library/Logs/Unity/Editor.log` ; les diagnostics des
-  premières tentatives de lancement direct sont conservés sous `.local/logs/`.
+| Service | Adresse locale |
+| --- | --- |
+| Dashboard | <http://127.0.0.1:8766/> |
+| Interface officielle LOTUSim | <http://127.0.0.1:8080/> |
+| API de cette interface | Port 5001 |
+| ROS TCP Endpoint | Port 10000 |
 
-Le monde ouvert est `maritime_dataset.world`, dédié aux campagnes pilotées.
-Il n'a pas besoin de xDyn ; les anciens scénarios de propulsion peuvent, eux, en dépendre.
-Ne pas lancer un autre monde simultanément dans le namespace `/lotusim`.
-Le dashboard est un éditeur de plans et un observateur : il ne démarre pas Play.
+Le monde dataset est `maritime_dataset.world`. Ne pas le lancer en parallèle
+avec `lotusim.world` dans `/lotusim`. Les campagnes dataset n’ont pas besoin de
+xDyn ; les anciens scénarios de propulsion peuvent en dépendre.
 
-Le lanceur du simulateur définit `LTTNG_UST_REGISTER_TIMEOUT=0` pour éviter une
-attente initiale du traceur. Cela ne désactive pas les journaux LOTUSim et n'altère
-pas les plans de campagne. Les indicateurs de service du lanceur inspectent les
-processus et sockets dans le conteneur : un port publié par Docker Desktop ne suffit
-pas à prouver qu'un serveur a réellement démarré.
-
-La chaîne n'utilise pas de fonction réservée à Unity Pro. L'activation de licence
-reste gérée dans Unity Hub ; l'éligibilité à Personal pour un travail de stage ou
-effectué pour un organisme doit être vérifiée auprès de cet organisme selon les
-[conditions Unity](https://unity.com/pages/license-compliance).
-
-Pour consulter l'état sans aucune connexion réseau au serveur ROS :
+Consulter l’état sans créer de client ROS supplémentaire :
 
 ```bash
 python3 scripts/start_local_stack.py status
-```
-
-Pour relancer seulement un service arrêté dans un onglet Terminal :
-
-```bash
 python3 scripts/start_local_stack.py run dashboard
-# autres noms : ros, sim, web
 ```
 
-## Tester les mises à jour : pilote de deux images
+La seconde commande relance seulement le service nommé s’il est arrêté ; les
+autres noms sont `ros`, `sim` et `web`. Un port Docker publié ne suffit pas à
+prouver que le processus dans le conteneur est prêt.
 
-1. Dans le dashboard, ouvrir **Paramétrage**. La configuration sauvegardée
-   « Pilote de validation — 2 images » peut être rechargée et préparée.
-   Une préparation écrit le plan ; elle ne lance pas la génération.
-2. Un plan prêt existe déjà :
-   `runtime/LOTUSim/artifacts/campaign-settings/prepared/a69ab5b1-ef36-4225-aa57-4ebed2b3eaab/manifest.json`.
-   Il demande une bouée à 100 m, une image de jour et une de nuit en 1280×720,
-   avec une hauteur de houle nominale de 1,5 m.
-3. Dans Unity, hors Play : **LOTUSim > Dataset > Manual campaigns > Import prepared campaign**.
-   Choisir ce `manifest.json`, en laissant `campaign.json` à côté. Une scène dédiée s'ouvre.
-4. Lancer **Play** dans cette scène seulement. Les sorties vont sous
-   `runtime/LOTUSim-Unity-modules/artifacts/manual-campaigns/` : RGB, annotations,
-   overlays et métadonnées. Leur suivi est visible dans le dashboard.
+## Faire un petit essai
 
-La validation manuelle de ces deux images reste nécessaire avant une campagne longue.
-La préparation des plans et les tests de code ne prouvent pas, à eux seuls, le rendu GPU.
-Les tailles apparentes, vitesses de catalogue et paramètres météo sont des approximations
-de scénario documentées ; l'image reconnaissable ou visible n'est pas garantie par le plan.
+Dans **Paramétrage**, préparer une bouée à 100 m, une image de jour et une de
+nuit en 1280 × 720. Le fichier `examples/campagne-2-images.json` est une base
+de configuration à consulter. Ne pas réutiliser un ancien identifiant de bundle.
+
+Dans Unity, hors Play, choisir **LOTUSim > Dataset > Manual campaigns > Import
+prepared campaign**, sélectionner le nouveau `manifest.json` puis lancer Play
+dans la scène créée. Les sorties sont sous
+`runtime/LOTUSim-Unity-modules/artifacts/manual-campaigns/` et apparaissent dans
+le dashboard. Contrôler RGB, masques et exclusion de l’observateur avant d’augmenter
+le volume.
 
 ## Arrêter
 
-Quitter Play et laisser la campagne finir son arrêt. Fermer Unity normalement si nécessaire.
-Dans chaque onglet dédié, utiliser Ctrl+C. Pour arrêter tout le runtime du conteneur :
+Quitter Play après l’arrêt de la campagne. Utiliser Ctrl+C dans les onglets des
+services à arrêter. Pour arrêter aussi le conteneur :
 
 ```bash
 docker stop --time 20 lotusim-dev
 ```
 
-Cela ne ferme pas le dashboard Python du Mac : utiliser Ctrl+C dans son onglet.
-Ne pas relancer plusieurs fois des services dont l'arrêt n'est pas confirmé.
-
-## Ce qui a été conservé
-
-- Les anciens répertoires LOTUSim et Unity sont inchangés, à part leur arrêt propre.
-- L'ancien conteneur est conservé arrêté : `lotusim-dev-before-export-20261027`.
-- Son état est sauvegardé localement dans l'image
-  `lotusim-dev:before-export-move-20261027`. Rien n'a été publié.
-- Le nouveau conteneur expose ses ports uniquement sur `127.0.0.1`.
-- Les poids du validateur RGB, sa base de connaissance et les configurations sont recopiés.
-- Les gros corpus historiques restent dans les anciens dossiers pour éviter de dupliquer
-  plus de 25 Go. Ils ne sont ni perdus ni automatiquement analysés au démarrage.
-- Le venv RGB est recréé à son nouveau chemin, avec les paquets déjà disponibles sur ce Mac.
-
-`manifest.json` décrit les sources portables et les nouveaux lanceurs, pas les caches,
-binaires, dépendances et résultats du `runtime/`. Le manifeste initial est conservé
-sous `.local/backups/manifest-before-relocation.json`.
+Cette commande ne ferme pas le dashboard du Mac : Ctrl+C dans son propre onglet.
+Fermer Unity normalement. Ne pas lancer plusieurs fois un service dont l’arrêt
+n’a pas été confirmé. Les journaux Unity sont dans `~/Library/Logs/Unity/Editor.log`.

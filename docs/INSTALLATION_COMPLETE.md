@@ -1,6 +1,13 @@
-# Réinstaller la chaîne LOTUSim et Unity
+# Installer LOTUSim et Unity
 
-Pour le dashboard seul, utiliser [INSTALLATION_DASHBOARD.md](INSTALLATION_DASHBOARD.md). La procédure suivante ajoute les composants exportés à **deux nouveaux clones compatibles**. Elle n’est pas destinée à réinstaller par-dessus les projets de travail actuels.
+Cette procédure installe les extensions dans deux nouveaux clones compatibles.
+Ne pas l’appliquer par-dessus des projets de travail déjà modifiés. Pour le
+dashboard seul, voir le [démarrage local](INSTALLATION_DASHBOARD.md).
+
+Le dépôt fournit les ajouts dans `components/`, les patchs dans `patches/`, leurs
+copies complètes dans `references/` et un inventaire SHA-256 dans `manifest.json`.
+Les moteurs, dépôts complets, builds, caches, poids IA, bases locales et corpus
+ne sont pas inclus. Les [licences des médias](ASSETS_ET_LICENCES.md) restent distinctes.
 
 ## 1. Préparer les deux dépôts de base
 

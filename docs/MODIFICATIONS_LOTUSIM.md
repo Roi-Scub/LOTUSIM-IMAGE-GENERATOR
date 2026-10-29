@@ -1,6 +1,7 @@
-# Modifications exactes du noyau LOTUSim
+# Intégration LOTUSim
 
-Audit du 27 octobre 2026, fondé sur les sources et le diff local, sans modifier le dépôt source ni ses services. Les chemins ci-dessous sont relatifs à la racine du dépôt LOTUSim cible.
+Les chemins sont relatifs au clone LOTUSim cible. Les modifications fonctionnelles
+ci-dessous vont ensemble ; les adaptations d’environnement sont optionnelles.
 
 ## 1. Références et portée de compatibilité
 
@@ -13,7 +14,10 @@ Audit du 27 octobre 2026, fondé sur les sources et le diff local, sans modifier
 | xDyn, verrouillé par `flake.lock` | `https://github.com/naval-group/lxdyn` | `363668b2b1f97e3177d2d617586fee6c4a727262` |
 | Environnement ROS Nix, verrouillé par `flake.lock` | `https://github.com/lopsided98/nix-ros-overlay` | `2004728f9f450421c9d44b62d6c707a5834139bb` |
 
-Ces SHA sont les bases ou dépendances constatées dans les checkouts locaux. Ils ne désignent pas des commits publiés contenant les nouvelles fonctions dataset/dashboard. Les nouvelles fonctions et les correctifs sont des modifications locales, dont plusieurs fichiers non suivis par Git. Cloner uniquement ces commits ne suffit donc pas : il faut également appliquer les sources et patchs de cet export. Aucune consultation distante ni certification de compatibilité avec d'autres révisions n'a été réalisée pour cet audit.
+Ces SHA sont les versions de base, pas les commits des extensions dataset.
+Cloner ces révisions ne suffit pas : appliquer aussi les ajouts et patchs via
+l’[installateur](INSTALLATION_COMPLETE.md). La compatibilité avec d’autres bases
+doit être testée séparément.
 
 Versions lues dans les fichiers : ROS 2 Jazzy, Gazebo Harmonic, Unity `2022.3.18f1` et HDRP `14.0.10`. Conserver `flake.lock`, `Packages/manifest.json` et `Packages/packages-lock.json` avec l'export ; le manifeste Unity utilise une URL Git non épinglée pour ROS-TCP-Connector, dont la résolution précise appartient au lockfile.
 
@@ -140,7 +144,10 @@ Attention : la limitation séquentielle ajoutée dans `flake.nix` concerne la co
 
 ## 7. Application, construction et vérification
 
-Appliquer les fichiers fonctionnels ensemble sur un clone correspondant à la base indiquée, puis ajouter les assets nécessaires. Examiner un patch avec `git apply --check` avant son application ; s'il échoue, comparer les changements au lieu d'écraser des travaux locaux. Un patch suivi par Git seul n'inclut pas les trois nouveaux fichiers non suivis : vérifier leur présence dans le paquet de sources exporté.
+Appliquer les fichiers fonctionnels ensemble sur le clone de base, avec les assets.
+Un patch seul ne contient pas les trois nouveaux fichiers de la timeline : ils
+sont fournis dans `components/LOTUSim/`. L’installateur contrôle les deux ensembles.
+En cas de conflit, comparer les fichiers sans écraser les modifications locales.
 
 Commandes dans le devShell Linux/Nix du dépôt cible, et non directement dans un terminal macOS :
 

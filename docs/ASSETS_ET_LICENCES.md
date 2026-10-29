@@ -1,124 +1,77 @@
-# Assets et provenance à conserver
+# Assets et licences
 
-Inventaire documentaire local du 27 octobre 2026. Ce fichier décrit les notices
-et métadonnées effectivement archivées ; il ne transfère pas la propriété des
-modèles et ne remplace pas les conditions de leurs auteurs.
+Les [crédits du README](../README.md#modèles-3d-et-crédits) recensent les modèles
+et leurs auteurs. La licence du code ne s’applique pas automatiquement à tous
+les médias utilisés par une scène.
 
-## Trois ensembles différents
+| Ensemble | Licence et provenance |
+| --- | --- |
+| Créations procédurales de Gabriel Ricardon | [CC BY 4.0, périmètre explicite](LICENCE_ASSETS.md) |
+| 14 modèles externes | CC BY 4.0 déclarée dans les manifestes, notices et preuves archivées ; réserves ci-dessous |
+| Modèles et environnement du socle | Notices du projet officiel et de leurs fournisseurs ; pas de nouvelle attribution à Gabriel |
+| Code et générateurs | [EPL-2.0](../LICENSE), avec conservation des en-têtes existants |
+| Packages et bibliothèques tierces | Licences propres, notamment Three.js MIT dans le visualiseur |
 
-1. **Créations procédurales et code d’intégration** : bouée, bibliothèque aérienne,
-   sept familles de navires, matériaux/textures générés et scripts de réponse
-   visuelle. Les constructeurs correspondants restent dans `Assets/Editor/Dataset/Models/`.
-2. **Adaptations de modèles externes** : six bateaux et huit autres variantes,
-   importés dans `Assets/models/open_boats/` et `open_objects/` puis assemblés en
-   prefabs. Les manifestes les déclarent `CC-BY-4.0` et enregistrent leurs auteurs,
-   URL sources, commits miroirs, empreintes SHA-256 et transformations.
-3. **Assets du projet officiel de base** : FREMM original, HDRP/environnement,
-   terrain, audio, polices, personnages, Photon/XR et autres dépendances.
-   L’export d’intégration ne les transforme pas en créations nouvelles et ne leur
-   attribue pas automatiquement la licence des modèles externes.
+## Sources externes
 
-Le `LICENSE` du dépôt Unity de base est EPL-2.0. Garder ce fichier et les en-têtes
-existants avec les fichiers de code repris/modifiés. Ne pas appliquer une seule
-étiquette de licence à l’ensemble des médias par commodité ; conserver les
-notices propres à chaque ensemble.
+Les deux manifestes sont la référence pour retrouver les fichiers effectivement
+intégrés, leurs auteurs, les pages sources, les commits miroirs, les SHA-256 et
+les changements de conversion :
 
-## Bibliothèque externe présente
+- [OpenBoats](../components/LOTUSim-Unity-modules/ThirdParty/OpenBoats/manifest.json) : six bateaux.
+- [OpenObjects](../components/LOTUSim-Unity-modules/ThirdParty/OpenObjects/manifest.json) : huit variantes maritimes et aériennes.
 
-Les identifiants sont les clés de modèles utilisées par les prefabs et le
-catalogue LOTUSim. Les sources complètes et leurs empreintes sont dans les
-manifestes, qui font foi pour retrouver les téléchargements retenus.
+Conserver `ThirdParty/` avec les sources GLB/FBX sélectionnées, `ATTRIBUTION.txt`,
+preuves `creator-license.json` ou `sketchfab-license.json`, inspections et textes
+de licence. Les dossiers `Assets/models/open_boats/`, `open_objects/` et les modèles
+Gazebo associés restent des adaptations de ces œuvres, pas des créations originales.
 
-| Identifiant | Œuvre / auteur renseignés | Licence déclarée dans l’archive |
-| --- | --- | --- |
-| `speedboat_zefiro` | ZEFIRO — angelo raffaele catalano | CC BY 4.0 |
-| `rib_assault` | Assault Boat — tnnv | CC BY 4.0 |
-| `motor_yacht_35` | motoryacht 35 — angelo raffaele catalano | CC BY 4.0 |
-| `jetski_seadoo_gti` | 2012 Sea-Doo GTI SE 130 — BoatUS Foundation | CC BY 4.0 |
-| `cabin_cruiser_minnow` | SS Minnow III — gogiart | CC BY 4.0 |
-| `rib_zodiac` | Zodiac boat — RedC130 | CC BY 4.0 |
-| `buoy_navigation_ozzy` | Buoy — OzzyDan | CC BY 4.0 |
-| `drone_amvlab` | drone amvlab — AMV Lab | CC BY 4.0 |
-| `helicopter_utility_gb` | Helicopter — Gigantic Burger | CC BY 4.0 |
-| `airplane_a320` | airplane a320 — AMV Lab | CC BY 4.0 |
-| `airplane_c172` | Cessna 172 — Nobilis the Palaeovespa | CC BY 4.0 |
-| `seagull_dayvable` | Seagull — Dayvable ; adaptation FBX/rig viniciusbarros | CC BY 4.0, avec signalement ci-dessous |
-| `speedboat_smolbot` | Boat — Nicosama, selon le manifeste et la preuve créateur | CC BY 4.0 |
-| `speedboat_racing` | Boat — milamila | CC BY 4.0 |
+Les conversions comprennent selon le modèle : orientation, échelle, ligne d’eau
+artistique, regroupement des meshes, matériaux HDRP opaques, animation et lumières.
+Elles ne conservent pas nécessairement la transmission du verre ou tous les effets
+du matériau source. Les listes détaillées restent dans les notices locales.
 
-Les URL vers les œuvres et les liens de licence doivent rester dans les
-`ATTRIBUTION.txt`, composants `OpenBoatAssetCredit`, manifestes et notices.
-Les marques et noms commerciaux ne constituent pas une approbation du projet.
-Les dimensions, masses, vitesses représentatives et réponses à la mer sont des
-paramètres de simulation, pas une certification des modèles de fabricants.
+Les dimensions, masses, vitesses et réponses aux vagues sont des paramètres de
+simulation. Les noms commerciaux et les crédits n’impliquent aucun soutien des auteurs
+ou fabricants.
 
-## Dossier `ThirdParty` : partie indispensable de l’export
+## Cas à vérifier avant diffusion
 
-Conserver **tout le dossier sélectionné `ThirdParty/`** (67 fichiers, environ
-87 Mio à l’audit), sans ajouter les dépôts miroirs complets :
+### Goéland Dayvable
 
-- `OpenBoats/manifest.json` et `OpenObjects/manifest.json` ;
-- `LICENSE-CC-BY-4.0.txt` dans chaque collection ;
-- `ATTRIBUTION.txt`, `inspection.json`, preuves `sketchfab-license.json` ou
-  `creator-license.json` de chaque modèle ;
-- fichiers sources `source.glb` ou `source.fbx`, utiles à la reproduction et à
-  la vérification des empreintes ;
-- notices du miroir `MIRROR_NOTICES.md`, `water-THIRD_PARTY_NOTICES.md`, licences
-  et README d’AMV/SDR/du modèle d’oiseau ; texture source d’oiseau conservée.
+La preuve `OpenObjects/seagull_dayvable/creator-license.json` contient à la fois
+une licence CC Attribution et un tag `noai`. Ne pas supprimer ce signalement.
+Faire clarifier les droits avant entraînement ou diffusion d’un corpus utilisant
+ce modèle. Le goéland procédural `seagull` est une autre géométrie, couverte par
+la licence des créations originales.
 
-Ces sources ne sont pas un cache anonyme jetable. Elles permettent de distinguer
-le fichier téléchargé de sa conversion Unity et de documenter les transformations
-sans dépendre d’un téléchargement futur potentiellement modifié.
+### Noms d’auteur dans les miroirs
 
-Les adaptations documentées incluent notamment : orientation et échelle, ligne
-de flottaison artistique, regroupement des maillages, conversion HDRP des
-matériaux, approximation du verre et de la transmission en surfaces opaques pour
-la politique d’annotation, animations de maillage et ajout de lumières/réponse
-visuelle. Garder ces listes de changements avec l’attribution.
+Pour `speedboat_smolbot`, la notice générale du miroir diffère du manifeste et
+de la preuve créateur retenus, qui créditent **Nicosama**. Garder les deux pièces.
+Le Cessna 172 est crédité **Nobilis the Palaeovespa** dans notre archive et **e737**
+dans la notice du miroir gods-eye-view ; la page source reste la même.
 
-## Points de vigilance documentaires
+Les miroirs contiennent aussi d’autres modèles NC ou ShareAlike non retenus ici,
+notamment yacht Frickie, dauphin, raie, tortue et autre mouette. Ne pas importer
+le miroir complet en lui attribuant la licence de notre sélection.
 
-### Oiseau Dayvable et mention `noai`
+### Ressources du socle
 
-L’archive `OpenObjects/seagull_dayvable/creator-license.json` indique une licence
-« CC Attribution » vers CC BY 4.0 **et contient un tag `noai`** parmi les tags de
-la page créateur. Ce constat doit rester visible et la preuve ne doit pas être
-supprimée. Ce document ne tranche pas la portée de ce tag, ni sa relation avec la
-licence indiquée. Avant une diffusion destinée à l’entraînement ou une
-publication du corpus, faire vérifier ce cas ou utiliser une autre variante
-d’oiseau dont la provenance convient à l’usage retenu. L’oiseau procédural
-existant constitue une variante technique distincte.
+`DatasetObserverFremm` référence `Assets/models/boat/fremm.dae`. Certaines scènes
+référencent IslandTools et `ES_Underwater Ambience 4.mp3`. Ces ressources ne sont
+pas couvertes par notre licence CC BY et ne sont pas redistribuées comme des
+créations de Gabriel. LRAUV, x500, HDRP, Photon, XR, polices et autres dépendances
+gardent aussi leurs propres notices.
 
-### Informations de miroirs non équivalentes à une licence globale
+## Corpus et nouveaux imports
 
-Les notices des miroirs mentionnent aussi des modèles **non commerciaux** ou
-**ShareAlike** présents dans ces autres dépôts : yacht Frickie, dauphin, raie,
-tortue, autre mouette. Ces fichiers ne font pas partie des 14 téléchargements
-retenus ci-dessus. Ne pas les ajouter par un téléchargement global du miroir.
-Le nom d’auteur de `speedboat_smolbot` diffère entre une notice générale du miroir
-et le manifeste/preuve créateur retenus ; conserver les deux documents, sans
-écraser cette différence de provenance.
+Garder les crédits des modèles effectivement utilisés avec les données diffusées.
+Conserver aussi les `asset-attributions.json` produits par les pilotes qui les
+exportent, les configurations et les manifestes de campagne. La licence d’un mesh
+ajouté depuis le dashboard reste celle déclarée pour cet import ; le formulaire
+ne vérifie pas les droits à la place de l’utilisateur.
 
-### Assets du socle
-
-Le prefab `DatasetObserverFremm` référence le fichier original
-`Assets/models/boat/fremm.dae`. Certaines scènes pilotes référencent un terrain
-IslandTools et `ES_Underwater Ambience 4.mp3`. Ce sont des dépendances du projet
-de base, non incluses dans les manifestes CC BY de nos variantes. Leur présence
-dans une scène ne suffit pas à attribuer leurs droits. Le projet de base et ses
-propres notices restent nécessaires.
-
-## Métadonnées lors de la génération de corpus
-
-Conserver avec les résultats les `asset-attributions.json` écrits par les
-exporteurs, configurations demandées, plans/scénarios, paramètres réellement
-capturés et manifestes de campagne. Pour un corpus diffusé, définir aussi une
-politique d’attribution et de vérification des droits adaptée aux fichiers
-effectivement utilisés. Le présent export n’est pas une validation juridique
-générale de toutes les utilisations possibles.
-
-Enfin, ne pas présenter les approximations visuelles comme des mesures validées :
-la houle HDRP demandée en mètres reste un proxy non calibré ; pluie, infrarouge et
-vision nocturne sont synthétiques ; la physique visuelle des modèles n’est pas
-une hydrodynamique/aérodynamique certifiée. Cette provenance technique est aussi
-importante que la provenance des modèles pour réutiliser les images correctement.
+La licence d’un modèle ne suffit pas à fixer celle de tous les éléments d’une
+image. Vérifier aussi les textures, sons ou environnements inclus dans le corpus
+avant sa publication.

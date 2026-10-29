@@ -2,6 +2,9 @@
 
 Quatre modèles originaux, génériques et sans marque, construits pour le rendu dans le projet HDRP. Aucun mesh ni texture téléchargé.
 
+Crédit : **Gabriel Ricardon (Roi-Scub)**. Géométries, textures et matériaux originaux
+sous [CC BY 4.0](../../../ORIGINAL_ASSETS_LICENSE.md), avec attribution.
+
 | Modèle | Prefab / adresse Addressables | Catégorie | Identifiant Gazebo |
 | --- | --- | --- | --- |
 | Petit quadricoptère avec caméra sur nacelle | `small_drone` | `drone` | 2 |

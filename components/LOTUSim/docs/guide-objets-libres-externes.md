@@ -64,13 +64,18 @@ modèles du premier lot. Le Cessna reste limité par ses textures 256 px.
 
 ## Droits et traçabilité
 
-Les huit sources sont sous **CC BY 4.0**, vérifiées par les pages/API des créateurs
-ou, pour AMV Lab, par le dépôt original et sa licence. Partage, adaptation et
+Les huit sources annoncent **CC BY 4.0** dans les preuves archivées des créateurs
+ou, pour AMV Lab, dans le dépôt original et sa licence. Partage, adaptation et
 usage commercial sont permis avec attribution, lien de licence et indication
 des modifications : [conditions officielles](https://creativecommons.org/licenses/by/4.0/).
 Ce n’est ni du domaine public ni une conversion de leur licence en EPL-2.0.
 Marques, personnes et autres droits éventuels ne sont pas couverts ; aucun
 créateur n’endosse l’intégration.
+
+Attention : la preuve créateur de `seagull_dayvable` contient aussi un tag `noai`.
+Faire clarifier ce cas avant entraînement ou diffusion d’un corpus utilisant cet
+oiseau ; le goéland procédural `seagull` reste une variante distincte. Conserver
+la preuve et cette réserve avec le modèle.
 
 Les GLB/FBX modifiables, notices, licences, versions Git des miroirs et SHA-256
 sont conservés dans `ThirdParty/OpenObjects/` du projet Unity. Les captures des
